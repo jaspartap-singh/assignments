@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Composite Functions — Interactive Worksheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+<style>
+  :root {
+    --bg: #f7f4ef;
+    --card: #ffffff;
+    --accent: #5b4fcf;
+    --accent2: #e85d4a;
+    --green: #2e9e6b;
+    --yellow: #f0b429;
+    --text: #1a1a2e;
+    --muted: #6b6b80;
+    --border: #ddd8f0;
+    --correct: #d4f4e7;
+    --wrong: #fde8e5;
+    --correct-border: #2e9e6b;
+    --wrong-border: #e85d4a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: var(--accent);
+    letter-spacing: -1px;
+  }
+
+  header p {
+    color: var(--muted);
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .sheet {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--accent);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 1.8rem 2rem;
+    box-shadow: 0 2px 16px rgba(91,79,207,0.07);
+    border: 1.5px solid var(--border);
+    position: relative;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    margin-bottom: 0.8rem;
+  }
+
+  .badge.we-do { background: #e8e5ff; color: var(--accent); }
+  .badge.your-turn { background: #fff3cd; color: #8a6200; }
+
+  .qnum {
+    position: absolute;
+    top: -14px;
+    left: 20px;
+    background: var(--accent);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+  }
+
+  .problem-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+
+  .problem-text strong { color: var(--accent); }
+
+  .hint {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+    font-style: italic;
+  }
+
+  .answer-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    align-items: flex-start;
+    margin-top: 0.6rem;
+  }
+
+  .answer-group label {
+    font-size: 0.9rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .answer-group label span {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.88rem;
+  }
+
+  input.ans {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.95rem;
+    padding: 0.45rem 0.8rem;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+    min-width: 160px;
+    transition: border 0.2s, background 0.2s;
+    outline: none;
+  }
+
+  input.ans:focus {
+    border-color: var(--accent);
+    background: #fff;
+  }
+
+  input.ans.correct {
+    background: var(--correct);
+    border-color: var(--correct-border);
+  }
+
+  input.ans.wrong {
+    background: var(--wrong);
+    border-color: var(--wrong-border);
+  }
+
+  textarea.ans {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.95rem;
+    padding: 0.6rem 0.9rem;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+    width: 100%;
+    min-height: 80px;
+    resize: vertical;
+    transition: border 0.2s, background 0.2s;
+    outline: none;
+    line-height: 1.6;
+  }
+
+  textarea.ans:focus {
+    border-color: var(--accent);
+    background: #fff;
+  }
+
+  textarea.ans.correct {
+    background: var(--correct);
+    border-color: var(--correct-border);
+  }
+
+  textarea.ans.wrong {
+    background: var(--wrong);
+    border-color: var(--wrong-border);
+  }
+
+  .check-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 9px;
+    padding: 0.55rem 1.4rem;
+    font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 1rem;
+  }
+
+  .check-btn:hover { background: #4a40b8; }
+  .check-btn:active { transform: scale(0.97); }
+
+  .feedback {
+    margin-top: 0.7rem;
+    font-size: 0.88rem;
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.ok { background: var(--correct); color: #175c3d; border: 1px solid var(--correct-border); }
+  .feedback.no { background: var(--wrong); color: #7a1f17; border: 1px solid var(--wrong-border); }
+  .feedback.partial { background: #fff8e1; color: #7a5800; border: 1px solid var(--yellow); }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-top: 0.8rem;
+  }
+
+  .col-box {
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+  }
+
+  .col-box .col-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+
+  .help-text {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+    padding: 0.5rem 0.8rem;
+    background: #f0eeff;
+    border-radius: 6px;
+  }
+
+  .score-bar {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .score-bar .score-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .score-bar .score-val {
+    font-size: 1.6rem;
+    font-family: 'Playfair Display', serif;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .progress-track {
+    flex: 1;
+    background: var(--border);
+    border-radius: 999px;
+    height: 8px;
+    overflow: hidden;
+    min-width: 100px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 999px;
+    transition: width 0.4s;
+    width: 0%;
+  }
+
+  .bullet-q {
+    font-size: 0.92rem;
+    margin-top: 0.5rem;
+    padding-left: 1.2rem;
+    position: relative;
+    color: var(--muted);
+  }
+
+  .bullet-q::before {
+    content: "◆";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.55rem;
+    top: 5px;
+  }
+
+  @media (max-width: 600px) {
+    .two-col { grid-template-columns: 1fr; }
+    .card { padding: 1.2rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Composite Functions</h1>
+  <p>Interactive Practice Worksheet &nbsp;·&nbsp; Type answers, then click <strong>Check</strong></p>
+  <p style="font-size:0.8rem;color:var(--muted);margin-top:0.3rem">You may type <code>infinity</code> or <code>inf</code> instead of ∞</p>
+</header>
+
+<div class="sheet">
+
+  <!-- Score bar -->
+  <div class="score-bar">
+    <div>
+      <div class="score-label">Score</div>
+      <div class="score-val" id="scoreDisplay">0 / 0</div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <button class="check-btn" style="margin-top:0" onclick="checkAll()">Check All</button>
+  </div>
+
+  <!-- ======= SECTION 1: Decomposing Composite Functions ======= -->
+  <div class="section-title">§1 — Decomposing Composite Functions</div>
+
+  <!-- 1a -->
+  <div class="card">
+    <div class="qnum">1a — WE DO</div>
+    <div class="badge we-do">We Do</div>
+    <div class="problem-text">
+      Suppose \(h(x) = \sqrt{x^3+5}\), and \(h(x) = f(g(x))\).<br>
+      The example shows: inner \(g(x)=x^3+5\), outer \(f(x)=\sqrt{x}\).<br><br>
+      Now consider a composite function as \(g(f(x))\).<br>
+      What is the <strong>inner</strong> and <strong>outer</strong> function here?
+    </div>
+    <div class="answer-group">
+      <label><span>Inner f(x) =</span> <input class="ans" id="q1a_inner" placeholder="e.g. sqrt(x)"></label>
+      <label><span>Outer g(x) =</span> <input class="ans" id="q1a_outer" placeholder="e.g. x^3+5"></label>
+    </div>
+    <div class="help-text">Tip: In g(f(x)), f is applied first (inner), then g wraps around it (outer).</div>
+    <button class="check-btn" onclick="check1a()">Check</button>
+    <div class="feedback" id="fb1a"></div>
+  </div>
+
+  <!-- 1b -->
+  <div class="card">
+    <div class="qnum">1b — WE DO</div>
+    <div class="badge we-do">We Do</div>
+    <div class="problem-text">
+      Suppose \(r(t) = \dfrac{1}{(t-9)^2}\). Write <strong>two non-trivial</strong> decompositions \(r(t) = (p \circ q)(t)\).
+    </div>
+    <p class="hint">Do not use the identity function. Give two different ways.</p>
+
+    <div class="two-col">
+      <div class="col-box">
+        <div class="col-label">Decomposition 1</div>
+        <label>Inner q(t) = <input class="ans" id="q1b_q1" placeholder="e.g. t-9"></label>
+        <label style="margin-top:0.6rem;display:block">Outer p(t) = <input class="ans" id="q1b_p1" placeholder="e.g. 1/t^2"></label>
+      </div>
+      <div class="col-box">
+        <div class="col-label">Decomposition 2</div>
+        <label>Inner q(t) = <input class="ans" id="q1b_q2" placeholder="e.g. (t-9)^2"></label>
+        <label style="margin-top:0.6rem;display:block">Outer p(t) = <input class="ans" id="q1b_p2" placeholder="e.g. 1/t"></label>
+      </div>
+    </div>
+    <button class="check-btn" onclick="check1b()">Check</button>
+    <div class="feedback" id="fb1b"></div>
+  </div>
+
+  <!-- 2 -->
+  <div class="card">
+    <div class="qnum">2 — YOUR TURN</div>
+    <div class="badge your-turn">Your Turn</div>
+    <div class="problem-text">
+      Given \(f(x) = |1 - x^2|\), find functions \(g\) and \(h\) such that \(f(x) = (g \circ h)(x)\).
+    </div>
+    <div class="answer-group">
+      <label><span>Inner h(x) =</span> <input class="ans" id="q2_h" placeholder="e.g. 1-x^2"></label>
+      <label><span>Outer g(x) =</span> <input class="ans" id="q2_g" placeholder="e.g. |x|"></label>
+    </div>
+    <button class="check-btn" onclick="check2()">Check</button>
+    <div class="feedback" id="fb2"></div>
+  </div>
+
+  <!-- ======= SECTION 2: Domain of Composite Functions ======= -->
+  <div class="section-title">§2 — Domain of Composite Functions</div>
+
+  <!-- 3a -->
+  <div class="card">
+    <div class="qnum">3a — WE DO</div>
+    <div class="badge we-do">We Do</div>
+    <div class="problem-text">
+      \(f(x)=\sqrt{x-2}\), \(g(x)=\dfrac{1}{x^2}\). Recap the steps to find the domain of \(f(g(x)) = \sqrt{\dfrac{1}{x^2}-2}\).<br><br>
+      List the key steps in order:
+    </div>
+    <textarea class="ans" id="q3a" placeholder="Step 1: Find domain and range of inner function g(x)...&#10;Step 2: ...&#10;Step 3: ..."></textarea>
+    <button class="check-btn" onclick="check3a()">Check</button>
+    <div class="feedback" id="fb3a"></div>
+  </div>
+
+  <!-- 3b -->
+  <div class="card">
+    <div class="qnum">3b — WE DO</div>
+    <div class="badge we-do">We Do</div>
+    <div class="problem-text">
+      \(f(x)=\sqrt{x-2}\), \(g(x)=\dfrac{1}{x^2}\). Find the domain of \((g \circ f)(x) = \dfrac{1}{x-2}\).
+    </div>
+
+    <div class="bullet-q">What is the domain and range of the inner function f(x)?</div>
+    <div class="answer-group" style="margin-left:1.2rem">
+      <label><span>Domain of f:</span> <input class="ans" id="q3b_df" placeholder="e.g. [2, infinity)"></label>
+      <label><span>Range of f:</span> <input class="ans" id="q3b_rf" placeholder="e.g. [0, infinity)"></label>
+    </div>
+
+    <div class="bullet-q" style="margin-top:0.8rem">What is the domain of g(x)?</div>
+    <div class="answer-group" style="margin-left:1.2rem">
+      <label><span>Domain of g:</span> <input class="ans" id="q3b_dg" placeholder="e.g. x ≠ 0"></label>
+    </div>
+
+    <div class="bullet-q" style="margin-top:0.8rem">Additional restriction so f(x) lies in domain of g?</div>
+    <textarea class="ans" id="q3b_restrict" style="min-height:60px" placeholder="We need f(x) ≠ 0, so..."></textarea>
+
+    <div class="bullet-q" style="margin-top:0.8rem">Domain of (g ∘ f)(x):</div>
+    <div class="answer-group" style="margin-left:1.2rem">
+      <label><span>Domain:</span> <input class="ans" id="q3b_final" placeholder="e.g. (2, infinity)"></label>
+    </div>
+    <button class="check-btn" onclick="check3b()">Check</button>
+    <div class="feedback" id="fb3b"></div>
+  </div>
+
+  <!-- 3c -->
+  <div class="card">
+    <div class="qnum">3c — WE DO</div>
+    <div class="badge we-do">We Do</div>
+    <div class="problem-text">
+      We found: domain of \((g \circ f)(x) = \dfrac{1}{x-2}\) is \((2, \infty)\).<br>
+      How does this compare with the domain of \(m(x) = \dfrac{1}{x-2}\)?
+    </div>
+    <textarea class="ans" id="q3c" placeholder="The domain of m(x) = 1/(x-2) is... whereas the domain of (g∘f)(x) is..."></textarea>
+    <button class="check-btn" onclick="check3c()">Check</button>
+    <div class="feedback" id="fb3c"></div>
+  </div>
+
+  <!-- 4 -->
+  <div class="card">
+    <div class="qnum">4 — YOUR TURN</div>
+    <div class="badge your-turn">Your Turn</div>
+    <div class="problem-text">
+      \(p(x) = x^2 - 8\), \(q(x) = \sqrt{x-1}\). Find the domain of:
+    </div>
+    <div class="two-col">
+      <div class="col-box">
+        <div class="col-label">Domain of p(q(x))</div>
+        <input class="ans" id="q4_pq" placeholder="e.g. [1, infinity)" style="width:100%">
+      </div>
+      <div class="col-box">
+        <div class="col-label">Domain of (q ∘ p)(x)</div>
+        <input class="ans" id="q4_qp" placeholder="e.g. (-inf, -3]∪[3, inf)" style="width:100%">
+      </div>
+    </div>
+    <button class="check-btn" onclick="check4()">Check</button>
+    <div class="feedback" id="fb4"></div>
+  </div>
+
+  <!-- ======= SECTION 3: Composite Functions in Context ======= -->
+  <div class="section-title">§3 — Applications in Context</div>
+
+  <!-- 5b -->
+  <div class="card">
+    <div class="qnum">5b — WE DO</div>
+    <div class="badge we-do">We Do</div>
+    <div class="problem-text">
+      \(C(t) = 50 + 10t\) (number of customers after t hours)<br>
+      \(A(n) = 5 - 0.01n\) (avg. amount spent per customer when n customers present)<br><br>
+      Write the composite function for average amount spent per customer in terms of hours t.
+    </div>
+    <label>A(C(t)) = <input class="ans" id="q5b" placeholder="e.g. 5 - 0.01(50 + 10t)" style="min-width:260px"></label>
+    <div class="help-text">Simplify your answer fully.</div>
+    <button class="check-btn" onclick="check5b()">Check</button>
+    <div class="feedback" id="fb5b"></div>
+  </div>
+
+  <!-- 5c -->
+  <div class="card">
+    <div class="qnum">5c — WE DO</div>
+    <div class="badge we-do">We Do</div>
+    <div class="problem-text">
+      Using \(C(t) = 50+10t\) and \(A(n)=5-0.01n\), explain what \((A \circ C)(4)\) means in context.
+    </div>
+    <textarea class="ans" id="q5c" placeholder="(A∘C)(4) means..."></textarea>
+    <button class="check-btn" onclick="check5c()">Check</button>
+    <div class="feedback" id="fb5c"></div>
+  </div>
+
+  <!-- 6 -->
+  <div class="card">
+    <div class="qnum">6 — YOUR TURN</div>
+    <div class="badge your-turn">Your Turn</div>
+    <div class="problem-text">
+      A botanist models: S(t) = sunlight as function of time t, G(a) = growth rate as function of sunlight a, Y(r) = yield as function of growth rate r.<br><br>
+      Which composed functions make sense in context? Justify each.
+    </div>
+    <div style="margin-top:0.8rem">
+      <div style="font-weight:500;margin-bottom:0.4rem">1. S(G(a)) — makes sense?</div>
+      <textarea class="ans" id="q6_1" style="min-height:60px" placeholder="Yes/No — because..."></textarea>
+
+      <div style="font-weight:500;margin:0.8rem 0 0.4rem">2. Y(G(a)) — makes sense?</div>
+      <textarea class="ans" id="q6_2" style="min-height:60px" placeholder="Yes/No — because..."></textarea>
+
+      <div style="font-weight:500;margin:0.8rem 0 0.4rem">3. G(S(t)) — makes sense?</div>
+      <textarea class="ans" id="q6_3" style="min-height:60px" placeholder="Yes/No — because..."></textarea>
+
+      <div style="font-weight:500;margin:0.8rem 0 0.4rem">4. Y(S(t)) — makes sense?</div>
+      <textarea class="ans" id="q6_4" style="min-height:60px" placeholder="Yes/No — because..."></textarea>
+    </div>
+    <button class="check-btn" onclick="check6()">Check</button>
+    <div class="feedback" id="fb6"></div>
+  </div>
+
+  <!-- ======= SECTION 4: More Practice ======= -->
+  <div class="section-title">§4 — More Practice</div>
+
+  <!-- HW 1a -->
+  <div class="card">
+    <div class="qnum">HW 1a</div>
+    <div class="problem-text">
+      \(w(x) = \dfrac{4}{\sqrt{x}+3}\). Find functions u(x) and v(x) such that \(w(x) = (v \circ u)(x)\).
+    </div>
+    <div class="answer-group">
+      <label><span>Inner u(x) =</span> <input class="ans" id="hw1a_u" placeholder="e.g. sqrt(x)"></label>
+      <label><span>Outer v(x) =</span> <input class="ans" id="hw1a_v" placeholder="e.g. 4/(x+3)"></label>
+    </div>
+    <button class="check-btn" onclick="checkHW1a()">Check</button>
+    <div class="feedback" id="fbhw1a"></div>
+  </div>
+
+  <!-- HW 1b -->
+  <div class="card">
+    <div class="qnum">HW 1b</div>
+    <div class="problem-text">
+      \(f(x)=x^4-x^2\), \(g(x)=\sqrt{x}\). It's given that \(f(g(x)) = x^2 - x\).<br>
+      What is the domain of \(f(g(x))\)?
+    </div>
+    <label>Domain: <input class="ans" id="hw1b" placeholder="e.g. [0, infinity)"></label>
+    <button class="check-btn" onclick="checkHW1b()">Check</button>
+    <div class="feedback" id="fbhw1b"></div>
+  </div>
+
+  <!-- HW 1c -->
+  <div class="card">
+    <div class="qnum">HW 1c</div>
+    <div class="problem-text">
+      N(T) = number of bacteria as function of temperature T (°C).<br>
+      T(t) = temperature as function of time t (hours) after removal from refrigerator.<br><br>
+      Interpret \((N \circ T)(t)\) in context.
+    </div>
+    <textarea class="ans" id="hw1c" placeholder="(N∘T)(t) represents..."></textarea>
+    <button class="check-btn" onclick="checkHW1c()">Check</button>
+    <div class="feedback" id="fbhw1c"></div>
+  </div>
+
+  <!-- HW 2a -->
+  <div class="card">
+    <div class="qnum">HW 2a</div>
+    <div class="problem-text">
+      \(p(t) = \dfrac{1}{t+2}\), \(q(t) = \dfrac{1}{t-1}\).<br>
+      Find \((p \circ q)(t)\) and \((q \circ p)(t)\), and determine their domains.
+    </div>
+    <div class="answer-group">
+      <label><span>(p∘q)(t) =</span> <input class="ans" id="hw2a_pq" placeholder="simplified expression"></label>
+      <label><span>Domain of (p∘q):</span> <input class="ans" id="hw2a_pq_d" placeholder="e.g. x ≠ 1 and x ≠ ..."></label>
+    </div>
+    <div class="answer-group" style="margin-top:0.6rem">
+      <label><span>(q∘p)(t) =</span> <input class="ans" id="hw2a_qp" placeholder="simplified expression"></label>
+      <label><span>Domain of (q∘p):</span> <input class="ans" id="hw2a_qp_d" placeholder="e.g. x ≠ -2 and x ≠ ..."></label>
+    </div>
+    <button class="check-btn" onclick="checkHW2a()">Check</button>
+    <div class="feedback" id="fbhw2a"></div>
+  </div>
+
+  <!-- HW 2b -->
+  <div class="card">
+    <div class="qnum">HW 2b</div>
+    <div class="problem-text">
+      A skydiver's altitude: \(h(s) = 3000 - 56s\) (meters, \(0 \le s \le 35\) seconds).<br>
+      Air temperature: \(t(h) = -0.0064h + 25\) (°C).<br><br>
+      Find \(t(h(s))\) and interpret its meaning.
+    </div>
+    <label style="display:block;margin-bottom:0.6rem">t(h(s)) = <input class="ans" id="hw2b_expr" placeholder="simplified expression in s"></label>
+    <textarea class="ans" id="hw2b_interp" placeholder="Interpretation: t(h(s)) gives..."></textarea>
+    <button class="check-btn" onclick="checkHW2b()">Check</button>
+    <div class="feedback" id="fbhw2b"></div>
+  </div>
+
+  <!-- HW 2c -->
+  <div class="card">
+    <div class="qnum">HW 2c</div>
+    <div class="problem-text">
+      An economist models:<br>
+      \(Q(c) = 100 - 2c\) (quantity exported when cost is $c per million metric ton)<br>
+      \(P(k) = \dfrac{200}{k} + 5\) (price when k million metric tons produced)<br>
+      \(A(r) = 1.5r - 10\) (quantity produced when rainfall is r cm)<br><br>
+      Express the price ($ per million metric ton) as a function of average rainfall r.
+    </div>
+    <label>P as function of r: <input class="ans" id="hw2c" placeholder="e.g. P(A(r)) = 200/(1.5r-10) + 5" style="min-width:280px"></label>
+    <button class="check-btn" onclick="checkHW2c()">Check</button>
+    <div class="feedback" id="fbhw2c"></div>
+  </div>
+
+</div><!-- end sheet -->
+
+<script>
+// ──────────────────────────────────────────────
+// Normalization helpers
+// ──────────────────────────────────────────────
+function norm(s) {
+  return s.toLowerCase()
+    .replace(/infinity|inf|∞/g, 'inf')
+    .replace(/\s+/g, '')
+    .replace(/[×*]/g, '*')
+    .replace(/\^/g, '^')
+    .trim();
+}
+
+function matches(input, ...accepted) {
+  const n = norm(input);
+  return accepted.some(a => norm(a) === n);
+}
+
+function containsAll(input, ...keywords) {
+  const n = norm(input);
+  return keywords.every(k => n.includes(norm(k)));
+}
+
+function containsAny(input, ...keywords) {
+  const n = norm(input);
+  return keywords.some(k => n.includes(norm(k)));
+}
+
+function setFeedback(id, ok, msg) {
+  const el = document.getElementById(id);
+  el.className = 'feedback show ' + (ok === true ? 'ok' : ok === 'partial' ? 'partial' : 'no');
+  el.innerHTML = msg;
+}
+
+function markInput(id, ok) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove('correct','wrong');
+  el.classList.add(ok ? 'correct' : 'wrong');
+}
+
+// Score tracking
+let scoreData = {}; // key -> bool
+function recordScore(key, val) {
+  scoreData[key] = val;
+  updateScore();
+}
+function updateScore() {
+  const vals = Object.values(scoreData);
+  const total = vals.length;
+  const correct = vals.filter(Boolean).length;
+  document.getElementById('scoreDisplay').textContent = correct + ' / ' + total;
+  const pct = total > 0 ? (correct/total)*100 : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function checkAll() {
+  check1a(); check1b(); check2(); check3a(); check3b(); check3c();
+  check4(); check5b(); check5c(); check6();
+  checkHW1a(); checkHW1b(); checkHW1c(); checkHW2a(); checkHW2b(); checkHW2c();
+}
+
+// ──────────────────────────────────────────────
+// 1a
+// ──────────────────────────────────────────────
+function check1a() {
+  const inner = document.getElementById('q1a_inner').value;
+  const outer = document.getElementById('q1a_outer').value;
+  // In g(f(x)), f is inner, g is outer
+  // f(x) = sqrt(x), g(x) = x^3+5
+  const innerOk = matches(inner, 'sqrt(x)', '√x', 'x^(1/2)', 'x^0.5');
+  const outerOk = matches(outer, 'x^3+5', 'x³+5', 'x^3 + 5');
+  markInput('q1a_inner', innerOk);
+  markInput('q1a_outer', outerOk);
+  const ok = innerOk && outerOk;
+  recordScore('1a', ok);
+  setFeedback('fb1a', ok,
+    ok ? '✓ Correct! In g(f(x)), f(x) = √x is the inner function and g(x) = x³+5 is the outer function.'
+       : `Hint: In g(f(x)), which function is applied first? That's the inner function. f(x)=√x goes inside, g(x)=x³+5 wraps around.`
+  );
+}
+
+// ──────────────────────────────────────────────
+// 1b — flexible, accept multiple valid decompositions
+// ──────────────────────────────────────────────
+function check1b() {
+  const q1 = document.getElementById('q1b_q1').value;
+  const p1 = document.getElementById('q1b_p1').value;
+  const q2 = document.getElementById('q1b_q2').value;
+  const p2 = document.getElementById('q1b_p2').value;
+
+  // Valid pairs for r(t)=1/(t-9)^2:
+  // q=t-9, p=1/t^2
+  // q=(t-9)^2, p=1/t
+  // q=t, p=1/(t-9)^2 (trivial — not allowed, but we just look for plausible pairs)
+  function validPair(q, p) {
+    const qn = norm(q), pn = norm(p);
+    if (matches(q,'t-9','t - 9') && (pn.includes('1/t^2') || pn.includes('t^-2') || pn.includes('1/t²'))) return true;
+    if ((matches(q,'(t-9)^2','(t-9)²')) && (pn.includes('1/t') || pn.includes('t^-1'))) return true;
+    // Also accept other creative but mathematically valid attempts
+    if (qn.length > 0 && pn.length > 0 && !matches(q,'t') && !matches(p,'1/(t-9)^2')) return 'partial';
+    return false;
+  }
+
+  const r1 = validPair(q1, p1);
+  const r2 = validPair(q2, p2);
+  markInput('q1b_q1', r1 === true); markInput('q1b_p1', r1 === true);
+  markInput('q1b_q2', r2 === true); markInput('q1b_p2', r2 === true);
+  const ok = r1 === true && r2 === true;
+  recordScore('1b', ok);
+  setFeedback('fb1b', ok ? true : (r1 || r2) ? 'partial' : false,
+    ok ? '✓ Both decompositions are valid!'
+       : 'Two standard decompositions: (1) q(t)=t−9, p(t)=1/t² and (2) q(t)=(t−9)², p(t)=1/t. Try again!'
+  );
+}
+
+// ──────────────────────────────────────────────
+// 2
+// ──────────────────────────────────────────────
+function check2() {
+  const h = document.getElementById('q2_h').value;
+  const g = document.getElementById('q2_g').value;
+  // f(x)=|1-x^2| = g(h(x)) where h(x)=1-x^2, g(x)=|x|
+  const hOk = matches(h, '1-x^2','1 - x^2','1-x²');
+  const gOk = matches(g, '|x|','abs(x)');
+  markInput('q2_h', hOk); markInput('q2_g', gOk);
+  const ok = hOk && gOk;
+  recordScore('2', ok);
+  setFeedback('fb2', ok,
+    ok ? '✓ Correct! h(x)=1−x² is the inner function and g(x)=|x| is the outer.'
+       : 'Hint: Think about which operation happens last — the absolute value. So g(x)=|x| is outer, and h(x)=1−x² is inner.'
+  );
+}
+
+// ──────────────────────────────────────────────
+// 3a — steps (keyword check)
+// ──────────────────────────────────────────────
+function check3a() {
+  const v = document.getElementById('q3a').value;
+  const has = (...kw) => containsAll(v, ...kw);
+  const step1 = containsAny(v, 'domain', 'range') && containsAny(v, 'inner', 'g(x)', 'g');
+  const step2 = containsAny(v, 'domain of f', 'outer', 'f(x)');
+  const step3 = containsAny(v, 'intersect', 'restrict', 'combine', 'both', 'additional');
+  const ok = step1 && step2;
+  recordScore('3a', ok);
+  setFeedback('fb3a', ok ? true : step1 ? 'partial' : false,
+    ok ? '✓ Great summary of steps!'
+       : 'Key steps: (1) Find domain & range of inner g(x). (2) Find domain of outer f(x). (3) Restrict domain of g so its range lies within domain of f. (4) Combine restrictions.'
+  );
+}
+
+// ──────────────────────────────────────────────
+// 3b
+// ──────────────────────────────────────────────
+function check3b() {
+  const df = document.getElementById('q3b_df').value;
+  const rf = document.getElementById('q3b_rf').value;
+  const dg = document.getElementById('q3b_dg').value;
+  const restrict = document.getElementById('q3b_restrict').value;
+  const final = document.getElementById('q3b_final').value;
+
+  const dfOk = matches(df, '[2,infinity)','[2,inf)','x>=2','x≥2','[2,∞)');
+  const rfOk = matches(rf, '[0,infinity)','[0,inf)','y>=0','[0,∞)');
+  const dgOk = containsAny(dg, 'x≠0','x!=0','x=/=0','x≠ 0') || matches(dg,'(-inf,0)∪(0,inf)','(-infinity,0)u(0,infinity)');
+  const finalOk = matches(final, '(2,infinity)','(2,inf)','x>2','(2,∞)');
+
+  [['q3b_df',dfOk],['q3b_rf',rfOk],['q3b_dg',dgOk],['q3b_final',finalOk]].forEach(([id,ok])=>markInput(id,ok));
+
+  const score = [dfOk,rfOk,dgOk,finalOk].filter(Boolean).length;
+  const allOk = score === 4;
+  recordScore('3b', allOk);
+  setFeedback('fb3b', allOk ? true : score >= 2 ? 'partial' : false,
+    allOk
+      ? '✓ All correct! Domain of f: [2,∞), Range of f: [0,∞), Domain of g: x≠0, so we need f(x)≠0 → x>2, giving domain (2,∞).'
+      : `Got ${score}/4. Domain of f=[2,∞), Range of f=[0,∞), Domain of g: x≠0. Since f(x)=0 when x=2, we need x>2. Final domain: (2,∞).`
+  );
+}
+
+// ──────────────────────────────────────────────
+// 3c
+// ──────────────────────────────────────────────
+function check3c() {
+  const v = document.getElementById('q3c').value;
+  const mentionsMx = containsAny(v, 'm(x)', 'mx', '1/(x-2)', 'x≠2','x!=2');
+  const mentionsDiff = containsAny(v, 'different','restrict','smaller','exclud','x>2','(2,');
+  const ok = mentionsMx && mentionsDiff;
+  recordScore('3c', ok);
+  setFeedback('fb3c', ok,
+    ok ? '✓ Good comparison! The function m(x)=1/(x−2) has domain x≠2 i.e. (−∞,2)∪(2,∞), but (g∘f)(x) has the more restricted domain (2,∞) because the composition requires x≥2 from f(x).'
+       : 'Hint: m(x)=1/(x−2) is defined for all x≠2, giving two intervals. But (g∘f) requires x≥2 from f(x)=√(x−2), and then x>2 to avoid 0 in denominator. So the domain is smaller: (2,∞).'
+  );
+}
+
+// ──────────────────────────────────────────────
+// 4
+// ──────────────────────────────────────────────
+function check4() {
+  const pq = document.getElementById('q4_pq').value;
+  const qp = document.getElementById('q4_qp').value;
+
+  // p(q(x)) = p(√(x-1)) = (x-1)-8 = x-9. Domain: need x-1≥0 → x≥1. Domain: [1,∞)
+  const pqOk = matches(pq, '[1,infinity)','[1,inf)','x>=1','x≥1','[1,∞)');
+
+  // (q∘p)(x) = q(p(x)) = √(x²-8-1) = √(x²-9). Need x²-9≥0 → x≤-3 or x≥3
+  const qpOk = matches(qp,
+    '(-inf,-3]∪[3,inf)','(-infinity,-3]u[3,infinity)',
+    '(-inf,-3]u[3,inf)','x<=-3orx>=3','x≤-3orx≥3',
+    '(-∞,-3]∪[3,∞)','|x|>=3','|x|≥3'
+  ) || (containsAll(qp,'-3') && containsAll(qp,'3') && (containsAny(qp,'∪','u','or','union')));
+
+  markInput('q4_pq', pqOk); markInput('q4_qp', qpOk);
+  const ok = pqOk && qpOk;
+  recordScore('4', ok);
+  setFeedback('fb4', ok ? true : (pqOk||qpOk) ? 'partial' : false,
+    ok
+      ? '✓ Correct! p(q(x)): domain [1,∞). (q∘p)(x): need x²−9≥0, so x≤−3 or x≥3, giving (−∞,−3]∪[3,∞).'
+      : 'p(q(x))=x−9, need x≥1 → [1,∞). (q∘p)(x)=√(x²−9), need x²≥9 → (−∞,−3]∪[3,∞).'
+  );
+}
+
+// ──────────────────────────────────────────────
+// 5b
+// ──────────────────────────────────────────────
+function check5b() {
+  const v = document.getElementById('q5b').value;
+  // A(C(t)) = 5 - 0.01(50+10t) = 5 - 0.5 - 0.1t = 4.5 - 0.1t
+  const ok = matches(v, '4.5-0.1t','4.5 - 0.1t') ||
+    (containsAll(v,'4.5') && containsAll(v,'0.1t')) ||
+    matches(v,'5-0.01(50+10t)','5 - 0.01(50 + 10t)');
+  markInput('q5b', ok);
+  recordScore('5b', ok);
+  setFeedback('fb5b', ok,
+    ok ? '✓ Correct! A(C(t)) = 5 − 0.01(50+10t) = 5 − 0.5 − 0.1t = 4.5 − 0.1t'
+       : 'Substitute C(t) into A(n): A(C(t)) = 5 − 0.01(50+10t) = 4.5 − 0.1t'
+  );
+}
+
+// ──────────────────────────────────────────────
+// 5c
+// ──────────────────────────────────────────────
+function check5c() {
+  const v = document.getElementById('q5c').value;
+  // (A∘C)(4): t=4 hours after opening, gives avg amount spent
+  const timeOk = containsAny(v, '4 hours','4hour','t=4','after 4','4 hrs');
+  const avgOk = containsAny(v, 'average','avg','amount spent','per customer');
+  const ok = timeOk && avgOk;
+  recordScore('5c', ok);
+  setFeedback('fb5c', ok,
+    ok ? '✓ Great interpretation! (A∘C)(4) gives the average amount spent per customer 4 hours after the shop opens.'
+       : 'Hint: C(4) tells you how many customers are there after 4 hours, then A() converts that to avg spending. So (A∘C)(4) = average amount spent per customer 4 hours after opening.'
+  );
+}
+
+// ──────────────────────────────────────────────
+// 6
+// ──────────────────────────────────────────────
+function check6() {
+  const v1 = document.getElementById('q6_1').value;
+  const v2 = document.getElementById('q6_2').value;
+  const v3 = document.getElementById('q6_3').value;
+  const v4 = document.getElementById('q6_4').value;
+
+  // S(G(a)): G outputs growth rate r, but S takes time t as input — DOESN'T MAKE SENSE
+  const ok1 = containsAny(v1,'no','does not','doesn\'t','invalid','not valid','wrong') &&
+               containsAny(v1,'growth','output','input','rate','S takes');
+
+  // Y(G(a)): G(a) outputs growth rate r, Y takes growth rate r — MAKES SENSE
+  const ok2 = containsAny(v2,'yes','makes sense','valid','correct') &&
+               containsAny(v2,'growth','rate','output','Y takes');
+
+  // G(S(t)): S(t) outputs sunlight a, G takes sunlight a — MAKES SENSE
+  const ok3 = containsAny(v3,'yes','makes sense','valid','correct') &&
+               containsAny(v3,'sunlight','output','S','G takes');
+
+  // Y(S(t)): S(t) outputs sunlight a, but Y takes growth rate r — DOESN'T MAKE SENSE directly
+  const ok4 = containsAny(v4,'no','does not','doesn\'t','invalid','not','wrong') &&
+               containsAny(v4,'sunlight','growth','rate','output','Y takes');
+
+  const score = [ok1,ok2,ok3,ok4].filter(Boolean).length;
+  recordScore('6', score === 4);
+  setFeedback('fb6', score === 4 ? true : score >= 2 ? 'partial' : false,
+    `Got ${score}/4. ` +
+    '(1) S(G(a)): NO — G outputs growth rate, S needs time as input. ' +
+    '(2) Y(G(a)): YES — G outputs growth rate r, which is Y\'s input. ' +
+    '(3) G(S(t)): YES — S outputs sunlight a, which is G\'s input. ' +
+    '(4) Y(S(t)): NO — S outputs sunlight, but Y needs growth rate as input.'
+  );
+}
+
+// ──────────────────────────────────────────────
+// HW 1a
+// ──────────────────────────────────────────────
+function checkHW1a() {
+  const u = document.getElementById('hw1a_u').value;
+  const v = document.getElementById('hw1a_v').value;
+  // w(x) = 4/(sqrt(x)+3) = v(u(x)) where u=sqrt(x), v=4/(x+3)
+  const uOk = matches(u, 'sqrt(x)','√x','x^(1/2)','x^0.5');
+  const vOk = matches(v, '4/(x+3)','4/(x + 3)') || (containsAll(v,'4') && containsAll(v,'x+3'));
+  markInput('hw1a_u', uOk); markInput('hw1a_v', vOk);
+  const ok = uOk && vOk;
+  recordScore('hw1a', ok);
+  setFeedback('fbhw1a', ok,
+    ok ? '✓ Correct! u(x)=√x is the inner function, v(x)=4/(x+3) is the outer.'
+       : 'u(x)=√x (inner), v(x)=4/(x+3) (outer). Check: v(u(x))=4/(√x+3)=w(x) ✓'
+  );
+}
+
+// ──────────────────────────────────────────────
+// HW 1b
+// ──────────────────────────────────────────────
+function checkHW1b() {
+  const v = document.getElementById('hw1b').value;
+  // g(x)=√x requires x≥0. f(g(x))=x²-x. Domain of g: x≥0, so domain is [0,∞)
+  const ok = matches(v,'[0,infinity)','[0,inf)','x>=0','x≥0','[0,∞)');
+  markInput('hw1b', ok);
+  recordScore('hw1b', ok);
+  setFeedback('fbhw1b', ok,
+    ok ? '✓ Correct! g(x)=√x requires x≥0, so domain of f(g(x)) is [0,∞).'
+       : 'The inner function g(x)=√x requires x≥0. Domain: [0,∞).'
+  );
+}
+
+// ──────────────────────────────────────────────
+// HW 1c
+// ──────────────────────────────────────────────
+function checkHW1c() {
+  const v = document.getElementById('hw1c').value;
+  const timeOk = containsAny(v,'time','hours','t');
+  const bacteriaOk = containsAny(v,'bacteria','number','count','N');
+  const tempOk = containsAny(v,'temperature','temp');
+  const ok = timeOk && bacteriaOk;
+  recordScore('hw1c', ok);
+  setFeedback('fbhw1c', ok,
+    ok ? '✓ Good! (N∘T)(t) gives the number of bacteria on the medium as a function of time (hours after removal from the refrigerator), accounting for the changing temperature.'
+       : 'T(t) gives the temperature at time t. N(T) gives bacteria count at temperature T. So (N∘T)(t) = number of bacteria at time t after removal from the refrigerator.'
+  );
+}
+
+// ──────────────────────────────────────────────
+// HW 2a
+// ──────────────────────────────────────────────
+function checkHW2a() {
+  const pq = document.getElementById('hw2a_pq').value;
+  const pqd = document.getElementById('hw2a_pq_d').value;
+  const qp = document.getElementById('hw2a_qp').value;
+  const qpd = document.getElementById('hw2a_qp_d').value;
+
+  // (p∘q)(t) = p(q(t)) = p(1/(t-1)) = 1/(1/(t-1)+2) = (t-1)/(1+2(t-1)) = (t-1)/(2t-1)
+  const pqOk = matches(pq,'(t-1)/(2t-1)','t-1/2t-1') || containsAll(pq,'t-1','2t-1');
+  // Domain: q defined for t≠1; then p defined when q(t)≠-2 → 1/(t-1)≠-2 → t-1≠-1/2 → t≠1/2
+  const pqdOk = containsAll(pqd,'1') && (containsAny(pqd,'1/2','0.5'));
+
+  // (q∘p)(t) = q(p(t)) = q(1/(t+2)) = 1/(1/(t+2)-1) = (t+2)/(1-(t+2)) = (t+2)/(-t-1) = -(t+2)/(t+1)
+  const qpOk = matches(qp,'(t+2)/(-t-1)','-(t+2)/(t+1)','-t-2/t+1') || containsAll(qp,'t+2','t+1');
+  // Domain: p defined for t≠-2; q defined when p(t)≠1 → 1/(t+2)≠1 → t+2≠1 → t≠-1
+  const qpdOk = containsAll(qpd,'-2') && containsAll(qpd,'-1');
+
+  [['hw2a_pq',pqOk],['hw2a_pq_d',pqdOk],['hw2a_qp',qpOk],['hw2a_qp_d',qpdOk]].forEach(([id,ok])=>markInput(id,ok));
+  const score = [pqOk,pqdOk,qpOk,qpdOk].filter(Boolean).length;
+  recordScore('hw2a', score === 4);
+  setFeedback('fbhw2a', score===4?true:score>=2?'partial':false,
+    `Got ${score}/4. ` +
+    '(p∘q)(t) = (t−1)/(2t−1), domain t≠1 and t≠½. ' +
+    '(q∘p)(t) = −(t+2)/(t+1), domain t≠−2 and t≠−1.'
+  );
+}
+
+// ──────────────────────────────────────────────
+// HW 2b
+// ──────────────────────────────────────────────
+function checkHW2b() {
+  const expr = document.getElementById('hw2b_expr').value;
+  const interp = document.getElementById('hw2b_interp').value;
+
+  // t(h(s)) = -0.0064(3000-56s)+25 = -19.2+0.3584s+25 = 5.8+0.3584s
+  const exprOk = matches(expr,'5.8+0.3584s','5.8 + 0.3584s') ||
+    (containsAll(expr,'5.8') && containsAll(expr,'0.3584')) ||
+    containsAll(expr,'-0.0064(3000-56s)','25');
+
+  const timeOk = containsAny(interp,'time','seconds','s');
+  const tempOk = containsAny(interp,'temperature','temp','°C','celsius');
+  const interpOk = timeOk && tempOk;
+
+  markInput('hw2b_expr', exprOk);
+  const ok = exprOk && interpOk;
+  recordScore('hw2b', ok);
+  setFeedback('fbhw2b', ok?true:exprOk||interpOk?'partial':false,
+    ok ? '✓ t(h(s)) = 5.8 + 0.3584s °C, giving air temperature as a function of seconds of descent.'
+       : 't(h(s)) = −0.0064(3000−56s)+25 = −19.2+0.3584s+25 = 5.8+0.3584s. It gives the air temperature (°C) as a function of time s (seconds) spent descending.'
+  );
+}
+
+// ──────────────────────────────────────────────
+// HW 2c
+// ──────────────────────────────────────────────
+function checkHW2c() {
+  const v = document.getElementById('hw2c').value;
+  // Price as function of rainfall: P(A(r)) = 200/(1.5r-10) + 5
+  const ok = (containsAll(v,'200') && containsAll(v,'1.5r') && containsAll(v,'10')) ||
+    matches(v,'200/(1.5r-10)+5','200/(1.5r - 10) + 5');
+  markInput('hw2c', ok);
+  recordScore('hw2c', ok);
+  setFeedback('fbhw2c', ok,
+    ok ? '✓ Correct! P(A(r)) = 200/(1.5r−10) + 5. Substitute A(r)=1.5r−10 into P(k)=200/k+5.'
+       : 'k = A(r) = 1.5r−10. So P(A(r)) = 200/(1.5r−10) + 5.'
+  );
+}
+</script>
+
+</body>
+</html>
