@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inverse Functions – Practice Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+<style>
+  :root {
+    --cream: #faf6ef;
+    --warm-white: #fffdf9;
+    --ink: #1a1612;
+    --ink-light: #4a3f35;
+    --teal: #2a7c74;
+    --teal-light: #e8f4f3;
+    --teal-mid: #b8dedd;
+    --amber: #d4820a;
+    --amber-light: #fef3e0;
+    --green: #2d7a3a;
+    --green-light: #e8f5eb;
+    --red: #c0392b;
+    --red-light: #fdecea;
+    --border: #d6cfc4;
+    --shadow: rgba(26,22,18,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  header {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 28px 40px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 4px solid var(--teal);
+  }
+  header h1 {
+    font-family: 'Crimson Pro', serif;
+    font-size: 2.2rem;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+  }
+  header p { font-size: 0.85rem; color: #a89f94; margin-top: 4px; }
+  .score-board {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #a89f94;
+  }
+  .score-board span { font-size: 1.6rem; font-weight: 600; color: var(--teal); display: block; line-height: 1; }
+
+  /* ── Layout ── */
+  .sheet { max-width: 860px; margin: 0 auto; padding: 36px 24px 60px; }
+
+  /* ── Section Titles ── */
+  .section-title {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--ink-light);
+    border-bottom: 1.5px solid var(--border);
+    padding-bottom: 8px;
+    margin: 36px 0 20px;
+  }
+
+  /* ── Question Card ── */
+  .q-card {
+    background: var(--warm-white);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 8px var(--shadow);
+    transition: border-color 0.2s;
+  }
+  .q-card:focus-within { border-color: var(--teal); }
+
+  .q-badge {
+    display: inline-block;
+    background: var(--teal);
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+  .your-turn .q-badge { background: var(--amber); }
+
+  .q-prompt {
+    font-size: 0.97rem;
+    line-height: 1.65;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .q-prompt .math-inline { font-family: 'Crimson Pro', serif; font-style: italic; }
+
+  /* ── Answer area ── */
+  textarea.answer-box {
+    width: 100%;
+    min-height: 70px;
+    background: var(--cream);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    resize: vertical;
+    outline: none;
+    color: var(--ink);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  textarea.answer-box:focus { border-color: var(--teal); background: white; }
+
+  .check-btn {
+    margin-top: 10px;
+    padding: 7px 20px;
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .check-btn:hover { background: var(--teal); transform: translateY(-1px); }
+
+  .feedback {
+    margin-top: 12px;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    display: none;
+  }
+  .feedback.correct { background: var(--green-light); border-left: 4px solid var(--green); color: #1a4d23; }
+  .feedback.incorrect { background: var(--red-light); border-left: 4px solid var(--red); color: #7b1c14; }
+  .feedback.show { display: block; }
+
+  /* ── Graph canvas ── */
+  .graph-wrap {
+    display: inline-block;
+    margin: 10px 0 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: white;
+  }
+  canvas { display: block; }
+
+  /* ── Multi-part ── */
+  .sub-parts { display: flex; flex-direction: column; gap: 14px; }
+  .sub-part label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+    color: var(--ink-light);
+  }
+
+  /* ── Fill in blank ── */
+  input.blank {
+    display: inline-block;
+    border: none;
+    border-bottom: 2px solid var(--teal);
+    background: transparent;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    width: 130px;
+    padding: 2px 6px;
+    outline: none;
+    color: var(--ink);
+    text-align: center;
+  }
+
+  /* ── MCQ ── */
+  .mcq-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
+  .mcq-btn {
+    padding: 10px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    text-align: left;
+    transition: all 0.15s;
+    line-height: 1.5;
+  }
+  .mcq-btn:hover { border-color: var(--teal); background: var(--teal-light); }
+  .mcq-btn.selected { border-color: var(--teal); background: var(--teal-light); font-weight: 600; }
+  .mcq-btn.correct-ans { border-color: var(--green); background: var(--green-light); color: var(--green); }
+  .mcq-btn.wrong-ans { border-color: var(--red); background: var(--red-light); color: var(--red); }
+
+  /* ── Reset ── */
+  .reset-btn {
+    display: block;
+    margin: 32px auto 0;
+    padding: 11px 36px;
+    background: transparent;
+    border: 2px solid var(--ink);
+    border-radius: 30px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .reset-btn:hover { background: var(--ink); color: var(--cream); }
+
+  /* ── Progress bar ── */
+  .progress-bar-wrap {
+    height: 4px;
+    background: var(--border);
+    border-radius: 4px;
+    margin-bottom: 30px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--teal);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .note {
+    font-size: 0.83rem;
+    color: var(--ink-light);
+    font-style: italic;
+    margin-top: 6px;
+  }
+
+  .hint-text {
+    font-size: 0.85rem;
+    color: var(--teal);
+    font-weight: 500;
+    margin-top: 8px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .hint-content { display: none; margin-top: 6px; font-size: 0.85rem; color: var(--ink-light); background: var(--teal-light); padding: 8px 12px; border-radius: 6px; }
+  .hint-content.open { display: block; }
+
+  @media (max-width: 600px) {
+    header { flex-direction: column; gap: 10px; align-items: flex-start; }
+    .mcq-options { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Inverse Functions</h1>
+    <p>Practice Sheet · Answer each question and click Check</p>
+  </div>
+  <div class="score-board">
+    Score<span id="score-display">0 / 0</span>
+  </div>
+</header>
+
+<div class="sheet">
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-bar"></div></div>
+
+  <!-- ═══════════════════════════════════════════ SECTION 1 ═══ -->
+  <div class="section-title">§1 · Composition & Inverses</div>
+
+  <!-- 1a: fill in blanks -->
+  <div class="q-card">
+    <span class="q-badge">1a · WE DO</span>
+    <div class="q-prompt">If <em>f</em> is an invertible function, complete the identities:</div>
+    <div style="margin: 10px 0 14px; font-size: 1rem; line-height: 2.4;">
+      <code>f(f⁻¹(x))</code> = <input class="blank" id="q1a-1" placeholder="?"> &nbsp;&nbsp;
+      <code>f⁻¹(f(x))</code> = <input class="blank" id="q1a-2" placeholder="?">
+    </div>
+    <button class="check-btn" onclick="check1a()">Check</button>
+    <div class="feedback" id="fb-1a"></div>
+  </div>
+
+  <!-- 1b WE DO -->
+  <div class="q-card">
+    <span class="q-badge">1b · WE DO</span>
+    <div class="q-prompt">
+      Suppose <strong>m(x) = ∛(3 + x)</strong> and <strong>n(x) = x³ − 3</strong>.<br>
+      Show that m(x) and n(x) are inverses by finding both compositions.
+    </div>
+    <div class="sub-parts">
+      <div>
+        <label>Find m(n(x)):</label>
+        <textarea class="answer-box" id="q1b-1" placeholder="Substitute n(x) into m(x) and simplify..."></textarea>
+      </div>
+      <div>
+        <label>Find n(m(x)):</label>
+        <textarea class="answer-box" id="q1b-2" placeholder="Substitute m(x) into n(x) and simplify..."></textarea>
+      </div>
+      <div>
+        <label>Justify whether m and n are inverses:</label>
+        <textarea class="answer-box" id="q1b-3" placeholder="Explain based on your results above..."></textarea>
+      </div>
+    </div>
+    <button class="check-btn" onclick="check1b()">Check</button>
+    <div class="feedback" id="fb-1b"></div>
+  </div>
+
+  <!-- 1b YOUR TURN -->
+  <div class="q-card your-turn">
+    <span class="q-badge your-turn">1b · YOUR TURN</span>
+    <div class="q-prompt">
+      Suppose <strong>f(x) = (x − 32)<sup>1/5</sup></strong> and <strong>g(x) = x⁵ + 32</strong>.<br>
+      Determine if f and g are inverses of each other.
+    </div>
+    <div class="sub-parts">
+      <div>
+        <label>Find f(g(x)):</label>
+        <textarea class="answer-box" id="q1bt-1" placeholder="Show your working..."></textarea>
+      </div>
+      <div>
+        <label>Find g(f(x)):</label>
+        <textarea class="answer-box" id="q1bt-2" placeholder="Show your working..."></textarea>
+      </div>
+      <div>
+        <label>Conclusion:</label>
+        <textarea class="answer-box" id="q1bt-3" placeholder="Are f and g inverses? Why?"></textarea>
+      </div>
+    </div>
+    <button class="check-btn" onclick="check1bt()">Check</button>
+    <div class="feedback" id="fb-1bt"></div>
+  </div>
+
+  <!-- 1c YOUR TURN fill-in -->
+  <div class="q-card your-turn">
+    <span class="q-badge your-turn">1c · YOUR TURN</span>
+    <div class="q-prompt">Complete the following — for a function to be invertible:</div>
+    <div style="font-size: 0.97rem; line-height: 2.8; margin: 8px 0;">
+      • it must be a <input class="blank" id="q1c-1" placeholder="________"> function<br>
+      • its graph must pass the <input class="blank" id="q1c-2" placeholder="________"> Line Test
+    </div>
+    <button class="check-btn" onclick="check1c()">Check</button>
+    <div class="feedback" id="fb-1c"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ SECTION 2 ═══ -->
+  <div class="section-title">§2 · Identifying Inverse Functions</div>
+
+  <!-- Q2 MCQ -->
+  <div class="q-card your-turn">
+    <span class="q-badge your-turn">2 · YOUR TURN</span>
+    <div class="q-prompt">
+      Which of the following is the inverse of <strong>p(x) = 2/(x − 5)</strong>?
+    </div>
+    <div class="mcq-options">
+      <button class="mcq-btn" id="mcq2-a" onclick="selectMCQ(2,'a')">
+        q(x) = (x − 5) / 2
+      </button>
+      <button class="mcq-btn" id="mcq2-b" onclick="selectMCQ(2,'b')">
+        r(x) = 2/x + 5
+      </button>
+    </div>
+    <button class="check-btn" onclick="checkMCQ(2,'b','r(x) = 2/x + 5 is correct. To find the inverse: let y = 2/(x-5), swap x and y: x = 2/(y-5), solve: x(y-5)=2 → y-5 = 2/x → y = 2/x + 5. ✓')">Check</button>
+    <div class="feedback" id="fb-mcq2"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ SECTION 3 ═══ -->
+  <div class="section-title">§3 · Horizontal Line Test & Invertibility</div>
+
+  <!-- 3b graph + question -->
+  <div class="q-card">
+    <span class="q-badge">3b · WE DO</span>
+    <div class="q-prompt">Here is the graph of <strong>f(x) = x²</strong>:</div>
+    <div class="graph-wrap">
+      <canvas id="canvas-3b" width="300" height="260"></canvas>
+    </div>
+    <div class="sub-parts">
+      <div>
+        <label>Using the horizontal line test, describe why f(x) is NOT one-to-one:</label>
+        <textarea class="answer-box" id="q3b-1" placeholder="Draw or imagine horizontal lines across the parabola..."></textarea>
+      </div>
+      <div>
+        <label>Hence justify why f(x) is non-invertible:</label>
+        <textarea class="answer-box" id="q3b-2" placeholder="Link your answer above to invertibility..."></textarea>
+      </div>
+    </div>
+    <button class="check-btn" onclick="check3b()">Check</button>
+    <div class="feedback" id="fb-3b"></div>
+  </div>
+
+  <!-- 3c g(x)=x³ sketch -->
+  <div class="q-card">
+    <span class="q-badge">3c · WE DO</span>
+    <div class="q-prompt">Suppose <strong>g(x) = x³</strong>.</div>
+    <div class="graph-wrap">
+      <canvas id="canvas-3c" width="340" height="300"></canvas>
+    </div>
+    <div class="sub-parts">
+      <div>
+        <label>Is g(x) a one-to-one function? Justify (refer to the graph):</label>
+        <textarea class="answer-box" id="q3c-1" placeholder="Apply the horizontal line test to g(x) = x³..."></textarea>
+      </div>
+      <div>
+        <label>Is g(x) an invertible function? Justify:</label>
+        <textarea class="answer-box" id="q3c-2" placeholder="Link your one-to-one answer to invertibility..."></textarea>
+      </div>
+    </div>
+    <button class="check-btn" onclick="check3c()">Check</button>
+    <div class="feedback" id="fb-3c"></div>
+  </div>
+
+  <!-- 4a -->
+  <div class="q-card your-turn">
+    <span class="q-badge your-turn">4a · YOUR TURN</span>
+    <div class="q-prompt">
+      In general, a function is <strong>invertible</strong> if its graph passes the <strong>horizontal line test</strong>.<br><br>
+      Explain how the horizontal line test and invertibility are linked.
+    </div>
+    <textarea class="answer-box" id="q4a" placeholder="Explain in your own words the connection between the two..."></textarea>
+    <button class="check-btn" onclick="check4a()">Check</button>
+    <div class="feedback" id="fb-4a"></div>
+  </div>
+
+  <!-- 4b 3 graphs -->
+  <div class="q-card your-turn">
+    <span class="q-badge your-turn">4b · YOUR TURN</span>
+    <div class="q-prompt">Here are the graphs of <strong>p</strong>, <strong>q</strong>, and <strong>r</strong>. In each case, justify whether the function is invertible or not.</div>
+    <div style="display:flex; gap:12px; flex-wrap:wrap; margin: 10px 0 14px;">
+      <div class="graph-wrap"><canvas id="canvas-4b-p" width="185" height="165"></canvas></div>
+      <div class="graph-wrap"><canvas id="canvas-4b-q" width="185" height="165"></canvas></div>
+      <div class="graph-wrap"><canvas id="canvas-4b-r" width="185" height="165"></canvas></div>
+    </div>
+    <div class="sub-parts">
+      <div>
+        <label>p (left graph):</label>
+        <textarea class="answer-box" id="q4b-p" style="min-height:55px" placeholder="Invertible or not? Why?"></textarea>
+      </div>
+      <div>
+        <label>q (middle graph):</label>
+        <textarea class="answer-box" id="q4b-q" style="min-height:55px" placeholder="Invertible or not? Why?"></textarea>
+      </div>
+      <div>
+        <label>r (right graph):</label>
+        <textarea class="answer-box" id="q4b-r" style="min-height:55px" placeholder="Invertible or not? Why?"></textarea>
+      </div>
+    </div>
+    <button class="check-btn" onclick="check4b()">Check</button>
+    <div class="feedback" id="fb-4b"></div>
+  </div>
+
+  <!-- 4c |x| -->
+  <div class="q-card your-turn">
+    <span class="q-badge your-turn">4c · YOUR TURN</span>
+    <div class="q-prompt">Is <strong>m(x) = |x|</strong> an invertible function? Justify.</div>
+    <div class="graph-wrap"><canvas id="canvas-4c" width="280" height="220"></canvas></div>
+    <textarea class="answer-box" id="q4c" placeholder="Use the horizontal line test on the V-shaped graph..."></textarea>
+    <button class="check-btn" onclick="check4c()">Check</button>
+    <div class="feedback" id="fb-4c"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ SECTION 4 ═══ -->
+  <div class="section-title">§4 · Finding Inverse Functions</div>
+
+  <!-- 5b -->
+  <div class="q-card">
+    <span class="q-badge">5b · WE DO</span>
+    <div class="q-prompt">If <strong>g(x) = x², x ≥ 0</strong>, find g⁻¹(x). Also determine the domain and range of g⁻¹(x).</div>
+    <div class="sub-parts">
+      <div>
+        <label>Find g⁻¹(x):</label>
+        <textarea class="answer-box" id="q5b-1" placeholder="Let y = x², swap x and y, then solve for y..."></textarea>
+      </div>
+      <div>
+        <label>Domain of g⁻¹(x):</label>
+        <textarea class="answer-box" id="q5b-2" style="min-height:50px" placeholder="e.g. x ≥ 0 ..."></textarea>
+      </div>
+      <div>
+        <label>Range of g⁻¹(x):</label>
+        <textarea class="answer-box" id="q5b-3" style="min-height:50px" placeholder="e.g. y ≥ 0 ..."></textarea>
+      </div>
+    </div>
+    <button class="check-btn" onclick="check5b()">Check</button>
+    <div class="feedback" id="fb-5b"></div>
+  </div>
+
+  <!-- 5c intervals -->
+  <div class="q-card">
+    <span class="q-badge">5c · WE DO</span>
+    <div class="q-prompt">Here is the graph of <strong>f(x) = x²</strong>. Mark out three intervals on the graph where f(x) is invertible.</div>
+    <div class="graph-wrap">
+      <canvas id="canvas-5c" width="320" height="260"></canvas>
+    </div>
+    <textarea class="answer-box" id="q5c" placeholder="Name three intervals (e.g. [0,∞), (-∞,0], [1,3]) where f(x) is one-to-one..."></textarea>
+    <button class="check-btn" onclick="check5c()">Check</button>
+    <div class="feedback" id="fb-5c"></div>
+  </div>
+
+  <!-- 6a restricted domain -->
+  <div class="q-card your-turn">
+    <span class="q-badge your-turn">6a · YOUR TURN</span>
+    <div class="q-prompt">For <strong>x ≤ 0</strong>, justify whether <strong>h(x) = x²</strong> is invertible or not. If yes, find h⁻¹(x) and state its domain and range.</div>
+    <div class="sub-parts">
+      <div>
+        <label>Is h(x) invertible on x ≤ 0? Justify:</label>
+        <textarea class="answer-box" id="q6a-1" placeholder="Think about what the graph looks like for x ≤ 0..."></textarea>
+      </div>
+      <div>
+        <label>Find h⁻¹(x):</label>
+        <textarea class="answer-box" id="q6a-2" placeholder="Let y = x², swap, solve. Remember x ≤ 0..."></textarea>
+      </div>
+      <div>
+        <label>Domain and Range of h⁻¹(x):</label>
+        <textarea class="answer-box" id="q6a-3" style="min-height:50px" placeholder="State domain and range..."></textarea>
+      </div>
+    </div>
+    <button class="check-btn" onclick="check6a()">Check</button>
+    <div class="feedback" id="fb-6a"></div>
+  </div>
+
+  <!-- 6b sine restrict domain -->
+  <div class="q-card your-turn">
+    <span class="q-badge your-turn">6b · YOUR TURN</span>
+    <div class="q-prompt">Here is the graph of <strong>p(x)</strong> (a sine-like wave). Restrict the domain of p(x) such that it is invertible and covers the entirety of the range of p.</div>
+    <div class="graph-wrap">
+      <canvas id="canvas-6b" width="380" height="220"></canvas>
+    </div>
+    <textarea class="answer-box" id="q6b" placeholder="State a restricted domain interval, e.g. [-π/2, π/2]..."></textarea>
+    <button class="check-btn" onclick="check6b()">Check</button>
+    <div class="feedback" id="fb-6b"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ SECTION 5 ═══ -->
+  <div class="section-title">§5 · Real-World Inverse Functions</div>
+
+  <!-- 7b water bill -->
+  <div class="q-card">
+    <span class="q-badge">7b · WE DO</span>
+    <div class="q-prompt">
+      The monthly water bill (B, in $) for a household is modeled as a function of consumption (g, in gallons):<br>
+      <strong>B = p(g) = 20 + 0.004g</strong>
+    </div>
+    <div class="sub-parts">
+      <div>
+        <label>Find p⁻¹ (the inverse function):</label>
+        <textarea class="answer-box" id="q7b-1" placeholder="Let B = 20 + 0.004g, solve for g in terms of B..."></textarea>
+      </div>
+      <div>
+        <label>Find p⁻¹(73). What does this represent in context?</label>
+        <textarea class="answer-box" id="q7b-2" placeholder="Substitute B = 73 and interpret your answer..."></textarea>
+      </div>
+    </div>
+    <button class="check-btn" onclick="check7b()">Check</button>
+    <div class="feedback" id="fb-7b"></div>
+  </div>
+
+  <!-- 8 car value -->
+  <div class="q-card your-turn">
+    <span class="q-badge your-turn">8 · YOUR TURN</span>
+    <div class="q-prompt">
+      The value (V in $) of a car decreases over time (t in years):<br>
+      <strong>V = f(t) = 21000 − 1500t, 0 ≤ t ≤ 14</strong>
+    </div>
+    <div class="sub-parts">
+      <div>
+        <label>Find f⁻¹. What does it represent in context?</label>
+        <textarea class="answer-box" id="q8-1" placeholder="Solve for t in terms of V, then interpret..."></textarea>
+      </div>
+      <div>
+        <label>Determine the domain and range of f⁻¹:</label>
+        <textarea class="answer-box" id="q8-2" placeholder="Use the domain/range of f to find domain/range of f⁻¹..."></textarea>
+      </div>
+    </div>
+    <button class="check-btn" onclick="check8()">Check</button>
+    <div class="feedback" id="fb-8"></div>
+  </div>
+
+  <button class="reset-btn" onclick="resetAll()">↺ Reset All Answers</button>
+</div>
+
+<script>
+// ── Score tracking ─────────────────────────────────────────────
+let totalChecked = 0, totalCorrect = 0;
+function updateScore(correct) {
+  totalChecked++;
+  if (correct) totalCorrect++;
+  document.getElementById('score-display').textContent = totalCorrect + ' / ' + totalChecked;
+  document.getElementById('progress-bar').style.width = Math.round((totalChecked / 16) * 100) + '%';
+}
+
+function showFeedback(id, correct, msg) {
+  const el = document.getElementById(id);
+  el.className = 'feedback show ' + (correct ? 'correct' : 'incorrect');
+  el.innerHTML = (correct ? '✓ ' : '✗ ') + msg;
+  updateScore(correct);
+}
+
+// ── 1a ─────────────────────────────────────────────────────────
+function check1a() {
+  const v1 = document.getElementById('q1a-1').value.trim().replace(/\s/g,'');
+  const v2 = document.getElementById('q1a-2').value.trim().replace(/\s/g,'');
+  const ok = (v1 === 'x' || v1 === 'X') && (v2 === 'x' || v2 === 'X');
+  showFeedback('fb-1a', ok,
+    ok ? 'Both compositions equal x — that\'s the defining property of inverse functions!'
+       : 'Both f(f⁻¹(x)) and f⁻¹(f(x)) equal <strong>x</strong> (the identity function).');
+}
+
+// ── 1b ─────────────────────────────────────────────────────────
+function check1b() {
+  const a1 = document.getElementById('q1b-1').value.toLowerCase();
+  const a2 = document.getElementById('q1b-2').value.toLowerCase();
+  const a3 = document.getElementById('q1b-3').value.toLowerCase();
+  const ok = a1.length > 5 && a2.length > 5 && a3.length > 10;
+  showFeedback('fb-1b', ok,
+    ok ? '<strong>Model answer:</strong><br>m(n(x)) = ∛(3 + (x³−3)) = ∛(x³) = x ✓<br>n(m(x)) = (∛(3+x))³ − 3 = (3+x) − 3 = x ✓<br>Since both compositions equal x, m and n are inverses.'
+       : 'Please complete all three parts. Remember: m(n(x)) = ∛(3 + x³ − 3) = ∛(x³) = x, and n(m(x)) = (∛(3+x))³ − 3 = x.');
+}
+
+// ── 1b YOUR TURN ────────────────────────────────────────────────
+function check1bt() {
+  const a1 = document.getElementById('q1bt-1').value.toLowerCase();
+  const a2 = document.getElementById('q1bt-2').value.toLowerCase();
+  const a3 = document.getElementById('q1bt-3').value.toLowerCase();
+  const ok = a1.length > 5 && a2.length > 5 && a3.length > 8;
+  showFeedback('fb-1bt', ok,
+    ok ? '<strong>Model answer:</strong><br>f(g(x)) = ((x⁵+32)−32)^(1/5) = (x⁵)^(1/5) = x ✓<br>g(f(x)) = ((x−32)^(1/5))⁵ + 32 = (x−32)+32 = x ✓<br>Yes, f and g are inverses since both compositions return x.'
+       : 'Complete all three parts. f(g(x)) = ((x⁵+32)−32)^(1/5) = x, and g(f(x)) = (x−32)+32 = x. Both equal x, so they are inverses.');
+}
+
+// ── 1c ─────────────────────────────────────────────────────────
+function check1c() {
+  const v1 = document.getElementById('q1c-1').value.toLowerCase().trim();
+  const v2 = document.getElementById('q1c-2').value.toLowerCase().trim();
+  const ok1 = v1.includes('one') || v1.includes('1-to-1') || v1.includes('bijective');
+  const ok2 = v2.includes('horizontal') || v2.includes('horiz');
+  showFeedback('fb-1c', ok1 && ok2,
+    (ok1 && ok2) ? 'Correct! A function must be one-to-one, and its graph must pass the Horizontal Line Test.'
+                 : 'The answers are: <strong>one-to-one</strong> function, and <strong>Horizontal</strong> Line Test.');
+}
+
+// ── Q2 MCQ ─────────────────────────────────────────────────────
+let mcqSelected = {};
+function selectMCQ(q, opt) {
+  mcqSelected[q] = opt;
+  ['a','b'].forEach(o => {
+    const btn = document.getElementById('mcq'+q+'-'+o);
+    btn.className = 'mcq-btn' + (o === opt ? ' selected' : '');
+  });
+}
+function checkMCQ(q, correct, msg) {
+  const sel = mcqSelected[q];
+  if (!sel) { alert('Please select an option first.'); return; }
+  ['a','b'].forEach(o => {
+    const btn = document.getElementById('mcq'+q+'-'+o);
+    btn.className = 'mcq-btn' + (o === correct ? ' correct-ans' : (o === sel && sel !== correct ? ' wrong-ans' : ''));
+  });
+  showFeedback('fb-mcq'+q, sel === correct, msg);
+}
+
+// ── 3b ─────────────────────────────────────────────────────────
+function check3b() {
+  const a1 = document.getElementById('q3b-1').value.toLowerCase();
+  const a2 = document.getElementById('q3b-2').value.toLowerCase();
+  const ok = a1.length > 15 && a2.length > 15;
+  showFeedback('fb-3b', ok,
+    ok ? '<strong>Model answer:</strong><br>A horizontal line (e.g. y=1) crosses the parabola at two points (x=1 and x=−1), meaning it fails the horizontal line test → it is NOT one-to-one. Since it isn\'t one-to-one, it cannot have a unique inverse, so f(x)=x² is non-invertible over all reals.'
+       : 'Please write more detail for both parts. Key idea: a horizontal line y=c (c>0) cuts x² twice, violating one-to-one, hence non-invertible.');
+}
+
+// ── 3c ─────────────────────────────────────────────────────────
+function check3c() {
+  const a1 = document.getElementById('q3c-1').value.toLowerCase();
+  const a2 = document.getElementById('q3c-2').value.toLowerCase();
+  const ok = a1.length > 10 && a2.length > 10;
+  showFeedback('fb-3c', ok,
+    ok ? '<strong>Model answer:</strong><br>g(x)=x³ passes the horizontal line test — every horizontal line crosses the curve exactly once. Therefore it is one-to-one and hence invertible. Its inverse is g⁻¹(x) = ∛x.'
+       : 'g(x)=x³ is strictly increasing — every horizontal line hits it exactly once → one-to-one → invertible.');
+}
+
+// ── 4a ─────────────────────────────────────────────────────────
+function check4a() {
+  const a = document.getElementById('q4a').value.toLowerCase();
+  const ok = a.length > 20 && (a.includes('one') || a.includes('horizontal'));
+  showFeedback('fb-4a', ok,
+    ok ? 'Good explanation! The horizontal line test checks if every output value is produced by exactly one input. If every horizontal line crosses the graph at most once, each output maps back to exactly one input — making the inverse a function.'
+       : 'Key idea: The horizontal line test determines if a function is one-to-one. If every horizontal line meets the graph at most once, each y-value has a unique x-value — so the inverse is also a function.');
+}
+
+// ── 4b ─────────────────────────────────────────────────────────
+function check4b() {
+  const ap = document.getElementById('q4b-p').value.toLowerCase();
+  const aq = document.getElementById('q4b-q').value.toLowerCase();
+  const ar = document.getElementById('q4b-r').value.toLowerCase();
+  const ok = ap.length > 8 && aq.length > 8 && ar.length > 8;
+  showFeedback('fb-4b', ok,
+    ok ? '<strong>Model answers:</strong><br><b>p</b> (hyperbola-like): Invertible — passes the horizontal line test, every horizontal line cuts it at most once.<br><b>q</b> (flat/constant-like): Not invertible — a horizontal line hits the graph infinitely many times.<br><b>r</b> (S-curve/cubic-like): Invertible — passes the horizontal line test (strictly increasing).'
+       : 'Answer all three. p: invertible (hyperbola passes HLT). q: not invertible (horizontal sections). r: invertible (strictly increasing).');
+}
+
+// ── 4c ─────────────────────────────────────────────────────────
+function check4c() {
+  const a = document.getElementById('q4c').value.toLowerCase();
+  const ok = a.length > 10 && (a.includes('not') || a.includes('no') || a.includes('non'));
+  showFeedback('fb-4c', ok,
+    ok ? 'Correct! m(x)=|x| is NOT invertible. The graph is V-shaped; a horizontal line y=c (c>0) crosses it twice (at x=c and x=−c), so it fails the horizontal line test and is not one-to-one.'
+       : 'm(x)=|x| is NOT invertible. A horizontal line like y=2 meets the V-shape at x=2 and x=−2 — two points — so it fails the HLT.');
+}
+
+// ── 5b ─────────────────────────────────────────────────────────
+function check5b() {
+  const a1 = document.getElementById('q5b-1').value.toLowerCase();
+  const a2 = document.getElementById('q5b-2').value.toLowerCase();
+  const a3 = document.getElementById('q5b-3').value.toLowerCase();
+  const ok = a1.length > 5 && a2.length > 3 && a3.length > 3;
+  showFeedback('fb-5b', ok,
+    ok ? '<strong>Model answer:</strong><br>Let y = x² (x≥0). Swap: x = y². Solve: y = √x (taking positive root since x≥0).<br>g⁻¹(x) = √x<br>Domain of g⁻¹: x ≥ 0<br>Range of g⁻¹: y ≥ 0'
+       : 'Answer: g⁻¹(x) = √x. Domain: [0,∞). Range: [0,∞). (The domain of g⁻¹ = range of g, and vice versa.)');
+}
+
+// ── 5c ─────────────────────────────────────────────────────────
+function check5c() {
+  const a = document.getElementById('q5c').value.toLowerCase();
+  const ok = a.length > 10;
+  showFeedback('fb-5c', ok,
+    ok ? '<strong>Model answer:</strong> Any three intervals on which f(x)=x² is monotone work. For example:<br>• [0, ∞) — increasing branch<br>• (−∞, 0] — decreasing branch<br>• [1, 3] — any sub-interval of [0,∞)'
+       : 'Any interval on which x² is strictly monotone (either all increasing or all decreasing) makes it invertible. For example [0,∞), (-∞,0], [2,5].');
+}
+
+// ── 6a ─────────────────────────────────────────────────────────
+function check6a() {
+  const a1 = document.getElementById('q6a-1').value.toLowerCase();
+  const a2 = document.getElementById('q6a-2').value.toLowerCase();
+  const a3 = document.getElementById('q6a-3').value.toLowerCase();
+  const ok = a1.length > 10 && a2.length > 5 && a3.length > 5;
+  showFeedback('fb-6a', ok,
+    ok ? '<strong>Model answer:</strong><br>On x≤0, h(x)=x² is strictly decreasing → passes HLT → invertible ✓<br>h⁻¹(x) = −√x (negative root, since x≤0 means the output is non-positive)<br>Domain of h⁻¹: x ≥ 0 (= range of h)<br>Range of h⁻¹: y ≤ 0 (= domain of h)'
+       : 'On x≤0, x² is decreasing and one-to-one → invertible. h⁻¹(x)=−√x. Domain: x≥0, Range: y≤0.');
+}
+
+// ── 6b ─────────────────────────────────────────────────────────
+function check6b() {
+  const a = document.getElementById('q6b').value.toLowerCase();
+  const ok = a.length > 5;
+  showFeedback('fb-6b', ok,
+    ok ? '<strong>Model answer:</strong> Any interval of length π on which sine is monotone works, for example:<br>• [−π/2, π/2] — one full increasing period from −1 to 1 ✓<br>• [π/2, 3π/2] — one full decreasing period ✓<br>These cover the full range [−1, 1].'
+       : 'Restrict to [−π/2, π/2] (or any interval of length π where the sine is monotone). This covers the full range [−1, 1].');
+}
+
+// ── 7b ─────────────────────────────────────────────────────────
+function check7b() {
+  const a1 = document.getElementById('q7b-1').value.toLowerCase();
+  const a2 = document.getElementById('q7b-2').value.toLowerCase();
+  const ok = a1.length > 10 && a2.length > 10;
+  showFeedback('fb-7b', ok,
+    ok ? '<strong>Model answer:</strong><br>B = 20 + 0.004g → B−20 = 0.004g → g = (B−20)/0.004 = 250(B−20)<br><strong>p⁻¹(B) = 250(B − 20)</strong><br>p⁻¹(73) = 250(73−20) = 250×53 = <strong>13,250 gallons</strong><br>This represents the water consumption when the bill is $73.'
+       : 'p⁻¹(B) = 250(B−20). p⁻¹(73) = 250(53) = 13,250 gallons — the consumption that leads to a $73 bill.');
+}
+
+// ── 8 ──────────────────────────────────────────────────────────
+function check8() {
+  const a1 = document.getElementById('q8-1').value.toLowerCase();
+  const a2 = document.getElementById('q8-2').value.toLowerCase();
+  const ok = a1.length > 15 && a2.length > 10;
+  showFeedback('fb-8', ok,
+    ok ? '<strong>Model answer:</strong><br>V = 21000−1500t → t = (21000−V)/1500<br><strong>f⁻¹(V) = (21000−V)/1500</strong><br>This represents the age (in years) of the car when its value is $V.<br>Domain of f⁻¹: [21000−1500×14, 21000] = [0, 21000]<br>Range of f⁻¹: [0, 14]'
+       : 'f⁻¹(V) = (21000−V)/1500. It gives the car\'s age given its current value. Domain: [0, 21000]; Range: [0, 14].');
+}
+
+// ── Reset ──────────────────────────────────────────────────────
+function resetAll() {
+  if (!confirm('Reset all answers and scores?')) return;
+  document.querySelectorAll('textarea, input.blank').forEach(el => el.value = '');
+  document.querySelectorAll('.feedback').forEach(el => { el.className = 'feedback'; el.innerHTML = ''; });
+  document.querySelectorAll('.mcq-btn').forEach(el => el.className = 'mcq-btn');
+  mcqSelected = {};
+  totalChecked = 0; totalCorrect = 0;
+  document.getElementById('score-display').textContent = '0 / 0';
+  document.getElementById('progress-bar').style.width = '0%';
+}
+
+// ══════════════════════════════════════════════════════════════
+//  GRAPHS
+// ══════════════════════════════════════════════════════════════
+function drawAxes(ctx, w, h, ox, oy, step, xRange, yRange) {
+  ctx.strokeStyle = '#ccc';
+  ctx.lineWidth = 1;
+  // grid
+  for (let gx = 0; gx <= w; gx += step) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, h); ctx.stroke(); }
+  for (let gy = 0; gy <= h; gy += step) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(w, gy); ctx.stroke(); }
+  // axes
+  ctx.strokeStyle = '#555'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(0, oy); ctx.lineTo(w, oy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(ox, 0); ctx.lineTo(ox, h); ctx.stroke();
+  // labels
+  ctx.fillStyle = '#888'; ctx.font = '10px DM Sans'; ctx.textAlign = 'center';
+  for (let i = xRange[0]; i <= xRange[1]; i++) {
+    if (i === 0) continue;
+    const px = ox + i * step;
+    ctx.fillText(i, px, oy + 12);
+  }
+  ctx.textAlign = 'right';
+  for (let j = yRange[0]; j <= yRange[1]; j++) {
+    if (j === 0) continue;
+    const py = oy - j * step;
+    if (py >= 0 && py <= h) ctx.fillText(j, ox - 3, py + 3);
+  }
+  ctx.fillStyle = '#555'; ctx.font = '11px DM Sans';
+  ctx.fillText('x', w - 8, oy - 4);
+  ctx.fillText('y', ox + 8, 10);
+}
+
+function plotFn(ctx, fn, ox, oy, step, xMin, xMax, color, lineWidth) {
+  ctx.strokeStyle = color; ctx.lineWidth = lineWidth || 2;
+  ctx.beginPath();
+  let first = true;
+  for (let px = 0; px <= 600; px++) {
+    const xVal = (px - ox) / step;
+    if (xVal < xMin || xVal > xMax) { first = true; continue; }
+    const yVal = fn(xVal);
+    const py = oy - yVal * step;
+    if (isNaN(py) || !isFinite(py) || py < -200 || py > 800) { first = true; continue; }
+    if (first) { ctx.moveTo(px, py); first = false; } else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+}
+
+// 3b: f(x)=x²
+window.addEventListener('load', () => {
+  // 3b
+  (function() {
+    const c = document.getElementById('canvas-3b');
+    const ctx = c.getContext('2d'); const w=300, h=260, ox=150, oy=210, step=30;
+    drawAxes(ctx, w, h, ox, oy, step, [-4,4], [-1,5]);
+    plotFn(ctx, x => x*x, ox, oy, step, -3, 3, '#3b82c4', 2.2);
+    ctx.fillStyle = '#3b82c4'; ctx.font = 'italic 13px Crimson Pro';
+    ctx.fillText('f', 240, 60);
+    // horizontal line demo
+    ctx.setLineDash([5,4]); ctx.strokeStyle = '#e55'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(0, oy - 1*step); ctx.lineTo(w, oy - 1*step); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#e55'; ctx.font = '10px DM Sans'; ctx.fillText('y=1 (hits twice!)', 10, oy - 1*step - 4);
+  })();
+
+  // 3c: g(x)=x³
+  (function() {
+    const c = document.getElementById('canvas-3c');
+    const ctx = c.getContext('2d'); const w=340, h=300, ox=170, oy=150, step=28;
+    drawAxes(ctx, w, h, ox, oy, step, [-5,5], [-5,5]);
+    plotFn(ctx, x => x*x*x, ox, oy, step, -4.5, 4.5, '#2a7c74', 2.2);
+    ctx.fillStyle = '#2a7c74'; ctx.font = 'italic 13px Crimson Pro'; ctx.fillText('g', 250, 50);
+  })();
+
+  // 4b p: 1/x
+  (function() {
+    const c = document.getElementById('canvas-4b-p');
+    const ctx = c.getContext('2d'); const w=185, h=165, ox=92, oy=82, step=22;
+    drawAxes(ctx, w, h, ox, oy, step, [-4,4], [-3,3]);
+    plotFn(ctx, x => 1/x, ox, oy, step, -4, -0.3, '#3b82c4', 2);
+    plotFn(ctx, x => 1/x, ox, oy, step, 0.3, 4, '#3b82c4', 2);
+    ctx.fillStyle = '#3b82c4'; ctx.font = 'italic bold 12px Crimson Pro'; ctx.fillText('p', 155, 20);
+  })();
+
+  // 4b q: like a logistic/tanh (passes HLT but looks like has flat parts)
+  (function() {
+    const c = document.getElementById('canvas-4b-q');
+    const ctx = c.getContext('2d'); const w=185, h=165, ox=92, oy=82, step=22;
+    drawAxes(ctx, w, h, ox, oy, step, [-4,4], [-4,4]);
+    // draw a curve that looks like the image: flat with a vertical part — like tan or 1/(x-1) shifted
+    plotFn(ctx, x => Math.tanh(x)*3, ox, oy, step, -4, 4, '#3b82c4', 2);
+    ctx.fillStyle = '#3b82c4'; ctx.font = 'italic bold 12px Crimson Pro'; ctx.fillText('q', 155, 20);
+  })();
+
+  // 4b r: cubic-like S-curve with local max/min (NOT invertible)
+  (function() {
+    const c = document.getElementById('canvas-4b-r');
+    const ctx = c.getContext('2d'); const w=185, h=165, ox=92, oy=82, step=22;
+    drawAxes(ctx, w, h, ox, oy, step, [-4,4], [-4,4]);
+    plotFn(ctx, x => x*x*x/6 - x, ox, oy, step, -3.5, 3.5, '#3b82c4', 2);
+    ctx.fillStyle = '#3b82c4'; ctx.font = 'italic bold 12px Crimson Pro'; ctx.fillText('r', 155, 20);
+  })();
+
+  // 4c |x|
+  (function() {
+    const c = document.getElementById('canvas-4c');
+    const ctx = c.getContext('2d'); const w=280, h=220, ox=140, oy=180, step=30;
+    drawAxes(ctx, w, h, ox, oy, step, [-4,4], [-1,4]);
+    plotFn(ctx, x => Math.abs(x), ox, oy, step, -4, 4, '#2a7c74', 2.2);
+    ctx.fillStyle = '#2a7c74'; ctx.font = 'italic 13px Crimson Pro'; ctx.fillText('m', 220, 50);
+    ctx.setLineDash([5,4]); ctx.strokeStyle = '#e55'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(0, oy - 2*step); ctx.lineTo(w, oy - 2*step); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#e55'; ctx.font = '10px DM Sans'; ctx.fillText('y=2 (hits twice!)', 10, oy - 2*step - 4);
+  })();
+
+  // 5c x²
+  (function() {
+    const c = document.getElementById('canvas-5c');
+    const ctx = c.getContext('2d'); const w=320, h=260, ox=160, oy=220, step=32;
+    drawAxes(ctx, w, h, ox, oy, step, [-4,4], [-1,5]);
+    plotFn(ctx, x => x*x, ox, oy, step, -4, 4, '#3b82c4', 2.2);
+    // mark intervals
+    ctx.strokeStyle = '#2d7a3a'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(ox + 4*step, oy); ctx.stroke();
+    ctx.strokeStyle = '#d4820a'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(ox - 4*step, oy); ctx.stroke();
+    ctx.fillStyle = '#2d7a3a'; ctx.font = '10px DM Sans'; ctx.fillText('[0,4]', ox + step, oy + 12);
+    ctx.fillStyle = '#d4820a'; ctx.fillText('[-4,0]', ox - 3*step, oy + 12);
+    ctx.fillStyle = '#3b82c4'; ctx.font = 'italic 13px Crimson Pro'; ctx.fillText('f', 260, 50);
+  })();
+
+  // 6b sine
+  (function() {
+    const c = document.getElementById('canvas-6b');
+    const ctx = c.getContext('2d'); const w=380, h=220, ox=190, oy=110, step=50;
+    // custom axes for π
+    ctx.strokeStyle = '#ccc'; ctx.lineWidth = 1;
+    for (let gx=0; gx<=w; gx+=step/2) { ctx.beginPath(); ctx.moveTo(gx,0); ctx.lineTo(gx,h); ctx.stroke(); }
+    for (let gy=0; gy<=h; gy+=step/4) { ctx.beginPath(); ctx.moveTo(0,gy); ctx.lineTo(w,gy); ctx.stroke(); }
+    ctx.strokeStyle = '#555'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(0,oy); ctx.lineTo(w,oy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(ox,0); ctx.lineTo(ox,h); ctx.stroke();
+    // π labels
+    ctx.fillStyle = '#888'; ctx.font = '9px DM Sans'; ctx.textAlign = 'center';
+    const piLabels = [[-2,'-2π'],[-1.5,'-3π/2'],[-1,'-π'],[-0.5,'-π/2'],[0.5,'π/2'],[1,'π'],[1.5,'3π/2'],[2,'2π']];
+    piLabels.forEach(([k,lbl]) => ctx.fillText(lbl, ox + k*step, oy+12));
+    // sine curve
+    ctx.strokeStyle = '#3b82c4'; ctx.lineWidth = 2.2;
+    ctx.beginPath();
+    for (let px=0; px<=w; px++) {
+      const xVal = (px-ox)/step * Math.PI;
+      const yVal = Math.sin(xVal);
+      const py = oy - yVal * (step*0.8);
+      if (px===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+    ctx.fillStyle = '#3b82c4'; ctx.font = 'italic bold 13px Crimson Pro'; ctx.fillText('p', 350, 80);
+    // highlight [-π/2, π/2]
+    ctx.strokeStyle = '#2d7a3a'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    for (let px = ox - step/2; px <= ox + step/2; px++) {
+      const xVal = (px-ox)/step * Math.PI;
+      const yVal = Math.sin(xVal);
+      const py = oy - yVal * (step*0.8);
+      if (px === ox - step/2) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+    ctx.fillStyle = '#2d7a3a'; ctx.font = '9px DM Sans'; ctx.fillText('[-π/2, π/2]', ox, oy - step*0.9);
+  })();
+});
+</script>
+</body>
+</html>
