@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geometry Practice Sheet — Parallelograms & Triangles</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Source+Serif+4:wght@300;400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1410;
+    --paper: #faf7f2;
+    --cream: #f2ede4;
+    --rule: #c8bfb0;
+    --accent: #8b3a1e;
+    --blue: #2c4a7c;
+    --light-blue: #dce8f5;
+    --green: #2d6a4f;
+    --light-green: #d8f3dc;
+    --red-light: #fde8e8;
+    --red: #9b2226;
+    --gold: #b5891a;
+    --shadow: rgba(26,20,16,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 300;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 36px 48px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 18px,
+      rgba(255,255,255,0.025) 18px,
+      rgba(255,255,255,0.025) 19px
+    );
+  }
+  header .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rule);
+    margin-bottom: 10px;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 600;
+    line-height: 1.1;
+    position: relative;
+  }
+  header h1 em {
+    font-style: italic;
+    color: #c8a97a;
+  }
+  header .subtitle {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #a89d90;
+    position: relative;
+  }
+  .progress-bar {
+    margin-top: 20px;
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    position: relative;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #c8a97a;
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.6s ease;
+  }
+  .progress-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #a89d90;
+    margin-top: 6px;
+  }
+
+  /* MAIN */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 24px 0;
+  }
+
+  /* QUESTION CARD */
+  .qcard {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    margin-bottom: 40px;
+    box-shadow: 4px 4px 0 var(--shadow);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .qcard:hover { box-shadow: 6px 6px 0 var(--shadow); }
+
+  .qcard-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--cream);
+    background: var(--cream);
+  }
+  .qnum {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--accent);
+    min-width: 36px;
+  }
+  .qtitle {
+    font-family: 'Source Serif 4', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .qcard-body {
+    padding: 24px;
+  }
+
+  .qtext {
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    color: #2a2420;
+  }
+  .qtext strong { font-weight: 600; }
+
+  /* SVG DIAGRAMS */
+  .diagram-wrap {
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 16px;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .diagram-wrap svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* ANSWER AREA */
+  .answer-area { margin-top: 16px; }
+  .answer-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .answer-label {
+    font-size: 14px;
+    color: #5a4f47;
+    min-width: 220px;
+  }
+  .answer-input {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    width: 90px;
+    padding: 8px 12px;
+    border: 2px solid var(--rule);
+    border-radius: 2px;
+    background: var(--paper);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+    text-align: center;
+  }
+  .answer-input:focus { border-color: var(--blue); }
+  .answer-input.correct { border-color: var(--green); background: var(--light-green); }
+  .answer-input.wrong { border-color: var(--red); background: var(--red-light); }
+
+  .unit-label {
+    font-size: 14px;
+    color: #5a4f47;
+  }
+
+  .check-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 9px 20px;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .check-btn:hover { background: var(--accent); }
+  .check-btn:active { transform: scale(0.97); }
+
+  .feedback {
+    margin-top: 12px;
+    font-size: 14px;
+    padding: 10px 14px;
+    border-radius: 2px;
+    display: none;
+    line-height: 1.5;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--light-green); color: var(--green); border: 1px solid #95d5b2; }
+  .feedback.wrong-fb { background: var(--red-light); color: var(--red); border: 1px solid #f4a0a0; }
+
+  .hint-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    border-radius: 2px;
+    cursor: pointer;
+    margin-left: 8px;
+    transition: background 0.2s;
+  }
+  .hint-btn:hover { background: rgba(181,137,26,0.08); }
+  .hint-box {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #6b4f10;
+    background: #fdf6e3;
+    border: 1px solid #e8d79a;
+    padding: 10px 14px;
+    border-radius: 2px;
+    display: none;
+    line-height: 1.6;
+  }
+  .hint-box.show { display: block; }
+
+  /* MCQ */
+  .mcq-options { margin-top: 8px; }
+  .mcq-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--rule);
+    border-radius: 2px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .mcq-option:hover { border-color: var(--blue); background: var(--light-blue); }
+  .mcq-option.selected { border-color: var(--blue); background: var(--light-blue); }
+  .mcq-option.correct-opt { border-color: var(--green); background: var(--light-green); }
+  .mcq-option.wrong-opt { border-color: var(--red); background: var(--red-light); }
+  .mcq-check { min-width: 18px; height: 18px; border: 2px solid var(--rule); border-radius: 2px; margin-top: 1px; }
+
+  /* FILL BLANKS */
+  .fill-line {
+    font-size: 15px;
+    line-height: 2;
+    margin-bottom: 8px;
+  }
+  .fill-input {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    width: 120px;
+    padding: 4px 8px;
+    border: none;
+    border-bottom: 2px solid var(--ink);
+    background: transparent;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .fill-input:focus { border-color: var(--blue); }
+  .fill-input.correct { border-color: var(--green); color: var(--green); }
+  .fill-input.wrong { border-color: var(--red); color: var(--red); }
+
+  /* TRUE/FALSE */
+  .tf-group { display: flex; gap: 12px; margin-top: 8px; }
+  .tf-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    padding: 10px 28px;
+    border: 2px solid var(--rule);
+    border-radius: 2px;
+    cursor: pointer;
+    background: var(--paper);
+    transition: all 0.2s;
+    font-weight: 600;
+  }
+  .tf-btn:hover { border-color: var(--blue); color: var(--blue); }
+  .tf-btn.selected { border-color: var(--blue); background: var(--light-blue); color: var(--blue); }
+  .tf-btn.correct-tf { border-color: var(--green); background: var(--light-green); color: var(--green); }
+  .tf-btn.wrong-tf { border-color: var(--red); background: var(--red-light); color: var(--red); }
+
+  /* SVG styling */
+  .sv-line { stroke: var(--blue); stroke-width: 1.8; fill: none; }
+  .sv-dash { stroke: #888; stroke-width: 1.4; stroke-dasharray: 5,4; fill: none; }
+  .sv-fill { fill: rgba(44,74,124,0.10); stroke: var(--blue); stroke-width: 1.5; }
+  .sv-label { font-family: 'Source Serif 4', serif; font-size: 14px; fill: var(--ink); font-weight: 600; }
+  .sv-angle { font-family: 'Source Serif 4', serif; font-size: 12px; fill: var(--accent); }
+  .sv-dot { fill: #c0392b; }
+  .sv-arc { fill: rgba(139,58,30,0.15); stroke: var(--accent); stroke-width: 1.2; }
+
+  /* SECTION DIVIDER */
+  .section-sep {
+    text-align: center;
+    margin: 8px 0 36px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+  .section-sep::before, .section-sep::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  /* SCORE */
+  #score-panel {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 2px;
+    padding: 14px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    z-index: 100;
+    min-width: 160px;
+  }
+  #score-panel .sc-label { font-size: 10px; letter-spacing: 2px; color: #a89d90; text-transform: uppercase; margin-bottom: 4px; }
+  #score-panel .sc-val { font-size: 22px; font-weight: 600; color: #c8a97a; }
+
+  @media (max-width: 600px) {
+    header { padding: 24px 20px 20px; }
+    main { padding: 28px 14px 0; }
+    .qcard-body { padding: 16px; }
+    .answer-label { min-width: unset; width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="label">Geometry · Parallelograms &amp; Triangles</div>
+  <h1>Practice <em>Worksheet</em></h1>
+  <p class="subtitle">Diagonals · Congruence · Rhombus Properties · Angle Proofs</p>
+  <div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+  <div class="progress-label" id="prog-label">0 of 9 questions answered</div>
+</header>
+
+<main>
+
+<!-- ═══════════════ Q1 ═══════════════ -->
+<div class="qcard" id="q1">
+  <div class="qcard-head">
+    <span class="qnum">1</span>
+    <span class="qtitle">Diagonals of a Parallelogram — Finding an Angle</span>
+  </div>
+  <div class="qcard-body">
+    <p class="qtext">
+      The diagonals of parallelogram <strong>ABCD</strong> intersect at <strong>O</strong>.<br>
+      Given: <strong>∠BOC = 90°</strong> and <strong>∠BDC = 50°</strong>.<br>
+      Find <strong>∠OAB</strong>.
+    </p>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 380 260" xmlns="http://www.w3.org/2000/svg" width="380">
+        <!-- Parallelogram ABCD: A bottom-left, B bottom-right, C top-right, D top-left -->
+        <!-- A=40,200  B=280,200  C=340,60  D=100,60  O=190,130 -->
+        <polygon class="sv-fill" points="40,200 280,200 340,60 100,60"/>
+        <!-- diagonals -->
+        <line class="sv-dash" x1="40" y1="200" x2="340" y2="60"/>
+        <line class="sv-dash" x1="280" y1="200" x2="100" y2="60"/>
+        <!-- 90° arc at O -->
+        <path d="M190,120 L200,120 L200,130" class="sv-arc" fill="rgba(139,58,30,0.15)" stroke-width="1.2"/>
+        <text x="205" y="128" class="sv-angle">90°</text>
+        <!-- 50° arc at D -->
+        <path d="M100,60 Q115,80 130,75" class="sv-arc" fill="rgba(139,58,30,0.1)" stroke-width="1.2" fill-rule="evenodd"/>
+        <text x="120" y="82" class="sv-angle">50°</text>
+        <!-- labels -->
+        <circle cx="40" cy="200" r="4" class="sv-dot"/>
+        <circle cx="280" cy="200" r="4" class="sv-dot"/>
+        <circle cx="340" cy="60" r="4" class="sv-dot"/>
+        <circle cx="100" cy="60" r="4" class="sv-dot"/>
+        <circle cx="190" cy="130" r="4" class="sv-dot"/>
+        <text x="22" y="217" class="sv-label">A</text>
+        <text x="284" y="218" class="sv-label">B</text>
+        <text x="344" y="56" class="sv-label">C</text>
+        <text x="84" y="54" class="sv-label">D</text>
+        <text x="194" y="125" class="sv-label" font-size="12">O</text>
+      </svg>
+    </div>
+
+    <div class="answer-area">
+      <div class="answer-row">
+        <span class="answer-label">∠OAB =</span>
+        <input type="text" class="answer-input" id="q1-ans" placeholder="°">
+        <span class="unit-label">degrees</span>
+      </div>
+      <button class="check-btn" onclick="checkQ1()">Check Answer</button>
+      <button class="hint-btn" onclick="toggleHint('h1')">Hint</button>
+      <div class="hint-box" id="h1">In △BOC: ∠BOC = 90°, ∠BCO = ∠BDC = 50° (alternate angles, BC ∥ AD). So ∠OBC = 40°. In a parallelogram, AB ∥ DC, so ∠OAB = ∠OBC (alternate interior angles with transversal AB).</div>
+      <div class="feedback" id="fb1"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ Q4 ═══════════════ -->
+<div class="section-sep">Question 2</div>
+<div class="qcard" id="q2">
+  <div class="qcard-head">
+    <span class="qnum">2</span>
+    <span class="qtitle">Triangle with Parallel Lines — Perimeter of △PQR</span>
+  </div>
+  <div class="qcard-body">
+    <p class="qtext">
+      Through vertices <strong>A</strong>, <strong>B</strong>, and <strong>C</strong> of △ABC, lines are drawn <em>parallel</em> to <strong>BC</strong>, <strong>CA</strong>, and <strong>AB</strong> respectively, forming triangle <strong>PQR</strong>.<br>
+      The perimeter of △ABC is <strong>27 cm</strong>.<br>
+      What is the perimeter of △PQR?
+    </p>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 380 240" xmlns="http://www.w3.org/2000/svg" width="360">
+        <!-- Inner triangle ABC: A=190,50  B=130,170  C=280,170 -->
+        <!-- Outer triangle PQR: P=260,230  Q=320,50  R=60,90 -->
+        <!-- Lines through each vertex parallel to opposite side -->
+        <!-- R through A parallel BC -->
+        <line class="sv-dash" x1="50" y1="170" x2="310" y2="50"/>
+        <!-- Q through C parallel AB -->
+        <line class="sv-dash" x1="160" y1="50" x2="350" y2="170"/>
+        <!-- P through B parallel AC -->
+        <line class="sv-dash" x1="60" y1="230" x2="360" y2="80"/>
+        <!-- Triangle ABC -->
+        <polygon class="sv-fill" points="190,50 130,170 280,170"/>
+        <!-- Triangle PQR outer edges -->
+        <line class="sv-line" x1="255,225" x2="60,90" style="display:none"/>
+        <!-- Labels -->
+        <circle cx="190" cy="50" r="4" class="sv-dot"/>
+        <circle cx="130" cy="170" r="4" class="sv-dot"/>
+        <circle cx="280" cy="170" r="4" class="sv-dot"/>
+        <text x="188" y="40" class="sv-label">A</text>
+        <text x="112" y="184" class="sv-label">B</text>
+        <text x="284" y="184" class="sv-label">C</text>
+        <!-- Outer triangle approximated -->
+        <circle cx="62" cy="90" r="5" fill="#8b3a1e"/>
+        <circle cx="320" cy="90" r="5" fill="#8b3a1e"/>
+        <circle cx="205" cy="220" r="5" fill="#8b3a1e"/>
+        <text x="42" y="88" class="sv-label" fill="#8b3a1e">R</text>
+        <text x="326" y="88" class="sv-label" fill="#8b3a1e">Q</text>
+        <text x="208" y="236" class="sv-label" fill="#8b3a1e">P</text>
+      </svg>
+    </div>
+
+    <div class="answer-area">
+      <div class="answer-row">
+        <span class="answer-label">Perimeter of △PQR =</span>
+        <input type="text" class="answer-input" id="q2-ans" placeholder="cm">
+        <span class="unit-label">cm</span>
+      </div>
+      <button class="check-btn" onclick="checkQ2()">Check Answer</button>
+      <button class="hint-btn" onclick="toggleHint('h2')">Hint</button>
+      <div class="hint-box" id="h2">Each side of △ABC is the midsegment of △PQR. A midsegment is half the parallel side, so each side of △PQR = 2 × corresponding side of △ABC. Thus perimeter of △PQR = 2 × perimeter of △ABC.</div>
+      <div class="feedback" id="fb2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ Q5 ═══════════════ -->
+<div class="section-sep">Question 3</div>
+<div class="qcard" id="q3">
+  <div class="qcard-head">
+    <span class="qnum">3</span>
+    <span class="qtitle">Angle Bisector in a Parallelogram</span>
+  </div>
+  <div class="qcard-body">
+    <p class="qtext">
+      In parallelogram <strong>ABCD</strong>, the bisector of <strong>∠A</strong> bisects side <strong>BC</strong> at <strong>X</strong>.<br>
+      If <strong>AB = 17 units</strong>, what is the measure of <strong>AD</strong>?
+    </p>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 380 260" xmlns="http://www.w3.org/2000/svg" width="360">
+        <!-- ABCD parallelogram: A=50,210  B=200,210  C=280,70  D=130,70 -->
+        <polygon class="sv-fill" points="50,210 200,210 280,70 130,70"/>
+        <!-- X midpoint of BC at (240,140) -->
+        <circle cx="240" cy="140" r="4" class="sv-dot"/>
+        <text x="248" y="144" class="sv-label">X</text>
+        <!-- angle bisector from A to X -->
+        <line x1="50" y1="210" x2="240" y2="140" stroke="#8b3a1e" stroke-width="1.8" stroke-dasharray="6,3"/>
+        <!-- tick marks on BX and XC -->
+        <line x1="235" y1="115" x2="245" y2="125" stroke="#2c4a7c" stroke-width="2"/>
+        <line x1="237" y1="118" x2="247" y2="128" stroke="#2c4a7c" stroke-width="2"/>
+        <line x1="235" y1="155" x2="245" y2="165" stroke="#2c4a7c" stroke-width="2"/>
+        <line x1="237" y1="158" x2="247" y2="168" stroke="#2c4a7c" stroke-width="2"/>
+        <!-- angle bisector arcs at A -->
+        <path d="M68,210 Q65,200 72,195" fill="none" stroke="#8b3a1e" stroke-width="1.3"/>
+        <path d="M72,212 Q70,200 78,194" fill="none" stroke="#8b3a1e" stroke-width="1.3"/>
+        <!-- Labels -->
+        <circle cx="50" cy="210" r="4" class="sv-dot"/>
+        <circle cx="200" cy="210" r="4" class="sv-dot"/>
+        <circle cx="280" cy="70" r="4" class="sv-dot"/>
+        <circle cx="130" cy="70" r="4" class="sv-dot"/>
+        <text x="32" y="226" class="sv-label">A</text>
+        <text x="202" y="228" class="sv-label">B</text>
+        <text x="284" y="66" class="sv-label">C</text>
+        <text x="114" y="64" class="sv-label">D</text>
+        <!-- AB label -->
+        <text x="115" y="228" class="sv-angle" font-size="13" fill="#2c4a7c">AB = 17</text>
+      </svg>
+    </div>
+
+    <div class="answer-area">
+      <div class="answer-row">
+        <span class="answer-label">AD =</span>
+        <input type="text" class="answer-input" id="q3-ans" placeholder="units">
+        <span class="unit-label">units</span>
+      </div>
+      <button class="check-btn" onclick="checkQ3()">Check Answer</button>
+      <button class="hint-btn" onclick="toggleHint('h3')">Hint</button>
+      <div class="hint-box" id="h3">Since AX bisects ∠A, ∠DAX = ∠BAX. Also ∠BAX = ∠AXB (alternate angles since AD ∥ BC). So △ABX is isosceles with AB = BX. Since X bisects BC, BX = BC/2. In a parallelogram AD = BC. So AD = BC = 2·BX = 2·AB = 2×17 = 34. Wait — re-examine: BX = AB = 17, and AD = BC = 2·BX... Re-check with the isosceles result: AB = BX = 17, and AD = BC = 2×17 = 34? Actually AD ∥ AB... use the isosceles triangle result carefully: AB = BX, and since X is the midpoint of BC, BX = XC = BC/2, so BC = 2AB. Since AD = BC in a parallelogram, AD = 2×17 = 34.</div>
+      <div class="feedback" id="fb3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ Q7a ═══════════════ -->
+<div class="section-sep">Questions 4 &amp; 5 — Trisecting Diagonal</div>
+<div class="qcard" id="q4">
+  <div class="qcard-head">
+    <span class="qnum">4</span>
+    <span class="qtitle">Trisection of Diagonal BD — Fractions (7a)</span>
+  </div>
+  <div class="qcard-body">
+    <p class="qtext">
+      Points <strong>P</strong> and <strong>Q</strong> trisect (divide into three equal parts) diagonal <strong>BD</strong> of parallelogram <strong>ABCD</strong>. <strong>O</strong> is the intersection of the diagonals AC and BD.
+    </p>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" width="380">
+        <!-- ABCD: A=60,40  B=60,180  C=340,180  D=340,40, O=200,110 -->
+        <!-- P trisects BD: B=60,180 D=340,40; P = B+1/3(D-B)=(60+93,180-47)=(153,133) -->
+        <!-- Q = B+2/3(D-B) = (60+186,180-93) = (246,87) -->
+        <polygon class="sv-fill" points="60,40 340,40 340,180 60,180"/>
+        <!-- diagonal BD -->
+        <line class="sv-line" x1="60" y1="180" x2="340" y2="40"/>
+        <!-- diagonal AC dashed -->
+        <line class="sv-dash" x1="60" y1="40" x2="340" y2="180"/>
+        <!-- trisection tick marks -->
+        <line x1="147" y1="128" x2="159" y2="138" stroke="#8b3a1e" stroke-width="2"/>
+        <line x1="197" y1="105" x2="209" y2="115" stroke="#8b3a1e" stroke-width="2"/>
+        <line x1="240" y1="82" x2="252" y2="92" stroke="#8b3a1e" stroke-width="2"/>
+        <!-- Points -->
+        <circle cx="60" cy="180" r="5" class="sv-dot"/>
+        <circle cx="340" cy="40" r="5" class="sv-dot"/>
+        <circle cx="60" cy="40" r="5" class="sv-dot"/>
+        <circle cx="340" cy="180" r="5" class="sv-dot"/>
+        <circle cx="200" cy="110" r="5" class="sv-dot"/>
+        <circle cx="153" cy="133" r="5" fill="#8b3a1e"/>
+        <circle cx="247" cy="87" r="5" fill="#8b3a1e"/>
+        <text x="42" y="196" class="sv-label">B</text>
+        <text x="344" y="36" class="sv-label">D</text>
+        <text x="42" y="38" class="sv-label">A</text>
+        <text x="344" y="196" class="sv-label">C</text>
+        <text x="204" y="107" class="sv-label" font-size="12">O</text>
+        <text x="134" y="150" class="sv-label" fill="#8b3a1e" font-size="13">P</text>
+        <text x="252" y="84" class="sv-label" fill="#8b3a1e" font-size="13">Q</text>
+      </svg>
+    </div>
+
+    <div class="answer-area">
+      <div class="answer-row">
+        <span class="answer-label">PO is what fraction of BD?</span>
+        <input type="text" class="answer-input" id="q4a-ans" placeholder="e.g. 1/6">
+      </div>
+      <div class="answer-row">
+        <span class="answer-label">QO is what fraction of BD?</span>
+        <input type="text" class="answer-input" id="q4b-ans" placeholder="e.g. 1/6">
+      </div>
+      <button class="check-btn" onclick="checkQ4()">Check Answers</button>
+      <button class="hint-btn" onclick="toggleHint('h4')">Hint</button>
+      <div class="hint-box" id="h4">The diagonals of a parallelogram bisect each other, so O is the midpoint of BD, meaning BO = OD = BD/2. P trisects BD from B, so BP = BD/3. Therefore PO = BO − BP = BD/2 − BD/3 = BD/6. Similarly, Q is 2/3 from B, so BQ = 2BD/3. QO = BQ − BO = 2BD/3 − BD/2 = BD/6.</div>
+      <div class="feedback" id="fb4"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ Q7b ═══════════════ -->
+<div class="section-sep">Question 5</div>
+<div class="qcard" id="q5">
+  <div class="qcard-head">
+    <span class="qnum">5</span>
+    <span class="qtitle">True Statements — Trisection Figure (7b)</span>
+  </div>
+  <div class="qcard-body">
+    <p class="qtext">Using the same figure (P and Q trisect BD), select <strong>all</strong> true statements:</p>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" width="340">
+        <polygon class="sv-fill" points="60,40 340,40 340,180 60,180"/>
+        <line class="sv-line" x1="60" y1="180" x2="340" y2="40"/>
+        <line class="sv-dash" x1="60" y1="40" x2="340" y2="180"/>
+        <!-- AP and CQ lines -->
+        <line x1="60" y1="40" x2="153" y2="133" stroke="#2d6a4f" stroke-width="1.6" stroke-dasharray="5,3"/>
+        <line x1="340" y1="180" x2="247" y2="87" stroke="#2d6a4f" stroke-width="1.6" stroke-dasharray="5,3"/>
+        <circle cx="60" cy="180" r="5" class="sv-dot"/>
+        <circle cx="340" cy="40" r="5" class="sv-dot"/>
+        <circle cx="60" cy="40" r="5" class="sv-dot"/>
+        <circle cx="340" cy="180" r="5" class="sv-dot"/>
+        <circle cx="200" cy="110" r="5" class="sv-dot"/>
+        <circle cx="153" cy="133" r="5" fill="#8b3a1e"/>
+        <circle cx="247" cy="87" r="5" fill="#8b3a1e"/>
+        <text x="42" y="196" class="sv-label">B</text>
+        <text x="344" y="36" class="sv-label">D</text>
+        <text x="42" y="38" class="sv-label">A</text>
+        <text x="344" y="196" class="sv-label">C</text>
+        <text x="204" y="107" class="sv-label" font-size="12">O</text>
+        <text x="134" y="150" class="sv-label" fill="#8b3a1e" font-size="13">P</text>
+        <text x="252" y="84" class="sv-label" fill="#8b3a1e" font-size="13">Q</text>
+      </svg>
+    </div>
+
+    <div class="mcq-options" id="q5-opts">
+      <div class="mcq-option" onclick="toggleMCQ(this, 'q5')" data-val="1">
+        <div class="mcq-check" id="chk5-1"></div>
+        <span>△POA ≅ △QOC</span>
+      </div>
+      <div class="mcq-option" onclick="toggleMCQ(this, 'q5')" data-val="2">
+        <div class="mcq-check" id="chk5-2"></div>
+        <span>AP = CQ</span>
+      </div>
+      <div class="mcq-option" onclick="toggleMCQ(this, 'q5')" data-val="3">
+        <div class="mcq-check" id="chk5-3"></div>
+        <span>AP ∥ CQ</span>
+      </div>
+      <div class="mcq-option" onclick="toggleMCQ(this, 'q5')" data-val="4">
+        <div class="mcq-check" id="chk5-4"></div>
+        <span>If AQ and CP are joined, APCQ must be a parallelogram.</span>
+      </div>
+    </div>
+    <button class="check-btn" style="margin-top:12px" onclick="checkQ5()">Check Answers</button>
+    <button class="hint-btn" onclick="toggleHint('h5')">Hint</button>
+    <div class="hint-box" id="h5">AO = OC and PO = QO = BD/6. Use SAS or ASA congruence in triangles POA and QOC. Since AP = CQ and AP ∥ CQ (both follow from congruence + parallelogram properties), APCQ has one pair of equal parallel sides — what kind of quadrilateral is that?</div>
+    <div class="feedback" id="fb5"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ Q8a ═══════════════ -->
+<div class="section-sep">Question 6</div>
+<div class="qcard" id="q6">
+  <div class="qcard-head">
+    <span class="qnum">6</span>
+    <span class="qtitle">Rhombus Extension — Is ∠G = 90°? (8a)</span>
+  </div>
+  <div class="qcard-body">
+    <p class="qtext">
+      In the figure, <strong>ABCD</strong> is a rhombus. Side <strong>AB</strong> is extended on both sides to segment <strong>EF</strong> such that <strong>EA = AB = BF</strong>. Lines <strong>ED</strong> and <strong>FC</strong> produced meet at <strong>G</strong>.<br>
+      Is the measure of <strong>∠G</strong> equal to <strong>90°</strong>?
+    </p>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg" width="400">
+        <!-- Rhombus ABCD: A=160,140  B=260,140  C=320,200  D=200,200 -->
+        <!-- Tilted rhombus: A=180,130  B=280,130  C=340,195  D=220,195 -->
+        <!-- Let's place: A=170,130  B=270,130  C=330,190  D=210,190 -->
+        <!-- E is extension of BA beyond A: E=70,130 -->
+        <!-- F is extension of AB beyond B: F=370,130 -->
+        <!-- rhombus sides: AB=100, tilt for BC and AD -->
+        <polygon class="sv-fill" points="170,130 270,130 330,190 210,190"/>
+        <!-- EF line -->
+        <line x1="70" y1="130" x2="370" y2="130" stroke="#888" stroke-width="1.3" stroke-dasharray="6,3"/>
+        <!-- ED line -->
+        <line class="sv-line" x1="70" y1="130" x2="210" y2="190"/>
+        <!-- ED extended to G -->
+        <line x1="210" y1="190" x2="430" y2="240" stroke="#2c4a7c" stroke-width="1.4" stroke-dasharray="5,3"/>
+        <!-- FC line -->
+        <line class="sv-line" x1="370" y1="130" x2="330" y2="190"/>
+        <!-- FC extended to G -->
+        <line x1="330" y1="190" x2="430" y2="240" stroke="#2c4a7c" stroke-width="1.4" stroke-dasharray="5,3"/>
+        <!-- G point -->
+        <circle cx="430" cy="240" r="5" fill="#8b3a1e"/>
+        <text x="436" y="244" class="sv-label" fill="#8b3a1e">G</text>
+        <!-- tick marks EA=AB=BF -->
+        <line x1="114" y1="124" x2="114" y2="136" stroke="#2c4a7c" stroke-width="2"/>
+        <line x1="220" y1="124" x2="220" y2="136" stroke="#2c4a7c" stroke-width="2"/>
+        <line x1="318" y1="124" x2="318" y2="136" stroke="#2c4a7c" stroke-width="2"/>
+        <!-- Labels -->
+        <circle cx="170" cy="130" r="4" class="sv-dot"/>
+        <circle cx="270" cy="130" r="4" class="sv-dot"/>
+        <circle cx="330" cy="190" r="4" class="sv-dot"/>
+        <circle cx="210" cy="190" r="4" class="sv-dot"/>
+        <circle cx="70" cy="130" r="4" fill="#555"/>
+        <circle cx="370" cy="130" r="4" fill="#555"/>
+        <text x="155" y="122" class="sv-label">A</text>
+        <text x="274" y="122" class="sv-label">B</text>
+        <text x="335" y="206" class="sv-label">C</text>
+        <text x="196" y="208" class="sv-label">D</text>
+        <text x="54" y="126" class="sv-label">E</text>
+        <text x="374" y="126" class="sv-label">F</text>
+      </svg>
+    </div>
+
+    <div class="answer-area">
+      <p class="qtext" style="margin-bottom:12px">The measure of ∠G must be 90°. Is this true or false?</p>
+      <div class="tf-group" id="q6-tf">
+        <button class="tf-btn" onclick="selectTF('q6','true',this)">True</button>
+        <button class="tf-btn" onclick="selectTF('q6','false',this)">False</button>
+      </div>
+      <button class="check-btn" style="margin-top:12px" onclick="checkQ6()">Check Answer</button>
+      <button class="hint-btn" onclick="toggleHint('h6')">Hint</button>
+      <div class="hint-box" id="h6">In a rhombus all sides are equal. EA = AB = BF. The triangles EAD and FBC are congruent (SAS). You can use angle-chasing: let ∠DAB = 2α. Then ∠EAD = 180°−2α, and in isosceles △EAD, ∠AED = ∠ADE = α. Similarly angles at F. Then in the triangle formed at G, the angles sum to 180°. You'll find ∠G = 90°.</div>
+      <div class="feedback" id="fb6"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ Q8b ═══════════════ -->
+<div class="section-sep">Question 7</div>
+<div class="qcard" id="q7">
+  <div class="qcard-head">
+    <span class="qnum">7</span>
+    <span class="qtitle">Rhombus — Fill in the Proof (8b)</span>
+  </div>
+  <div class="qcard-body">
+    <p class="qtext">
+      Complete the proof that <strong>∠G = 90°</strong>. Let <strong>∠x = ∠AED</strong> and <strong>∠y = ∠BFC</strong>.
+    </p>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg" width="380">
+        <polygon class="sv-fill" points="170,130 270,130 330,190 210,190"/>
+        <line x1="70" y1="130" x2="370" y2="130" stroke="#888" stroke-width="1.3" stroke-dasharray="6,3"/>
+        <line class="sv-line" x1="70" y1="130" x2="210" y2="190"/>
+        <line x1="210" y1="190" x2="430" y2="240" stroke="#2c4a7c" stroke-width="1.4" stroke-dasharray="5,3"/>
+        <line class="sv-line" x1="370" y1="130" x2="330" y2="190"/>
+        <line x1="330" y1="190" x2="430" y2="240" stroke="#2c4a7c" stroke-width="1.4" stroke-dasharray="5,3"/>
+        <circle cx="430" cy="240" r="5" fill="#8b3a1e"/>
+        <text x="436" y="244" class="sv-label" fill="#8b3a1e">G</text>
+        <!-- x and y labels -->
+        <text x="82" y="148" class="sv-angle" font-size="13">x</text>
+        <text x="356" y="148" class="sv-angle" font-size="13">y</text>
+        <circle cx="170" cy="130" r="4" class="sv-dot"/>
+        <circle cx="270" cy="130" r="4" class="sv-dot"/>
+        <circle cx="330" cy="190" r="4" class="sv-dot"/>
+        <circle cx="210" cy="190" r="4" class="sv-dot"/>
+        <circle cx="70" cy="130" r="4" fill="#555"/>
+        <circle cx="370" cy="130" r="4" fill="#555"/>
+        <text x="155" y="122" class="sv-label">A</text>
+        <text x="274" y="122" class="sv-label">B</text>
+        <text x="335" y="206" class="sv-label">C</text>
+        <text x="196" y="208" class="sv-label">D</text>
+        <text x="54" y="126" class="sv-label">E</text>
+        <text x="374" y="126" class="sv-label">F</text>
+      </svg>
+    </div>
+
+    <div class="answer-area">
+      <p class="fill-line">① In △AED, AE = <input type="text" class="fill-input" id="p1" placeholder="?"> , so <input type="text" class="fill-input" id="p2" placeholder="?"> = ∠x.</p>
+      <p class="fill-line">② Thus, ∠BAD = <input type="text" class="fill-input" id="p3" placeholder="?">.</p>
+      <p class="fill-line">③ Similarly, ∠ABC = <input type="text" class="fill-input" id="p4" placeholder="?">.</p>
+      <p class="fill-line">④ Now, ∠BAD + ∠ABC = <input type="text" class="fill-input" id="p5" placeholder="?"> , which means ∠x + ∠y = <input type="text" class="fill-input" id="p6" placeholder="?">.</p>
+      <p class="fill-line">⑤ Thus, ∠G = <input type="text" class="fill-input" id="p7" placeholder="?">.</p>
+      <button class="check-btn" style="margin-top:14px" onclick="checkQ7()">Check Proof</button>
+      <button class="hint-btn" onclick="toggleHint('h7')">Hint</button>
+      <div class="hint-box" id="h7">AE = AD (since AE = AB and ABCD is a rhombus with AB = AD). So △AED is isosceles → ∠ADE = ∠AED = x. ∠BAD = 2x (exterior angle). Co-interior angles: ∠BAD + ∠ABC = 180°. At G: ∠G = 180° − (∠GDC + ∠GCD) = 180° − (x + y) = 180° − 90° = 90°.</div>
+      <div class="feedback" id="fb7"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Score panel -->
+<div id="score-panel">
+  <div class="sc-label">Score</div>
+  <div class="sc-val" id="sc-val">0 / 9</div>
+</div>
+
+</main>
+
+<script>
+let answered = {};
+let correct = 0;
+let total = 0;
+
+function updateProgress() {
+  const answered_count = Object.keys(answered).length;
+  const correct_count = Object.values(answered).filter(Boolean).length;
+  document.getElementById('prog-label').textContent = answered_count + ' of 9 questions answered';
+  document.getElementById('prog').style.width = (answered_count / 9 * 100) + '%';
+  document.getElementById('sc-val').textContent = correct_count + ' / 9';
+}
+
+function showFeedback(id, isCorrect, message) {
+  const el = document.getElementById(id);
+  el.textContent = message;
+  el.className = 'feedback show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+}
+
+function markInput(el, isCorrect) {
+  el.classList.remove('correct', 'wrong');
+  el.classList.add(isCorrect ? 'correct' : 'wrong');
+}
+
+function toggleHint(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('show');
+}
+
+function normalize(str) {
+  return str.toLowerCase().replace(/\s/g,'').replace(/°/g,'').replace(/degrees?/g,'');
+}
+
+/* Q1 */
+function checkQ1() {
+  const val = normalize(document.getElementById('q1-ans').value);
+  const ok = val === '40';
+  markInput(document.getElementById('q1-ans'), ok);
+  answered['q1'] = ok;
+  updateProgress();
+  showFeedback('fb1', ok,
+    ok ? '✓ Correct! ∠OAB = 40°. In △BOC, ∠BCO = 50° (alternate angles), so ∠OBC = 40°. Since AB ∥ DC, ∠OAB = ∠OBC = 40°.'
+       : '✗ Not quite. Hint: ∠BCO = ∠BDC = 50° (alternate angles). Then ∠OBC = 180°−90°−50° = 40°. Use alternate angles again.');
+}
+
+/* Q2 */
+function checkQ2() {
+  const val = normalize(document.getElementById('q2-ans').value);
+  const ok = val === '54';
+  markInput(document.getElementById('q2-ans'), ok);
+  answered['q2'] = ok;
+  updateProgress();
+  showFeedback('fb2', ok,
+    ok ? '✓ Correct! Perimeter of △PQR = 2 × 27 = 54 cm. Each side of △ABC is a midsegment of △PQR.'
+       : '✗ Not quite. Each side of △ABC is half the corresponding side of △PQR (midsegment theorem). So perimeter of △PQR = 2 × 27 = 54 cm.');
+}
+
+/* Q3 */
+function checkQ3() {
+  const val = normalize(document.getElementById('q3-ans').value);
+  const ok = val === '34';
+  markInput(document.getElementById('q3-ans'), ok);
+  answered['q3'] = ok;
+  updateProgress();
+  showFeedback('fb3', ok,
+    ok ? '✓ Correct! AD = 34 units. The angle bisector makes △ABX isosceles, so AB = BX. Since X bisects BC, BC = 2·AB = 34 = AD.'
+       : '✗ Not quite. ∠DAX = ∠BAX (bisector), and ∠BAX = ∠AXB (alt. angles). So △ABX is isosceles with BX = AB = 17. Then BC = 2×17 = 34 = AD.');
+}
+
+/* Q4 */
+function checkQ4() {
+  const a = normalize(document.getElementById('q4a-ans').value);
+  const b = normalize(document.getElementById('q4b-ans').value);
+  const okA = a === '1/6';
+  const okB = b === '1/6';
+  markInput(document.getElementById('q4a-ans'), okA);
+  markInput(document.getElementById('q4b-ans'), okB);
+  answered['q4a'] = okA;
+  answered['q4b'] = okB;
+  updateProgress();
+  const both = okA && okB;
+  showFeedback('fb4', both,
+    both ? '✓ Both correct! O bisects BD (BO = BD/2), P is at BD/3 from B, so PO = BD/2 − BD/3 = BD/6. Similarly QO = BD/6.'
+         : '✗ Remember: O is the midpoint of BD, so BO = BD/2. P is at 1/3 from B, Q is at 2/3. PO = BD/2 − BD/3 = BD/6. QO = 2BD/3 − BD/2 = BD/6.');
+}
+
+/* Q5 — multi-select */
+let q5Selected = new Set();
+function toggleMCQ(el, group) {
+  el.classList.toggle('selected');
+  const val = el.getAttribute('data-val');
+  if (q5Selected.has(val)) q5Selected.delete(val);
+  else q5Selected.add(val);
+}
+function checkQ5() {
+  const correct_set = new Set(['1','2','3','4']);
+  const opts = document.querySelectorAll('#q5-opts .mcq-option');
+  let allOk = true;
+  opts.forEach(opt => {
+    const v = opt.getAttribute('data-val');
+    const shouldBeSelected = correct_set.has(v);
+    const isSelected = q5Selected.has(v);
+    opt.classList.remove('correct-opt','wrong-opt','selected');
+    if (shouldBeSelected) { opt.classList.add('correct-opt'); if (!isSelected) allOk = false; }
+    else if (isSelected) { opt.classList.add('wrong-opt'); allOk = false; }
+    else { opt.classList.add('correct-opt'); }
+  });
+  answered['q5'] = allOk;
+  updateProgress();
+  showFeedback('fb5', allOk,
+    allOk ? '✓ All four statements are true! △POA ≅ △QOC (SAS), AP = CQ, AP ∥ CQ, and therefore APCQ is a parallelogram.'
+           : '✗ All four statements are actually true. Review: PO = QO (both BD/6), AO = OC (diagonals bisect), vertical angles at O are equal → SAS congruence → AP = CQ and AP ∥ CQ → APCQ is a parallelogram.');
+}
+
+/* Q6 — True/False */
+let q6choice = null;
+function selectTF(q, val, btn) {
+  document.querySelectorAll('#' + q + '-tf .tf-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  q6choice = val;
+}
+function checkQ6() {
+  if (!q6choice) { alert('Please select True or False.'); return; }
+  const ok = q6choice === 'true';
+  document.querySelectorAll('#q6-tf .tf-btn').forEach(b => {
+    b.classList.remove('selected','correct-tf','wrong-tf');
+    if (b.textContent.toLowerCase() === 'true') b.classList.add('correct-tf');
+    else if (b.classList.contains('selected') || b.textContent.toLowerCase() === q6choice) b.classList.add('wrong-tf');
+  });
+  answered['q6'] = ok;
+  updateProgress();
+  showFeedback('fb6', ok,
+    ok ? '✓ True! ∠G = 90°. The proof in the next question shows this using isosceles triangles and co-interior angles.'
+       : '✗ The answer is True. ∠G = 90°. Proceed to Question 7 to see the full proof.');
+}
+
+/* Q7 — fill in proof */
+function checkQ7() {
+  const answers = [
+    { id: 'p1', ok: v => v === 'ad' || v === 'ab' },
+    { id: 'p2', ok: v => v.includes('ade') || v.includes('aed') || v === 'anglead' || v === 'anglede' || v.includes('ade') },
+    { id: 'p3', ok: v => v === '2x' || v === '2∠x' },
+    { id: 'p4', ok: v => v === '2y' || v === '2∠y' },
+    { id: 'p5', ok: v => v === '180' || v === '180°' },
+    { id: 'p6', ok: v => v === '90' || v === '90°' },
+    { id: 'p7', ok: v => v === '90' || v === '90°' },
+  ];
+  
+  // Accepted answers for display
+  const display = ['AD (= AB)', '∠ADE', '2x', '2y', '180°', '90°', '90°'];
+  
+  let allOk = true;
+  answers.forEach((a, i) => {
+    const el = document.getElementById(a.id);
+    const raw = el.value.trim().toLowerCase().replace(/\s/g,'').replace(/°/g,'').replace(/degrees?/g,'').replace(/angle/g,'');
+    const ok = a.ok(raw);
+    el.classList.remove('correct','wrong');
+    el.classList.add(ok ? 'correct' : 'wrong');
+    if (!ok) allOk = false;
+  });
+  
+  answered['q7'] = allOk;
+  updateProgress();
+  showFeedback('fb7', allOk,
+    allOk ? '✓ Excellent! The proof is complete. Since ∠x + ∠y = 90°, ∠G = 180° − 90° = 90°.'
+           : `✗ Some blanks need correction. Expected: (1) AD, (2) ∠ADE, (3) 2x, (4) 2y, (5) 180°, (6) 90°, (7) 90°.`);
+}
+
+updateProgress();
+</script>
+</body>
+</html>
