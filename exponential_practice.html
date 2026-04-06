@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exponential Functions — Practice Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf7f2;
+    --card: #fff;
+    --accent: #c0392b;
+    --accent2: #2c3e50;
+    --gold: #e67e22;
+    --green: #27ae60;
+    --ink: #1a1a2e;
+    --muted: #7f8c8d;
+    --border: #e8e0d5;
+    --correct-bg: #eafaf1;
+    --wrong-bg: #fdf2f1;
+    --shadow: 0 4px 24px rgba(26,26,46,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    font-family: 'Source Serif 4', Georgia, serif;
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--accent2);
+    color: #fff;
+    padding: 2.5rem 2rem 2rem;
+    text-align: center;
+    border-bottom: 5px solid var(--accent);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(255,255,255,0.03) 30px, rgba(255,255,255,0.03) 60px);
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    letter-spacing: 1px;
+    position: relative;
+  }
+  header p {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    opacity: 0.75;
+    font-style: italic;
+    position: relative;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    position: relative;
+    transition: box-shadow 0.2s;
+  }
+  .card:hover { box-shadow: 0 8px 32px rgba(26,26,46,0.13); }
+
+  .q-number {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    width: 2rem; height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+  }
+
+  .question-text {
+    font-size: 1.08rem;
+    line-height: 1.7;
+    margin-bottom: 1.4rem;
+    color: var(--ink);
+  }
+  .question-text strong { color: var(--accent2); }
+
+  /* Answer input */
+  .answer-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .answer-prefix {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: var(--accent2);
+    font-weight: 600;
+  }
+  .answer-input {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    padding: 0.5rem 0.9rem;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    background: #fafafa;
+    color: var(--ink);
+    min-width: 160px;
+    outline: none;
+    transition: border 0.2s, background 0.2s;
+  }
+  .answer-input:focus { border-color: var(--accent2); background: #fff; }
+  .answer-input.correct { border-color: var(--green); background: var(--correct-bg); }
+  .answer-input.wrong { border-color: var(--accent); background: var(--wrong-bg); }
+
+  .check-btn {
+    padding: 0.5rem 1.3rem;
+    background: var(--accent2);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .check-btn:hover { background: var(--accent); transform: translateY(-1px); }
+  .check-btn:active { transform: translateY(0); }
+
+  .feedback {
+    margin-top: 0.75rem;
+    font-size: 0.93rem;
+    padding: 0.55rem 1rem;
+    border-radius: 7px;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct { background: var(--correct-bg); color: #1e8449; border: 1px solid #a9dfbf; }
+  .feedback.wrong { background: var(--wrong-bg); color: var(--accent); border: 1px solid #f5c6c6; }
+
+  /* MCQ */
+  .mcq-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+  .mcq-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 1rem;
+    border: 2px solid var(--border);
+    border-radius: 9px;
+    cursor: pointer;
+    transition: border 0.2s, background 0.2s;
+    background: #fafafa;
+    font-size: 0.97rem;
+  }
+  .mcq-option:hover { border-color: var(--accent2); background: #f0f4f8; }
+  .mcq-option input { accent-color: var(--accent2); width: 1rem; height: 1rem; }
+  .mcq-option.correct { border-color: var(--green); background: var(--correct-bg); }
+  .mcq-option.wrong { border-color: var(--accent); background: var(--wrong-bg); }
+
+  /* Canvas/graphs */
+  canvas {
+    display: block;
+    margin: 0 auto;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+  }
+  .graph-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+  .graph-option {
+    cursor: pointer;
+    border: 3px solid var(--border);
+    border-radius: 10px;
+    padding: 0.5rem;
+    transition: border 0.2s, background 0.2s;
+    background: #fafafa;
+    position: relative;
+  }
+  .graph-option:hover { border-color: var(--accent2); }
+  .graph-option.selected { border-color: var(--accent2); background: #eaf0fa; }
+  .graph-option.correct { border-color: var(--green); background: var(--correct-bg); }
+  .graph-option.wrong { border-color: var(--accent); background: var(--wrong-bg); }
+  .graph-label {
+    text-align: center;
+    font-size: 0.78rem;
+    margin-top: 0.35rem;
+    font-style: italic;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hint {
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 0.4rem;
+  }
+
+  .multi-answer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+  .multi-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .multi-label {
+    font-size: 0.95rem;
+    min-width: 200px;
+  }
+
+  sup { font-size: 0.72em; vertical-align: super; }
+  sub { font-size: 0.72em; vertical-align: sub; }
+
+  .score-bar {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .score-bar h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 0.4rem; }
+  #score-display { font-size: 2rem; font-weight: 700; color: var(--accent2); font-family: 'JetBrains Mono', monospace; }
+
+  @media (max-width: 600px) {
+    .graph-grid { grid-template-columns: 1fr 1fr; }
+    header h1 { font-size: 1.6rem; }
+    .card { padding: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Exponential Functions</h1>
+  <p>Practice Sheet · Algebra II</p>
+</header>
+
+<div class="container">
+
+  <!-- Score bar -->
+  <div class="score-bar">
+    <h2>Your Score</h2>
+    <div id="score-display">0 / 0</div>
+    <p style="margin-top:0.3rem;color:var(--muted);font-size:0.9rem">Answer questions to track your progress</p>
+  </div>
+
+  <!-- Q1 -->
+  <div class="card" id="card-1">
+    <div class="q-number">1</div>
+    <div class="question-text">Evaluate <strong>2 − 3<sup>x</sup></strong> at <em>x</em> = 2.</div>
+    <div class="answer-row">
+      <input class="answer-input" id="ans-1" type="text" placeholder="Enter answer…" onkeydown="if(event.key==='Enter')checkText(1)">
+      <button class="check-btn" onclick="checkText(1)">Check</button>
+    </div>
+    <div class="feedback" id="fb-1"></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="card" id="card-2">
+    <div class="q-number">2</div>
+    <div class="question-text">Which of the following represents the graph of <strong><em>y</em> = (0.6)<sup>x</sup></strong>?</div>
+    <div class="graph-grid" id="graphs-2">
+      <div class="graph-option" id="g2-0" onclick="selectGraph(2,0)">
+        <canvas id="c2-0" width="180" height="140"></canvas>
+        <div class="graph-label">Exponential Decay (A)</div>
+      </div>
+      <div class="graph-option" id="g2-1" onclick="selectGraph(2,1)">
+        <canvas id="c2-1" width="180" height="140"></canvas>
+        <div class="graph-label">Exponential Growth (B)</div>
+      </div>
+      <div class="graph-option" id="g2-2" onclick="selectGraph(2,2)">
+        <canvas id="c2-2" width="180" height="140"></canvas>
+        <div class="graph-label">Exponential Decay (C)</div>
+      </div>
+      <div class="graph-option" id="g2-3" onclick="selectGraph(2,3)">
+        <canvas id="c2-3" width="180" height="140"></canvas>
+        <div class="graph-label">Exponential Growth (D)</div>
+      </div>
+    </div>
+    <button class="check-btn" onclick="checkGraph(2,2)">Check</button>
+    <div class="feedback" id="fb-2"></div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="card" id="card-3">
+    <div class="q-number">3</div>
+    <div class="question-text">Which of the following represents the graph of <strong><em>y</em> = (4/3)<sup>x</sup></strong>?</div>
+    <div class="graph-grid" id="graphs-3">
+      <div class="graph-option" id="g3-0" onclick="selectGraph(3,0)">
+        <canvas id="c3-0" width="180" height="140"></canvas>
+        <div class="graph-label">Exponential Decay (A)</div>
+      </div>
+      <div class="graph-option" id="g3-1" onclick="selectGraph(3,1)">
+        <canvas id="c3-1" width="180" height="140"></canvas>
+        <div class="graph-label">Exponential Growth (B)</div>
+      </div>
+      <div class="graph-option" id="g3-2" onclick="selectGraph(3,2)">
+        <canvas id="c3-2" width="180" height="140"></canvas>
+        <div class="graph-label">Exponential Decay (C)</div>
+      </div>
+      <div class="graph-option" id="g3-3" onclick="selectGraph(3,3)">
+        <canvas id="c3-3" width="180" height="140"></canvas>
+        <div class="graph-label">Exponential Growth (D)</div>
+      </div>
+    </div>
+    <button class="check-btn" onclick="checkGraph(3,1)">Check</button>
+    <div class="feedback" id="fb-3"></div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="card" id="card-4">
+    <div class="q-number">4</div>
+    <div class="question-text">Use the graph of <strong><em>f</em>(<em>x</em>) = <em>b</em><sup>x</sup></strong> to identify the value of the base <em>b</em>. The graph passes through (−1, 2), (0, 1), and (1, 1/2).</div>
+    <canvas id="c4" width="340" height="240" style="margin-bottom:1rem;"></canvas>
+    <div class="answer-row">
+      <span class="answer-prefix">b =</span>
+      <input class="answer-input" id="ans-4" type="text" placeholder="Enter value…" onkeydown="if(event.key==='Enter')checkText(4)">
+      <button class="check-btn" onclick="checkText(4)">Check</button>
+    </div>
+    <div class="feedback" id="fb-4"></div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="card" id="card-5">
+    <div class="q-number">5</div>
+    <div class="question-text">The graph below shows an exponential function with points (−2, 1/16), (−1, 1/4), (0, 1), (1, 4). Which of the following is the domain and range?</div>
+    <canvas id="c5" width="340" height="220" style="margin-bottom:1.2rem;"></canvas>
+    <div class="mcq-options" id="mcq-5">
+      <label class="mcq-option"><input type="radio" name="q5" value="0"> Domain: All real numbers, Range: <em>y</em> > 0</label>
+      <label class="mcq-option"><input type="radio" name="q5" value="1"> Domain: <em>x</em> > 0, Range: <em>y</em> ≥ 1</label>
+      <label class="mcq-option"><input type="radio" name="q5" value="2"> Domain: All real numbers, Range: <em>y</em> ≥ 0</label>
+      <label class="mcq-option"><input type="radio" name="q5" value="3"> Domain: All real numbers, Range: All real numbers</label>
+    </div>
+    <button class="check-btn" onclick="checkMCQ(5,0)">Check</button>
+    <div class="feedback" id="fb-5"></div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="card" id="card-6">
+    <div class="q-number">6</div>
+    <div class="question-text">Rewrite <strong><em>y</em> = 4(3/2)<sup>t/5</sup></strong> in the form <em>y</em> = <em>a</em>(1+<em>r</em>)<sup>t</sup> or <em>y</em> = <em>a</em>(1−<em>r</em>)<sup>t</sup>. State the growth or decay rate.</div>
+    <div class="mcq-options" id="mcq-6">
+      <label class="mcq-option"><input type="radio" name="q6" value="0"> <em>y</em> = 4(1 − 0.084)<sup>t</sup>, Decay rate: 8.4%</label>
+      <label class="mcq-option"><input type="radio" name="q6" value="1"> <em>y</em> = 4(1 + 0.084)<sup>t</sup>, Growth rate: 0.84%</label>
+      <label class="mcq-option"><input type="radio" name="q6" value="2"> <em>y</em> = 4(1 + 0.084)<sup>t</sup>, Growth rate: 8.4%</label>
+      <label class="mcq-option"><input type="radio" name="q6" value="3"> <em>y</em> = 4(1 − 0.084)<sup>t</sup>, Decay rate: 8.4%</label>
+    </div>
+    <button class="check-btn" onclick="checkMCQ(6,2)">Check</button>
+    <div class="feedback" id="fb-6"></div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="card" id="card-7">
+    <div class="q-number">7</div>
+    <div class="question-text">The value of a laptop is modelled by <strong><em>y</em> = 1200(0.85)<sup>t</sup></strong>, where <em>t</em> is years since purchase.</div>
+    <div class="multi-answer">
+      <div class="multi-row">
+        <span class="multi-label">(a) Growth (G) or Decay (D)?</span>
+        <input class="answer-input" id="ans-7a" type="text" placeholder="G or D" style="min-width:80px;" onkeydown="if(event.key==='Enter')check7()">
+      </div>
+      <div class="multi-row">
+        <span class="multi-label">(b) Annual percent change:</span>
+        <input class="answer-input" id="ans-7b" type="text" placeholder="e.g. 15" style="min-width:100px;" onkeydown="if(event.key==='Enter')check7()">
+        <span>%</span>
+      </div>
+      <div class="multi-row">
+        <span class="multi-label">(c) When will value be $236?</span>
+        <span>After</span>
+        <input class="answer-input" id="ans-7c" type="text" placeholder="years" style="min-width:100px;" onkeydown="if(event.key==='Enter')check7()">
+        <span>years</span>
+      </div>
+    </div>
+    <button class="check-btn" onclick="check7()">Check All</button>
+    <div class="feedback" id="fb-7"></div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="card" id="card-8">
+    <div class="q-number">8</div>
+    <div class="question-text">The value of a smartphone is modelled by <strong><em>y</em> = 900(0.80)<sup>t/12</sup></strong>, where <em>t</em> is months since purchase.</div>
+    <canvas id="c8" width="340" height="200" style="margin-bottom:1rem;"></canvas>
+    <div class="multi-answer">
+      <div class="multi-row">
+        <span class="multi-label">(a) Percent decrease per month:</span>
+        <input class="answer-input" id="ans-8a" type="text" placeholder="e.g. 1.85" style="min-width:110px;" onkeydown="if(event.key==='Enter')check8()">
+        <span>%</span>
+      </div>
+      <div class="multi-row">
+        <span class="multi-label">(b) When will value ≈ $478?</span>
+        <input class="answer-input" id="ans-8b" type="text" placeholder="months" style="min-width:100px;" onkeydown="if(event.key==='Enter')check8()">
+        <span>months</span>
+      </div>
+      <div class="multi-row">
+        <span class="multi-label">(c) Rewrite with <em>t</em> in years:</span>
+        <span class="answer-prefix" style="font-size:0.9rem;">y =</span>
+        <input class="answer-input" id="ans-8c" type="text" placeholder="e.g. 900(0.8)^t" style="min-width:200px;" onkeydown="if(event.key==='Enter')check8()">
+      </div>
+    </div>
+    <button class="check-btn" onclick="check8()">Check All</button>
+    <div class="feedback" id="fb-8"></div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="card" id="card-9">
+    <div class="q-number">9</div>
+    <div class="question-text">In 2015, a city had <strong>64,000</strong> registered electric vehicles. The number increased by about <strong>18%</strong> each year for the next 6 years.</div>
+    <div class="multi-answer">
+      <div class="multi-row">
+        <span class="multi-label">(a) Exponential growth model:</span>
+        <span class="answer-prefix">y =</span>
+        <input class="answer-input" id="ans-9a" type="text" placeholder="e.g. 64000(1.18)^t" style="min-width:200px;" onkeydown="if(event.key==='Enter')check9()">
+      </div>
+      <div class="multi-row">
+        <span class="multi-label">(b) Estimate EVs in 2018:</span>
+        <input class="answer-input" id="ans-9b" type="text" placeholder="nearest whole" style="min-width:130px;" onkeydown="if(event.key==='Enter')check9()">
+      </div>
+      <div class="multi-row">
+        <span class="multi-label">(c) Year when EVs ≈ 174,000:</span>
+        <input class="answer-input" id="ans-9c" type="text" placeholder="year" style="min-width:100px;" onkeydown="if(event.key==='Enter')check9()">
+      </div>
+    </div>
+    <button class="check-btn" onclick="check9()">Check All</button>
+    <div class="feedback" id="fb-9"></div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="card" id="card-10">
+    <div class="q-number">10</div>
+    <div class="question-text">A hospital buys an MRI machine for <strong>$950,000</strong>. Its value after <strong>6 years</strong> is <strong>$420,000</strong>. Assuming exponential decay, write an equation for value <em>V</em> (in $) as a function of time <em>t</em> (in years).</div>
+    <div class="answer-row">
+      <span class="answer-prefix">V =</span>
+      <input class="answer-input" id="ans-10" type="text" placeholder="e.g. 950000(0.xxx)^t" style="min-width:230px;" onkeydown="if(event.key==='Enter')checkText(10)">
+      <button class="check-btn" onclick="checkText(10)">Check</button>
+    </div>
+    <div class="hint">Hint: Find <em>b</em> such that 950000·<em>b</em><sup>6</sup> = 420000.</div>
+    <div class="feedback" id="fb-10"></div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="card" id="card-11">
+    <div class="q-number">11</div>
+    <div class="question-text">You deposit <strong>$3,000</strong> in an account with <strong>3.5%</strong> annual interest compounded <strong>quarterly</strong>. Find the balance after <strong>4 years</strong>.</div>
+    <div class="answer-row">
+      <span class="answer-prefix">$</span>
+      <input class="answer-input" id="ans-11" type="text" placeholder="Nearest dollar" onkeydown="if(event.key==='Enter')checkText(11)">
+      <button class="check-btn" onclick="checkText(11)">Check</button>
+    </div>
+    <div class="hint">Formula: A = P(1 + r/n)<sup>nt</sup></div>
+    <div class="feedback" id="fb-11"></div>
+  </div>
+
+  <!-- Q12 -->
+  <div class="card" id="card-12">
+    <div class="q-number">12</div>
+    <div class="question-text">You deposit <strong>$18,000</strong> in an account with <strong>6.8%</strong> annual interest compounded <strong>daily</strong>. Find the balance after <strong>10 years</strong>.</div>
+    <div class="answer-row">
+      <span class="answer-prefix">$</span>
+      <input class="answer-input" id="ans-12" type="text" placeholder="Nearest dollar" onkeydown="if(event.key==='Enter')checkText(12)">
+      <button class="check-btn" onclick="checkText(12)">Check</button>
+    </div>
+    <div class="hint">Formula: A = P(1 + r/n)<sup>nt</sup>, n = 365</div>
+    <div class="feedback" id="fb-12"></div>
+  </div>
+
+  <!-- Q13 -->
+  <div class="card" id="card-13">
+    <div class="q-number">13</div>
+    <div class="question-text">The number of downloads of a new app after <em>t</em> weeks is <strong><em>y</em> = <em>a</em>(576.0)<sup>t/52</sup></strong>, where <em>a</em> is the initial number. By what percent do downloads increase each week? <em>(Round to nearest hundredth.)</em></div>
+    <div class="answer-row">
+      <input class="answer-input" id="ans-13" type="text" placeholder="e.g. 12.34" onkeydown="if(event.key==='Enter')checkText(13)">
+      <span>%</span>
+      <button class="check-btn" onclick="checkText(13)">Check</button>
+    </div>
+    <div class="hint">Hint: Weekly base = 576<sup>1/52</sup>. Percent increase = (base − 1) × 100</div>
+    <div class="feedback" id="fb-13"></div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ── Score tracking ──────────────────────────────────────────────
+const answered = {};
+function updateScore() {
+  const total = Object.keys(answered).length;
+  const correct = Object.values(answered).filter(Boolean).length;
+  document.getElementById('score-display').textContent = `${correct} / ${total}`;
+}
+function recordAnswer(id, isCorrect) {
+  answered[id] = isCorrect;
+  updateScore();
+}
+
+// ── Feedback helper ──────────────────────────────────────────────
+function showFeedback(id, isCorrect, msg) {
+  const el = document.getElementById('fb-' + id);
+  el.className = 'feedback show ' + (isCorrect ? 'correct' : 'wrong');
+  el.innerHTML = isCorrect ? '✔ ' + msg : '✘ ' + msg;
+  recordAnswer(id, isCorrect);
+}
+
+// ── Text answers ─────────────────────────────────────────────────
+const textAnswers = {
+  1: { accepted: ['-7'], hint: 'Substitute x=2: 2 − 3² = 2 − 9 = −7' },
+  4: { accepted: ['1/2', '0.5', '.5'], hint: 'At x=1, f(1)=1/2, so b=1/2' },
+  11: { accepted: ['3443', '3,443'], hint: 'A = 3000(1+0.035/4)^(4×4) ≈ $3,443' },
+  12: { accepted: ['35,183', '35183'], hint: 'A = 18000(1+0.068/365)^(365×10) ≈ $35,183' },
+  13: { accepted: ['12.94', '12.94%'], hint: '576^(1/52) ≈ 1.1294, so ≈ 12.94% weekly increase' },
+};
+
+function normalize(s) {
+  return s.trim().toLowerCase().replace(/\s|,|\$/g, '');
+}
+
+function checkText(qnum) {
+  const input = document.getElementById('ans-' + qnum);
+  const val = normalize(input.value);
+  if (!val) return;
+  const data = textAnswers[qnum];
+  const ok = data.accepted.map(normalize).includes(val);
+  input.className = 'answer-input ' + (ok ? 'correct' : 'wrong');
+  showFeedback(qnum, ok, ok ? 'Correct!' : 'Not quite. ' + data.hint);
+}
+
+// Q10 special (exponential decay)
+function checkText(qnum) {
+  if (qnum === 10) { check10(); return; }
+  const input = document.getElementById('ans-' + qnum);
+  const val = normalize(input.value);
+  if (!val) return;
+  const data = textAnswers[qnum];
+  if (!data) return;
+  const ok = data.accepted.map(normalize).includes(val);
+  input.className = 'answer-input ' + (ok ? 'correct' : 'wrong');
+  showFeedback(qnum, ok, ok ? 'Correct!' : 'Not quite. ' + data.hint);
+}
+
+function check10() {
+  const input = document.getElementById('ans-10');
+  const val = input.value.trim().toLowerCase().replace(/\s/g,'');
+  // Accept any form that has 950000 and approximately 0.893 as base
+  // b = (420000/950000)^(1/6) ≈ 0.8929
+  const hasBase = /0\.89[0-9]/.test(val) || /0\.893/.test(val);
+  const hasInit = /950000/.test(val);
+  const ok = hasBase && hasInit;
+  input.className = 'answer-input ' + (ok ? 'correct' : 'wrong');
+  showFeedback(10, ok, ok
+    ? 'Correct! V = 950000(0.893)^t'
+    : 'Not quite. b = (420000/950000)^(1/6) ≈ 0.893. So V = 950000(0.893)^t'
+  );
+}
+
+// ── MCQ ──────────────────────────────────────────────────────────
+function checkMCQ(qnum, correctIdx) {
+  const selected = document.querySelector(`input[name="q${qnum}"]:checked`);
+  const options = document.querySelectorAll(`#mcq-${qnum} .mcq-option`);
+  if (!selected) { showFeedback(qnum, false, 'Please select an option first.'); return; }
+  const chosen = parseInt(selected.value);
+  options.forEach((opt, i) => {
+    opt.className = 'mcq-option' + (i === correctIdx ? ' correct' : (i === chosen && chosen !== correctIdx ? ' wrong' : ''));
+  });
+  const ok = chosen === correctIdx;
+  showFeedback(qnum, ok, ok ? 'Correct!' : `Incorrect. The correct answer is option ${correctIdx+1}.`);
+}
+
+// ── Graph questions ───────────────────────────────────────────────
+const graphSelected = {};
+function selectGraph(qnum, idx) {
+  graphSelected[qnum] = idx;
+  for (let i = 0; i < 4; i++) {
+    const el = document.getElementById(`g${qnum}-${i}`);
+    el.className = 'graph-option' + (i === idx ? ' selected' : '');
+  }
+}
+function checkGraph(qnum, correctIdx) {
+  const chosen = graphSelected[qnum];
+  if (chosen === undefined) { showFeedback(qnum, false, 'Please select a graph first.'); return; }
+  for (let i = 0; i < 4; i++) {
+    const el = document.getElementById(`g${qnum}-${i}`);
+    if (i === correctIdx) el.className = 'graph-option correct';
+    else if (i === chosen && chosen !== correctIdx) el.className = 'graph-option wrong';
+    else el.className = 'graph-option';
+  }
+  const ok = chosen === correctIdx;
+  showFeedback(qnum, ok, ok ? 'Correct!' : `Not quite. The correct graph is option ${String.fromCharCode(65+correctIdx)}.`);
+}
+
+// ── Q7 multi ──────────────────────────────────────────────────────
+function check7() {
+  const a = document.getElementById('ans-7a').value.trim().toUpperCase();
+  const b = parseFloat(document.getElementById('ans-7b').value);
+  const c = parseFloat(document.getElementById('ans-7c').value);
+  const okA = a === 'D';
+  const okB = Math.abs(b - 15) < 0.5;
+  // 1200*(0.85)^t=236 => t=log(236/1200)/log(0.85)≈10.5
+  const okC = Math.abs(c - 10.5) < 1;
+  const all = okA && okB && okC;
+  let msg = '';
+  if (!okA) msg += '(a) It is decay (D). ';
+  if (!okB) msg += '(b) Percent decrease = 1−0.85 = 15%. ';
+  if (!okC) msg += '(c) t = log(236/1200)/log(0.85) ≈ 10.5 years. ';
+  document.getElementById('ans-7a').className = 'answer-input ' + (okA?'correct':'wrong');
+  document.getElementById('ans-7b').className = 'answer-input ' + (okB?'correct':'wrong');
+  document.getElementById('ans-7c').className = 'answer-input ' + (okC?'correct':'wrong');
+  showFeedback(7, all, all ? 'All correct! D, 15%, ≈10.5 years' : 'Some parts wrong. ' + msg);
+}
+
+// ── Q8 multi ──────────────────────────────────────────────────────
+function check8() {
+  const a = parseFloat(document.getElementById('ans-8a').value);
+  const b = parseFloat(document.getElementById('ans-8b').value);
+  const c = document.getElementById('ans-8c').value.trim().toLowerCase().replace(/\s/g,'');
+  // monthly base: 0.80^(1/12)≈0.9815, decrease≈1.85%
+  const okA = Math.abs(a - 1.85) < 0.1;
+  // 900*(0.80)^(t/12)=478 => t=12*log(478/900)/log(0.80)≈36
+  const okB = Math.abs(b - 36) < 2;
+  // yearly: 900*(0.80)^t
+  const okC = c.includes('900') && (c.includes('0.8)^t') || c.includes('0.80)^t'));
+  const all = okA && okB && okC;
+  let msg = '';
+  if (!okA) msg += '(a) Monthly decrease = (1−0.80^(1/12))×100 ≈ 1.85%. ';
+  if (!okB) msg += '(b) t = 12·log(478/900)/log(0.80) ≈ 36 months. ';
+  if (!okC) msg += '(c) Replace t/12 with t: y = 900(0.80)^t. ';
+  document.getElementById('ans-8a').className = 'answer-input ' + (okA?'correct':'wrong');
+  document.getElementById('ans-8b').className = 'answer-input ' + (okB?'correct':'wrong');
+  document.getElementById('ans-8c').className = 'answer-input ' + (okC?'correct':'wrong');
+  showFeedback(8, all, all ? 'All correct!' : 'Some parts wrong. ' + msg);
+}
+
+// ── Q9 multi ──────────────────────────────────────────────────────
+function check9() {
+  const a = document.getElementById('ans-9a').value.trim().toLowerCase().replace(/\s/g,'');
+  const b = parseInt(document.getElementById('ans-9b').value.replace(/,/g,''));
+  const cyear = parseInt(document.getElementById('ans-9c').value);
+  const okA = a.includes('64000') && (a.includes('1.18') || a.includes('118'));
+  // 64000*1.18^3=64000*1.643≈105152
+  const okB = Math.abs(b - 105152) < 500;
+  // 64000*1.18^t=174000 => t=log(174000/64000)/log(1.18)≈6.0 => year 2021
+  const okC = cyear === 2021 || cyear === 6;
+  const all = okA && okB && okC;
+  let msg = '';
+  if (!okA) msg += '(a) y = 64000(1.18)^t. ';
+  if (!okB) msg += '(b) t=3 (2018−2015): 64000×1.18³ ≈ 105,152. ';
+  if (!okC) msg += '(c) t≈6 → year 2021. ';
+  document.getElementById('ans-9a').className = 'answer-input ' + (okA?'correct':'wrong');
+  document.getElementById('ans-9b').className = 'answer-input ' + (okB?'correct':'wrong');
+  document.getElementById('ans-9c').className = 'answer-input ' + (okC?'correct':'wrong');
+  showFeedback(9, all, all ? 'All correct!' : 'Some parts wrong. ' + msg);
+}
+
+// ── Canvas drawing utilities ──────────────────────────────────────
+function drawAxes(ctx, W, H, xRange, yRange) {
+  const xScale = W / (xRange[1]-xRange[0]);
+  const yScale = H / (yRange[1]-yRange[0]);
+  const ox = -xRange[0]*xScale;
+  const oy = H + yRange[0]*yScale;
+  ctx.strokeStyle = '#aaa'; ctx.lineWidth = 0.5;
+  // grid
+  for (let x = Math.ceil(xRange[0]); x <= xRange[1]; x++) {
+    const px = ox + x*xScale;
+    ctx.beginPath(); ctx.moveTo(px,0); ctx.lineTo(px,H); ctx.stroke();
+  }
+  for (let y = Math.ceil(yRange[0]); y <= yRange[1]; y++) {
+    const py = oy - y*yScale;
+    ctx.beginPath(); ctx.moveTo(0,py); ctx.lineTo(W,py); ctx.stroke();
+  }
+  ctx.strokeStyle = '#333'; ctx.lineWidth = 1.5;
+  // x-axis
+  ctx.beginPath(); ctx.moveTo(0,oy); ctx.lineTo(W,oy); ctx.stroke();
+  // y-axis
+  ctx.beginPath(); ctx.moveTo(ox,0); ctx.lineTo(ox,H); ctx.stroke();
+  return {xScale, yScale, ox, oy};
+}
+
+function drawCurve(ctx, fn, xRange, axes, color) {
+  const {xScale, yScale, ox, oy} = axes;
+  ctx.strokeStyle = color; ctx.lineWidth = 2.2;
+  ctx.beginPath();
+  let first = true;
+  for (let xi = xRange[0]; xi <= xRange[1]; xi += 0.05) {
+    const yi = fn(xi);
+    const px = ox + xi*xScale;
+    const py = oy - yi*yScale;
+    if (first) { ctx.moveTo(px,py); first=false; } else ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+}
+
+// Q2 graphs — 4 options: A=decay left-to-right, B=growth left-to-right, C=decay shifted, D=growth
+function drawQ2Graphs() {
+  const configs = [
+    { fn: x => Math.pow(0.6,x), xR:[-5,3], yR:[0,8], color:'#2471a3' },       // A correct decay
+    { fn: x => Math.pow(1/0.6,x), xR:[-5,3], yR:[0,8], color:'#2471a3' },     // B growth (wrong)
+    { fn: x => Math.pow(0.6,-x), xR:[-5,3], yR:[0,8], color:'#2471a3' },      // C decay mirrored
+    { fn: x => Math.pow(4/3,x), xR:[-5,3], yR:[0,8], color:'#2471a3' },       // D growth
+  ];
+  configs.forEach((cfg, i) => {
+    const c = document.getElementById(`c2-${i}`);
+    const ctx = c.getContext('2d');
+    const ax = drawAxes(ctx, c.width, c.height, cfg.xR, cfg.yR);
+    drawCurve(ctx, cfg.fn, cfg.xR, ax, cfg.color);
+  });
+}
+
+// Q3 graphs
+function drawQ3Graphs() {
+  const configs = [
+    { fn: x => Math.pow(3/4,x), xR:[-5,5], yR:[0,10], color:'#2471a3' },      // A decay (wrong)
+    { fn: x => Math.pow(4/3,x), xR:[-5,5], yR:[0,10], color:'#2471a3' },      // B growth (correct)
+    { fn: x => Math.pow(3/4,-x), xR:[-5,5], yR:[0,10], color:'#2471a3' },     // C
+    { fn: x => Math.pow(4/3,-x), xR:[-5,5], yR:[0,10], color:'#2471a3' },     // D
+  ];
+  configs.forEach((cfg, i) => {
+    const c = document.getElementById(`c3-${i}`);
+    const ctx = c.getContext('2d');
+    const ax = drawAxes(ctx, c.width, c.height, cfg.xR, cfg.yR);
+    drawCurve(ctx, cfg.fn, cfg.xR, ax, cfg.color);
+  });
+}
+
+// Q4 graph — f(x)=(1/2)^x with labeled points
+function drawQ4() {
+  const c = document.getElementById('c4');
+  const ctx = c.getContext('2d');
+  const W=c.width, H=c.height;
+  const xR=[-3,3], yR=[-1,6];
+  const ax = drawAxes(ctx, W, H, xR, yR);
+  drawCurve(ctx, x=>Math.pow(0.5,x), xR, ax, '#c0392b');
+  // label points
+  const pts = [[-1,2],[0,1],[1,0.5]];
+  pts.forEach(([x,y]) => {
+    const px = ax.ox + x*ax.xScale;
+    const py = ax.oy - y*ax.yScale;
+    ctx.fillStyle='#c0392b'; ctx.beginPath(); ctx.arc(px,py,4,0,2*Math.PI); ctx.fill();
+    ctx.fillStyle='#c0392b'; ctx.font='bold 11px JetBrains Mono,monospace';
+    const label = y===0.5 ? `(1, ½)` : `(${x}, ${y})`;
+    ctx.fillText(label, px+6, py-5);
+  });
+}
+
+// Q5 graph — f(x)=4^x
+function drawQ5() {
+  const c = document.getElementById('c5');
+  const ctx = c.getContext('2d');
+  const W=c.width, H=c.height;
+  const xR=[-4,2], yR=[-1,5];
+  const ax = drawAxes(ctx, W, H, xR, yR);
+  drawCurve(ctx, x=>Math.pow(4,x), xR, ax, '#2471a3');
+  const pts = [[-2,1/16],[-1,0.25],[0,1],[1,4]];
+  pts.forEach(([x,y]) => {
+    const px = ax.ox + x*ax.xScale;
+    const py = ax.oy - y*ax.yScale;
+    ctx.fillStyle='#c0392b'; ctx.beginPath(); ctx.arc(px,py,4,0,2*Math.PI); ctx.fill();
+    ctx.fillStyle='#c0392b'; ctx.font='10px JetBrains Mono,monospace';
+    const label = x===-2?'(-2,1/16)':x===-1?'(-1,1/4)':x===0?'(0,1)':'(1,4)';
+    ctx.fillText(label, px+5, py-5);
+  });
+}
+
+// Q8 graph — y=900*(0.80)^(t/12)
+function drawQ8() {
+  const c = document.getElementById('c8');
+  const ctx = c.getContext('2d');
+  const W=c.width, H=c.height;
+  const xR=[0,72], yR=[0,1000];
+  const ax = drawAxes(ctx, W, H, xR, yR);
+  drawCurve(ctx, t=>900*Math.pow(0.80,t/12), xR, ax, '#2471a3');
+  // x labels
+  ctx.fillStyle='#555'; ctx.font='9px sans-serif';
+  [0,12,24,36,48,60,72].forEach(t=>{
+    const px = ax.ox + t*ax.xScale;
+    ctx.fillText(t, px-5, ax.oy+12);
+  });
+  [300,600,900].forEach(y=>{
+    const py = ax.oy - y*ax.yScale;
+    ctx.fillText(y, ax.ox-30, py+3);
+  });
+}
+
+// ── Init ──────────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  drawQ2Graphs();
+  drawQ3Graphs();
+  drawQ4();
+  drawQ5();
+  drawQ8();
+});
+</script>
+</body>
+</html>
