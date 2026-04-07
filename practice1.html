@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Functions & Inverses — Practice Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --cream: #faf7f2;
+    --warm: #f5efe6;
+    --gold: #c9a84c;
+    --gold-light: #e8d5a3;
+    --red: #c0392b;
+    --green: #27ae60;
+    --blue: #2471a3;
+    --muted: #7f8c8d;
+    --border: #d5c9b8;
+    --shadow: rgba(26,26,46,0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Source Serif 4', serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+  header {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 2rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 4px solid var(--gold);
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.02em;
+  }
+  header .subtitle { font-size: 0.85rem; opacity: 0.6; margin-top: 0.25rem; font-style: italic; }
+  .score-badge {
+    background: var(--gold);
+    color: var(--ink);
+    border-radius: 50px;
+    padding: 0.5rem 1.2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: none;
+  }
+  main { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 2.5rem 0 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .question-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 2px 8px var(--shadow);
+    transition: box-shadow 0.2s;
+  }
+  .question-card:hover { box-shadow: 0 4px 16px var(--shadow); }
+  .q-header {
+    background: var(--warm);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 1.25rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .q-num {
+    background: var(--ink);
+    color: var(--gold);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .q-text { font-size: 0.95rem; line-height: 1.5; }
+  .q-body { padding: 1.25rem; }
+  .math { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; }
+  .formula-box {
+    background: var(--warm);
+    border-left: 3px solid var(--gold);
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    border-radius: 0 4px 4px 0;
+  }
+  /* Multiple choice */
+  .choices { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; }
+  .choice {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.65rem 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 0.9rem;
+    background: var(--cream);
+    user-select: none;
+  }
+  .choice:hover { border-color: var(--gold); background: var(--warm); }
+  .choice.selected { border-color: var(--ink); background: var(--warm); }
+  .choice.correct { border-color: var(--green); background: #eafaf1; }
+  .choice.wrong { border-color: var(--red); background: #fdf2f2; }
+  .choice-letter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    width: 22px; height: 22px;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    color: var(--muted);
+  }
+  .choice.selected .choice-letter { border-color: var(--ink); color: var(--ink); }
+  .choice.correct .choice-letter { border-color: var(--green); color: var(--green); }
+  .choice.wrong .choice-letter { border-color: var(--red); color: var(--red); }
+  /* Open answer */
+  .open-answer { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.75rem; }
+  .open-answer label { font-size: 0.85rem; color: var(--muted); }
+  .open-answer input {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    width: 200px;
+    background: var(--cream);
+    color: var(--ink);
+    transition: border-color 0.15s;
+  }
+  .open-answer input:focus { outline: none; border-color: var(--gold); }
+  .open-answer input.correct { border-color: var(--green); background: #eafaf1; }
+  .open-answer input.wrong { border-color: var(--red); background: #fdf2f2; }
+  /* Dual input row */
+  .dual-inputs { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 0.75rem; }
+  .dual-inputs .open-answer { flex-direction: column; align-items: flex-start; }
+  /* Canvas graphs */
+  canvas {
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin: 0.75rem 0;
+    background: white;
+  }
+  /* Graph MCQ */
+  .graph-choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+  .graph-choice {
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+  .graph-choice:hover { border-color: var(--gold); }
+  .graph-choice.selected { border-color: var(--ink); }
+  .graph-choice.correct { border-color: var(--green); }
+  .graph-choice.wrong { border-color: var(--red); }
+  .graph-choice canvas { margin: 0; border: none; border-radius: 0; width: 100%; }
+  .graph-label {
+    background: var(--warm);
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.25rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+  }
+  /* Check / Dialog */
+  .check-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--ink);
+    border-top: 3px solid var(--gold);
+    padding: 1rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    z-index: 1000;
+    box-shadow: 0 -4px 20px var(--shadow);
+  }
+  .check-bar span { color: var(--cream); font-size: 0.9rem; opacity: 0.7; }
+  .check-btn {
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    padding: 0.7rem 2rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    transition: all 0.15s;
+  }
+  .check-btn:hover { background: #e8c060; transform: translateY(-1px); }
+  /* Dialog */
+  .dialog-overlay {
+    position: fixed; inset: 0;
+    background: rgba(26,26,46,0.6);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .dialog-overlay.open { display: flex; }
+  .dialog {
+    background: white;
+    border-radius: 8px;
+    padding: 2.5rem;
+    max-width: 480px;
+    width: 90%;
+    border-top: 6px solid var(--gold);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: pop 0.25s ease;
+  }
+  @keyframes pop {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .dialog h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+  .dialog .score-big {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 3rem;
+    font-weight: 600;
+    color: var(--gold);
+    line-height: 1;
+    margin: 1rem 0;
+  }
+  .dialog p { font-size: 0.95rem; color: var(--muted); margin-bottom: 1.5rem; }
+  .dialog-breakdown { margin-bottom: 1.5rem; }
+  .dialog-breakdown li {
+    font-size: 0.85rem;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between;
+    list-style: none;
+  }
+  .dialog-breakdown .ok { color: var(--green); font-weight: 600; }
+  .dialog-breakdown .no { color: var(--red); font-weight: 600; }
+  .dialog-actions { display: flex; gap: 0.75rem; }
+  .btn-primary {
+    background: var(--ink); color: var(--cream);
+    border: none; border-radius: 4px;
+    padding: 0.65rem 1.5rem;
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    flex: 1;
+    transition: background 0.15s;
+  }
+  .btn-primary:hover { background: #2c2c4e; }
+  .btn-secondary {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    padding: 0.65rem 1.5rem;
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: var(--ink);
+    transition: border-color 0.15s;
+  }
+  .btn-secondary:hover { border-color: var(--ink); }
+  .feedback-icon {
+    float: right;
+    font-size: 1rem;
+  }
+  .q-feedback {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.9rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    display: none;
+  }
+  .q-feedback.show { display: block; }
+  .q-feedback.correct-fb { background: #eafaf1; color: var(--green); border-left: 3px solid var(--green); }
+  .q-feedback.wrong-fb { background: #fdf2f2; color: var(--red); border-left: 3px solid var(--red); }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Functions &amp; Inverses</h1>
+    <div class="subtitle">Practice Sheet · Domain, Range, Composition, Graphs</div>
+  </div>
+  <div class="score-badge" id="headerScore">—</div>
+</header>
+
+<main>
+
+<!-- ===== SECTION A: Domain & Range ===== -->
+<div class="section-label">Section A — Domain &amp; Range</div>
+
+<!-- Q5 -->
+<div class="question-card" id="card-q5">
+  <div class="q-header">
+    <div class="q-num">5</div>
+    <div class="q-text">Find the domain of the function <span class="math">f(x) = 1 / √(x²−1)</span></div>
+  </div>
+  <div class="q-body">
+    <canvas id="g-q5" width="340" height="180"></canvas>
+    <div class="choices" data-q="q5" data-ans="0">
+      <div class="choice" data-idx="0"><div class="choice-letter">A</div><span>(-∞, -1) ∪ (1, ∞)</span></div>
+      <div class="choice" data-idx="1"><div class="choice-letter">B</div><span>(-∞, -1] ∪ (1, ∞)</span></div>
+      <div class="choice" data-idx="2"><div class="choice-letter">C</div><span>(-∞, -1) ∪ [1, ∞)</span></div>
+      <div class="choice" data-idx="3"><div class="choice-letter">D</div><span>(-∞, -1] ∪ [1, ∞)</span></div>
+    </div>
+    <div class="q-feedback" id="fb-q5"></div>
+  </div>
+</div>
+
+<!-- Q6 -->
+<div class="question-card" id="card-q6">
+  <div class="q-header">
+    <div class="q-num">6</div>
+    <div class="q-text">Find the domain of the function <span class="math">f(x) = √(9 − x²)</span></div>
+  </div>
+  <div class="q-body">
+    <canvas id="g-q6" width="340" height="180"></canvas>
+    <div class="choices" data-q="q6" data-ans="3">
+      <div class="choice" data-idx="0"><div class="choice-letter">A</div><span>(-3, 3]</span></div>
+      <div class="choice" data-idx="1"><div class="choice-letter">B</div><span>[-3, 3)</span></div>
+      <div class="choice" data-idx="2"><div class="choice-letter">C</div><span>(-3, 3)</span></div>
+      <div class="choice" data-idx="3"><div class="choice-letter">D</div><span>[-3, 3]</span></div>
+    </div>
+    <div class="q-feedback" id="fb-q6"></div>
+  </div>
+</div>
+
+<!-- Q8 -->
+<div class="question-card" id="card-q8">
+  <div class="q-header">
+    <div class="q-num">8</div>
+    <div class="q-text">Find the range of the function <span class="math">f(x) = (4 − x) / (x − 4)</span></div>
+  </div>
+  <div class="q-body">
+    <div class="formula-box">f(x) = (4 − x)/(x − 4) = −(x − 4)/(x − 4) = −1, x ≠ 4</div>
+    <div class="open-answer">
+      <label>Range =</label>
+      <input type="text" id="ans-q8" placeholder="e.g. {-1}" data-q="q8" data-ans="{-1}">
+    </div>
+    <div class="q-feedback" id="fb-q8"></div>
+  </div>
+</div>
+
+<!-- Q9 -->
+<div class="question-card" id="card-q9">
+  <div class="q-header">
+    <div class="q-num">9</div>
+    <div class="q-text">Identify the independent and dependent variables in <span class="math">y = √((t−2)/(3−t))</span></div>
+  </div>
+  <div class="q-body">
+    <div class="dual-inputs">
+      <div class="open-answer">
+        <label>Independent Variable =</label>
+        <input type="text" id="ans-q9a" placeholder="variable name" data-q="q9a" data-ans="t">
+      </div>
+      <div class="open-answer">
+        <label>Dependent Variable =</label>
+        <input type="text" id="ans-q9b" placeholder="variable name" data-q="q9b" data-ans="y">
+      </div>
+    </div>
+    <div class="q-feedback" id="fb-q9"></div>
+  </div>
+</div>
+
+<!-- ===== SECTION B: Composition ===== -->
+<div class="section-label">Section B — Composition of Functions</div>
+
+<!-- Q7-comp -->
+<div class="question-card" id="card-q7c">
+  <div class="q-header">
+    <div class="q-num">7</div>
+    <div class="q-text">Given <span class="math">f(x) = x² + 2</span> and <span class="math">g(x) = 1 − 1/(1−x)</span>, find the domain of <span class="math">(f ∘ g)(x)</span></div>
+  </div>
+  <div class="q-body">
+    <div class="formula-box">g(x) = 1 − 1/(1−x) = (1−x−1)/(1−x) = −x/(1−x) = x/(x−1)</div>
+    <div class="choices" data-q="q7c" data-ans="1">
+      <div class="choice" data-idx="0"><div class="choice-letter">A</div><span>(-∞, -1) ∪ [1, ∞)</span></div>
+      <div class="choice" data-idx="1"><div class="choice-letter">B</div><span>(-∞, 1) ∪ (1, ∞)</span></div>
+      <div class="choice" data-idx="2"><div class="choice-letter">C</div><span>(-∞, -1] ∪ [1, ∞)</span></div>
+      <div class="choice" data-idx="3"><div class="choice-letter">D</div><span>(-∞, -1] ∪ (1, ∞)</span></div>
+    </div>
+    <div class="q-feedback" id="fb-q7c"></div>
+  </div>
+</div>
+
+<!-- Q12-comp -->
+<div class="question-card" id="card-q12c">
+  <div class="q-header">
+    <div class="q-num">12</div>
+    <div class="q-text">Given <span class="math">f(x) = x² + 8</span> and <span class="math">g(x) = 3x³ + 1</span>. Which is true?</div>
+  </div>
+  <div class="q-body">
+    <div class="choices" data-q="q12c" data-ans="0">
+      <div class="choice" data-idx="0"><div class="choice-letter">A</div><span class="math">f∘g = 9x⁶+6x³+9 &amp; g∘f = 3(x²+8)³+1</span></div>
+      <div class="choice" data-idx="1"><div class="choice-letter">B</div><span class="math">f∘g = 9x⁶+6x³+9 &amp; g∘f = 3(x²+8)³+9</span></div>
+      <div class="choice" data-idx="2"><div class="choice-letter">C</div><span class="math">f∘g = 9x⁶+6x³+1 &amp; g∘f = 3(x²+8)³+1</span></div>
+      <div class="choice" data-idx="3"><div class="choice-letter">D</div><span class="math">f∘g = 9x⁶+6x³+8 &amp; g∘f = 3(x²+8)³+7</span></div>
+    </div>
+    <div class="q-feedback" id="fb-q12c"></div>
+  </div>
+</div>
+
+<!-- Q12-fitness -->
+<div class="question-card" id="card-q12f">
+  <div class="q-header">
+    <div class="q-num">12b</div>
+    <div class="q-text">Fitness composite function: <span class="math">S(t) = 5 + 3t</span> sessions; <span class="math">C(n) = 500 − 10n</span> calories. Write <span class="math">C(S(t))</span>.</div>
+  </div>
+  <div class="q-body">
+    <div class="formula-box">S(t) = 5 + 3t &nbsp;&nbsp;|&nbsp;&nbsp; C(n) = 500 − 10n</div>
+    <div class="open-answer">
+      <label>C(S(t)) =</label>
+      <input type="text" id="ans-q12f" placeholder="e.g. 450 - 30t" data-q="q12f" data-ans="450-30t">
+    </div>
+    <div class="q-feedback" id="fb-q12f"></div>
+  </div>
+</div>
+
+<!-- ===== SECTION C: Inverses ===== -->
+<div class="section-label">Section C — Inverse Functions</div>
+
+<!-- Q1-inv -->
+<div class="question-card" id="card-q1i">
+  <div class="q-header">
+    <div class="q-num">1</div>
+    <div class="q-text">Consider <span class="math">f : ℕ → ℕ</span>, <span class="math">f(x) = x² − 5x + 1</span>. Which is correct about <span class="math">f⁻¹</span>?</div>
+  </div>
+  <div class="q-body">
+    <div class="choices" data-q="q1i" data-ans="3">
+      <div class="choice" data-idx="0"><div class="choice-letter">A</div><span class="math">f⁻¹(x) = (5 + √(4x+21)) / 2</span></div>
+      <div class="choice" data-idx="1"><div class="choice-letter">B</div><span class="math">f⁻¹(x) = (−5 − √(4x+21)) / 2</span></div>
+      <div class="choice" data-idx="2"><div class="choice-letter">C</div><span class="math">f⁻¹(x) = (5 + √(4x+21)) / 2</span> (same as A)</div>
+      <div class="choice" data-idx="3"><div class="choice-letter">D</div><span>f⁻¹ does not exist (not one-to-one on ℕ)</span></div>
+    </div>
+    <div class="q-feedback" id="fb-q1i"></div>
+  </div>
+</div>
+
+<!-- Q2-inv restrict -->
+<div class="question-card" id="card-q2i">
+  <div class="q-header">
+    <div class="q-num">2</div>
+    <div class="q-text">Quadratic <span class="math">f</span> with range [5, ∞) and axis of symmetry <span class="math">x = 1</span>. Restrict domain to make invertible.</div>
+  </div>
+  <div class="q-body">
+    <canvas id="g-q2i" width="340" height="180"></canvas>
+    <div class="choices" data-q="q2i" data-ans="3">
+      <div class="choice" data-idx="0"><div class="choice-letter">A</div><span>[-1, ∞)</span></div>
+      <div class="choice" data-idx="1"><div class="choice-letter">B</div><span>(-∞, -1]</span></div>
+      <div class="choice" data-idx="2"><div class="choice-letter">C</div><span>[-1, 5]</span></div>
+      <div class="choice" data-idx="3"><div class="choice-letter">D</div><span>[0, ∞) — one side of axis x=1 giving monotone branch</span></div>
+    </div>
+    <div class="q-feedback" id="fb-q2i"></div>
+  </div>
+</div>
+
+<!-- Q3-inv -->
+<div class="question-card" id="card-q3i">
+  <div class="q-header">
+    <div class="q-num">3</div>
+    <div class="q-text">If <span class="math">p⁻¹(2) = 4</span>, which must be true?</div>
+  </div>
+  <div class="q-body">
+    <div class="choices" data-q="q3i" data-ans="1">
+      <div class="choice" data-idx="0"><div class="choice-letter">A</div><span>p⁻¹(4) = 1/2</span></div>
+      <div class="choice" data-idx="1"><div class="choice-letter">B</div><span>p(4) = 2</span></div>
+      <div class="choice" data-idx="2"><div class="choice-letter">C</div><span>p⁻¹(4) = 2</span></div>
+      <div class="choice" data-idx="3"><div class="choice-letter">D</div><span>(1/p)(2) = 4</span></div>
+      <div class="choice" data-idx="4"><div class="choice-letter">E</div><span>p(2) = 4</span></div>
+    </div>
+    <div class="q-feedback" id="fb-q3i"></div>
+  </div>
+</div>
+
+<!-- Q4-inv -->
+<div class="question-card" id="card-q4i">
+  <div class="q-header">
+    <div class="q-num">4</div>
+    <div class="q-text">Given <span class="math">f(x) = −(1/3)x² − 5, x ≥ 0</span>. Find <span class="math">f⁻¹(x)</span>.</div>
+  </div>
+  <div class="q-body">
+    <div class="formula-box">Solve x = −(1/3)y² − 5 for y ≥ 0</div>
+    <div class="open-answer">
+      <label>f⁻¹(x) =</label>
+      <input type="text" id="ans-q4i" placeholder="e.g. sqrt(-3(x+5))" data-q="q4i" data-ans="sqrt(-3(x+5))">
+    </div>
+    <div class="q-feedback" id="fb-q4i"></div>
+  </div>
+</div>
+
+<!-- Q6-inv domain/range -->
+<div class="question-card" id="card-q6i">
+  <div class="q-header">
+    <div class="q-num">6</div>
+    <div class="q-text">Given <span class="math">f(x) = (x+7)/(3x+5)</span>. Find domain and range of <span class="math">f⁻¹(x)</span>.</div>
+  </div>
+  <div class="q-body">
+    <div class="choices" data-q="q6i" data-ans="2">
+      <div class="choice" data-idx="0"><div class="choice-letter">A</div><span>Domain: (-∞, -1/3] ∪ [1/3, ∞) &nbsp; Range: (-∞, -5/3] ∪ [5/3, ∞)</span></div>
+      <div class="choice" data-idx="1"><div class="choice-letter">B</div><span>Domain: (-∞, 1/3) ∪ (1/3, ∞) &nbsp; Range: (-∞, -5/3) ∪ (5/3, ∞)</span></div>
+      <div class="choice" data-idx="2"><div class="choice-letter">C</div><span>Domain: (-∞, -1/3) ∪ (1/3, ∞) &nbsp; Range: (-∞, -5/3] ∪ [5/3, ∞)</span></div>
+      <div class="choice" data-idx="3"><div class="choice-letter">D</div><span>Domain: (-∞, 1/3) ∪ (1/3, ∞) &nbsp; Range: (-∞, -5/3) ∪ (-5/3, ∞)</span></div>
+    </div>
+    <div class="q-feedback" id="fb-q6i"></div>
+  </div>
+</div>
+
+<!-- Q3-graph restrict -->
+<div class="question-card" id="card-q3g">
+  <div class="q-header">
+    <div class="q-num">3 (Graph)</div>
+    <div class="q-text">The graph shows a parabola with vertex near x = 0. Restrict domain to make invertible.</div>
+  </div>
+  <div class="q-body">
+    <canvas id="g-q3g" width="340" height="180"></canvas>
+    <div class="choices" data-q="q3g" data-ans="0">
+      <div class="choice" data-idx="0"><div class="choice-letter">A</div><span>[-2, ∞)</span></div>
+      <div class="choice" data-idx="1"><div class="choice-letter">B</div><span>(-∞, 2]</span></div>
+      <div class="choice" data-idx="2"><div class="choice-letter">C</div><span>[-2, 2]</span></div>
+      <div class="choice" data-idx="3"><div class="choice-letter">D</div><span>[-1, 0]</span></div>
+    </div>
+    <div class="q-feedback" id="fb-q3g"></div>
+  </div>
+</div>
+
+<!-- Q4-vertex -->
+<div class="question-card" id="card-q4v">
+  <div class="q-header">
+    <div class="q-num">4 (Vertex)</div>
+    <div class="q-text">Downward quadratic with vertex (−3, 8), domain restricted to <span class="math">x ≤ −3</span>. What is true about <span class="math">f⁻¹</span>?</div>
+  </div>
+  <div class="q-body">
+    <canvas id="g-q4v" width="340" height="180"></canvas>
+    <div class="choices" data-q="q4v" data-ans="1">
+      <div class="choice" data-idx="0"><div class="choice-letter">A</div><span>Domain is (-∞, ∞)</span></div>
+      <div class="choice" data-idx="1"><div class="choice-letter">B</div><span>Domain is (-∞, 8]</span></div>
+      <div class="choice" data-idx="2"><div class="choice-letter">C</div><span>Range is [8, ∞)</span></div>
+      <div class="choice" data-idx="3"><div class="choice-letter">D</div><span>Domain is (-∞, -3]</span></div>
+    </div>
+    <div class="q-feedback" id="fb-q4v"></div>
+  </div>
+</div>
+
+<!-- Q10-graph -->
+<div class="question-card" id="card-q10g">
+  <div class="q-header">
+    <div class="q-num">10</div>
+    <div class="q-text">Given <span class="math">f(x) = −1 − (x−2)², x ≥ 2</span>. Which image shows <span class="math">f</span> and <span class="math">f⁻¹</span>?</div>
+  </div>
+  <div class="q-body">
+    <div class="graph-choices" id="gc-q10g" data-q="q10g" data-ans="1">
+      <div class="graph-choice" data-idx="0">
+        <canvas id="gc10-0" width="200" height="160"></canvas>
+        <div class="graph-label">Option A</div>
+      </div>
+      <div class="graph-choice" data-idx="1">
+        <canvas id="gc10-1" width="200" height="160"></canvas>
+        <div class="graph-label">Option B ✓</div>
+      </div>
+      <div class="graph-choice" data-idx="2">
+        <canvas id="gc10-2" width="200" height="160"></canvas>
+        <div class="graph-label">Option C</div>
+      </div>
+      <div class="graph-choice" data-idx="3">
+        <canvas id="gc10-3" width="200" height="160"></canvas>
+        <div class="graph-label">Option D</div>
+      </div>
+    </div>
+    <div class="q-feedback" id="fb-q10g"></div>
+  </div>
+</div>
+
+<!-- Q7-invertible -->
+<div class="question-card" id="card-q7inv">
+  <div class="q-header">
+    <div class="q-num">7</div>
+    <div class="q-text">Which of the following is the graph of an <strong>invertible</strong> function?</div>
+  </div>
+  <div class="q-body">
+    <div class="graph-choices" id="gc-q7inv" data-q="q7inv" data-ans="3">
+      <div class="graph-choice" data-idx="0">
+        <canvas id="gc7-0" width="200" height="160"></canvas>
+        <div class="graph-label">Option A (parabola)</div>
+      </div>
+      <div class="graph-choice" data-idx="1">
+        <canvas id="gc7-1" width="200" height="160"></canvas>
+        <div class="graph-label">Option B (W-shape)</div>
+      </div>
+      <div class="graph-choice" data-idx="2">
+        <canvas id="gc7-2" width="200" height="160"></canvas>
+        <div class="graph-label">Option C (cubic-like)</div>
+      </div>
+      <div class="graph-choice" data-idx="3">
+        <canvas id="gc7-3" width="200" height="160"></canvas>
+        <div class="graph-label">Option D (strictly increasing)</div>
+      </div>
+    </div>
+    <div class="q-feedback" id="fb-q7inv"></div>
+  </div>
+</div>
+
+<!-- ===== SECTION D: Transformations ===== -->
+<div class="section-label">Section D — Transformations of Functions</div>
+
+<!-- Q1-abs -->
+<div class="question-card" id="card-q1t">
+  <div class="q-header">
+    <div class="q-num">1</div>
+    <div class="q-text">Given <span class="math">m(x) = |x|</span> and <span class="math">n(x) = |x| + 6</span>. Which graph is correct?</div>
+  </div>
+  <div class="q-body">
+    <div class="graph-choices" id="gc-q1t" data-q="q1t" data-ans="0">
+      <div class="graph-choice" data-idx="0">
+        <canvas id="gc1t-0" width="200" height="160"></canvas>
+        <div class="graph-label">A: n above m by 6</div>
+      </div>
+      <div class="graph-choice" data-idx="1">
+        <canvas id="gc1t-1" width="200" height="160"></canvas>
+        <div class="graph-label">B: m above n</div>
+      </div>
+      <div class="graph-choice" data-idx="2">
+        <canvas id="gc1t-2" width="200" height="160"></canvas>
+        <div class="graph-label">C: same vertex, n steeper</div>
+      </div>
+      <div class="graph-choice" data-idx="3">
+        <canvas id="gc1t-3" width="200" height="160"></canvas>
+        <div class="graph-label">D: n shifted right</div>
+      </div>
+    </div>
+    <div class="q-feedback" id="fb-q1t"></div>
+  </div>
+</div>
+
+<!-- Q2-vertex shift -->
+<div class="question-card" id="card-q2t">
+  <div class="q-header">
+    <div class="q-num">2</div>
+    <div class="q-text">Graph of <span class="math">m(x)</span> (parabola with vertex near (3,4)). If <span class="math">n(x) = m(x−3) − 4</span>, what are the coordinates of the vertex of <span class="math">n</span>?</div>
+  </div>
+  <div class="q-body">
+    <canvas id="g-q2t" width="340" height="180"></canvas>
+    <div class="choices" data-q="q2t" data-ans="1">
+      <div class="choice" data-idx="0"><div class="choice-letter">A</div><span>(0, 6)</span></div>
+      <div class="choice" data-idx="1"><div class="choice-letter">B</div><span>(4, 3) — shifted right 3, down 4 from original vertex ~(1,7)</span></div>
+      <div class="choice" data-idx="2"><div class="choice-letter">C</div><span>(0, 0)</span></div>
+      <div class="choice" data-idx="3"><div class="choice-letter">D</div><span>(6, 0)</span></div>
+    </div>
+    <div class="q-feedback" id="fb-q2t"></div>
+  </div>
+</div>
+
+<!-- Q3-translate -->
+<div class="question-card" id="card-q3t">
+  <div class="q-header">
+    <div class="q-num">3</div>
+    <div class="q-text"><span class="math">u(x)</span> (blue) is a parabola near x ≥ 0; <span class="math">v(x)</span> (red) appears shifted left 2 and down. Express <span class="math">v</span> in terms of <span class="math">u</span>.</div>
+  </div>
+  <div class="q-body">
+    <canvas id="g-q3t" width="340" height="180"></canvas>
+    <div class="open-answer">
+      <label>v(x) =</label>
+      <input type="text" id="ans-q3t" placeholder="e.g. u(x+2)-3" data-q="q3t" data-ans="u(x+2)-3">
+    </div>
+    <div class="q-feedback" id="fb-q3t"></div>
+  </div>
+</div>
+
+<!-- Q4-vertical -->
+<div class="question-card" id="card-q4t">
+  <div class="q-header">
+    <div class="q-num">4</div>
+    <div class="q-text">Given <span class="math">u(x) = |x| + 9</span>. If <span class="math">v(x)</span> is a vertical translation of <span class="math">u(x)</span> by 6 units upward, find <span class="math">v(x)</span>.</div>
+  </div>
+  <div class="q-body">
+    <div class="choices" data-q="q4t" data-ans="0">
+      <div class="choice" data-idx="0"><div class="choice-letter">A</div><span class="math">v(x) = |x| + 15</span></div>
+      <div class="choice" data-idx="1"><div class="choice-letter">B</div><span class="math">v(x) = |x| − 15</span></div>
+      <div class="choice" data-idx="2"><div class="choice-letter">C</div><span class="math">v(x) = |x| + 6</span></div>
+      <div class="choice" data-idx="3"><div class="choice-letter">D</div><span class="math">v(x) = |x| + 3</span></div>
+    </div>
+    <div class="q-feedback" id="fb-q4t"></div>
+  </div>
+</div>
+
+</main>
+
+<!-- Check bar -->
+<div class="check-bar">
+  <span id="progressText">Answer all questions then check.</span>
+  <button class="check-btn" onclick="checkAll()">Check Answers</button>
+</div>
+
+<!-- Dialog -->
+<div class="dialog-overlay" id="resultDialog">
+  <div class="dialog">
+    <h2>Results</h2>
+    <div class="score-big" id="dialogScore">—</div>
+    <p id="dialogMsg"></p>
+    <ul class="dialog-breakdown" id="dialogBreakdown"></ul>
+    <div class="dialog-actions">
+      <button class="btn-secondary" onclick="closeDialog()">Review</button>
+      <button class="btn-primary" onclick="resetAll()">Try Again</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────── Graph helpers ───────────────
+function setupCanvas(id) {
+  const c = document.getElementById(id);
+  if (!c) return null;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+  return { ctx, w: c.width, h: c.height };
+}
+
+function drawAxes(ctx, w, h, xRange, yRange, color='#ccc') {
+  const [x0,x1] = xRange; const [y0,y1] = yRange;
+  const toX = x => (x-x0)/(x1-x0)*w;
+  const toY = y => h - (y-y0)/(y1-y0)*h;
+  ctx.strokeStyle = color; ctx.lineWidth = 0.5;
+  // grid
+  for (let x=Math.ceil(x0); x<=x1; x++) {
+    ctx.beginPath(); ctx.moveTo(toX(x),0); ctx.lineTo(toX(x),h); ctx.stroke();
+  }
+  for (let y=Math.ceil(y0); y<=y1; y++) {
+    ctx.beginPath(); ctx.moveTo(0,toY(y)); ctx.lineTo(w,toY(y)); ctx.stroke();
+  }
+  ctx.strokeStyle = '#888'; ctx.lineWidth = 1.2;
+  ctx.beginPath(); ctx.moveTo(toX(0),0); ctx.lineTo(toX(0),h); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0,toY(0)); ctx.lineTo(w,toY(0)); ctx.stroke();
+  ctx.fillStyle='#555'; ctx.font='9px JetBrains Mono,monospace';
+  for (let x=Math.ceil(x0); x<=x1; x++) if(x!==0) { ctx.fillText(x, toX(x)+2, toY(0)-3); }
+  for (let y=Math.ceil(y0); y<=y1; y++) if(y!==0) { ctx.fillText(y, toX(0)+3, toY(y)+3); }
+  return { toX, toY };
+}
+
+function plotFn(ctx, fn, xRange, toX, toY, color='#2471a3', lw=2) {
+  ctx.strokeStyle = color; ctx.lineWidth = lw;
+  ctx.beginPath(); let started = false;
+  const steps = 500;
+  for (let i=0; i<=steps; i++) {
+    const x = xRange[0] + i/steps*(xRange[1]-xRange[0]);
+    const y = fn(x);
+    if (!isFinite(y) || Math.abs(y)>1e6) { started=false; continue; }
+    if (!started) { ctx.moveTo(toX(x),toY(y)); started=true; }
+    else ctx.lineTo(toX(x),toY(y));
+  }
+  ctx.stroke();
+}
+
+function dot(ctx, toX, toY, x, y, filled=true, color='#2471a3', r=4) {
+  ctx.beginPath(); ctx.arc(toX(x),toY(y),r,0,2*Math.PI);
+  ctx.fillStyle = filled ? color : 'white';
+  ctx.fill();
+  ctx.strokeStyle = color; ctx.lineWidth=1.5; ctx.stroke();
+}
+
+// ─────────────── Draw all graphs ───────────────
+window.addEventListener('load', () => {
+  // Q5: f(x)=1/sqrt(x^2-1)
+  {
+    const {ctx,w,h} = setupCanvas('g-q5');
+    const {toX,toY} = drawAxes(ctx,w,h,[-5,5],[-0.5,4]);
+    plotFn(ctx, x=>1/Math.sqrt(x*x-1), [-5,-1.001], toX, toY,'#c0392b');
+    plotFn(ctx, x=>1/Math.sqrt(x*x-1), [1.001,5], toX, toY,'#c0392b');
+    dot(ctx,toX,toY,-1,0,false,'#c0392b'); dot(ctx,toX,toY,1,0,false,'#c0392b');
+    ctx.fillStyle='#555'; ctx.font='10px serif'; ctx.fillText('f(x)=1/√(x²−1)',5,14);
+  }
+  // Q6: sqrt(9-x^2)
+  {
+    const {ctx,w,h} = setupCanvas('g-q6');
+    const {toX,toY} = drawAxes(ctx,w,h,[-5,5],[-0.5,4]);
+    plotFn(ctx, x=>Math.sqrt(9-x*x), [-3,3], toX, toY,'#27ae60');
+    dot(ctx,toX,toY,-3,0,true,'#27ae60'); dot(ctx,toX,toY,3,0,true,'#27ae60');
+    ctx.fillStyle='#555'; ctx.font='10px serif'; ctx.fillText('f(x)=√(9−x²)',5,14);
+  }
+  // Q2i: quadratic axis x=1, range [5,∞)
+  {
+    const {ctx,w,h} = setupCanvas('g-q2i');
+    const {toX,toY} = drawAxes(ctx,w,h,[-3,5],[3,12]);
+    plotFn(ctx, x=>(x-1)*(x-1)+5, [-3,5], toX, toY,'#8e44ad');
+    ctx.setLineDash([4,3]); ctx.strokeStyle='#aaa'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(toX(1),0); ctx.lineTo(toX(1),h); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#8e44ad'; ctx.font='9px serif'; ctx.fillText('axis x=1',toX(1)+3,15);
+  }
+  // Q3g: parabola vertex ~(0,3)
+  {
+    const {ctx,w,h} = setupCanvas('g-q3g');
+    const {toX,toY} = drawAxes(ctx,w,h,[-5,5],[-1,7]);
+    plotFn(ctx, x=>x*x+3, [-4,4], toX, toY,'#2471a3');
+    ctx.fillStyle='#555'; ctx.font='10px serif'; ctx.fillText('f(x)',toX(2),toY(7)-5);
+  }
+  // Q4v: downward quad vertex (-3,8), x≤-3
+  {
+    const {ctx,w,h} = setupCanvas('g-q4v');
+    const {toX,toY} = drawAxes(ctx,w,h,[-9,1],[-2,10]);
+    plotFn(ctx, x=>-(x+3)*(x+3)+8, [-9,-3], toX, toY,'#c0392b');
+    dot(ctx,toX,toY,-3,8,true,'#c0392b');
+    ctx.fillStyle='#555'; ctx.font='9px serif'; ctx.fillText('vertex(−3,8)',toX(-3)+4,toY(8)-4);
+  }
+  // Q2t: m(x) parabola vertex (1,7)
+  {
+    const {ctx,w,h} = setupCanvas('g-q2t');
+    const {toX,toY} = drawAxes(ctx,w,h,[-1,7],[0,9]);
+    plotFn(ctx, x=>(x-1)*(x-1)+4, [0,7], toX, toY,'#2471a3');
+    dot(ctx,toX,toY,1,4,true,'#2471a3');
+    ctx.fillStyle='#2471a3'; ctx.font='10px serif'; ctx.fillText('m(x)',toX(5),toY(8));
+  }
+  // Q3t: u(x) and v(x)
+  {
+    const {ctx,w,h} = setupCanvas('g-q3t');
+    const {toX,toY} = drawAxes(ctx,w,h,[-5,5],[-4,7]);
+    plotFn(ctx, x=>(x)*(x)+3, [0,3], toX, toY,'#2471a3',2);
+    plotFn(ctx, x=>(x+2)*(x+2)+3-3, [-4,1], toX, toY,'#c0392b',2);
+    ctx.fillStyle='#2471a3'; ctx.font='10px serif'; ctx.fillText('u(x)',toX(1.5),toY(5));
+    ctx.fillStyle='#c0392b'; ctx.font='10px serif'; ctx.fillText('v(x)',toX(-3.5),toY(5));
+  }
+  // Q10 graphs: f(x)=-1-(x-2)^2, x>=2; inverse
+  function drawQ10(id, fDomain, fInvDomain, flipInv) {
+    const c = document.getElementById(id);
+    if (!c) return;
+    const ctx = c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height);
+    const w=c.width,h=c.height;
+    const xr=[-5,5],yr=[-5,5];
+    const {toX,toY} = drawAxes(ctx,w,h,xr,yr);
+    const f = x => -1-(x-2)*(x-2);
+    const finv = y => 2+Math.sqrt(-1-y); // x=2+sqrt(-1-y), y<=-1
+    if (!flipInv) {
+      plotFn(ctx, f, fDomain, toX, toY,'#2471a3');
+      plotFn(ctx, y=>finv(y), [-5,-1], toX, toY,'#c0392b');
+    } else {
+      plotFn(ctx, f, fDomain, toX, toY,'#2471a3');
+      // wrong inverse - reflect over x-axis instead
+      plotFn(ctx, x=>-finv(-x), [-5,-1], toX, toY,'#c0392b');
+    }
+    ctx.fillStyle='#2471a3'; ctx.font='8px sans-serif'; ctx.fillText('f',toX(3.5),toY(-3));
+    ctx.fillStyle='#c0392b'; ctx.font='8px sans-serif'; ctx.fillText('f⁻¹',toX(-3),toY(3.5));
+  }
+  drawQ10('gc10-0',[2,5],[-5,-1],true);   // wrong
+  drawQ10('gc10-1',[2,5],[-5,-1],false);  // correct
+  // option C: f on wrong domain
+  { const c=document.getElementById('gc10-2'); const ctx=c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height);
+    const {toX,toY}=drawAxes(ctx,c.width,c.height,[-5,5],[-5,5]);
+    plotFn(ctx, x=>-1-(x-2)*(x-2), [-1,5], toX, toY,'#2471a3');
+    plotFn(ctx, y=>2+Math.sqrt(Math.abs(-1-y)), [-5,-1], toX, toY,'#c0392b');
+    ctx.fillStyle='#2471a3'; ctx.font='8px sans-serif'; ctx.fillText('f',toX(3),toY(-4));
+    ctx.fillStyle='#c0392b'; ctx.font='8px sans-serif'; ctx.fillText('f⁻¹',toX(-4),toY(3)); }
+  { const c=document.getElementById('gc10-3'); const ctx=c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height);
+    const {toX,toY}=drawAxes(ctx,c.width,c.height,[-5,5],[-5,5]);
+    plotFn(ctx, x=>-1-(x-2)*(x-2), [2,5], toX, toY,'#2471a3');
+    // inv shifted
+    plotFn(ctx, y=>2+Math.sqrt(-1-y)+1, [-5,-1], toX, toY,'#c0392b');
+    ctx.fillStyle='#2471a3'; ctx.font='8px sans-serif'; ctx.fillText('f',toX(4),toY(-2));
+    ctx.fillStyle='#c0392b'; ctx.font='8px sans-serif'; ctx.fillText('f⁻¹',toX(-4),toY(4)); }
+  // Q7 invertible graphs
+  function drawGraph7(id, fn, label) {
+    const c=document.getElementById(id); if(!c) return;
+    const ctx=c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height);
+    const {toX,toY}=drawAxes(ctx,c.width,c.height,[-4,6],[-2,6]);
+    plotFn(ctx, fn, [-4,6], toX, toY,'#2471a3');
+  }
+  drawGraph7('gc7-0', x=>x*x-2); // parabola (not invertible)
+  drawGraph7('gc7-1', x=>x*x*x-3*x+1); // cubic with turns (not invertible)
+  drawGraph7('gc7-2', x=>Math.sin(x)*2+2); // wavy (not invertible)
+  drawGraph7('gc7-3', x=>Math.exp(x/2)-1); // strictly increasing (invertible)
+  // Q1t absolute value choices
+  function drawAbs1(id, mFn, nFn) {
+    const c=document.getElementById(id); if(!c) return;
+    const ctx=c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height);
+    const {toX,toY}=drawAxes(ctx,c.width,c.height,[-5,5],[-1,10]);
+    plotFn(ctx, mFn, [-5,5], toX, toY,'#2471a3',2);
+    plotFn(ctx, nFn, [-5,5], toX, toY,'#c0392b',2);
+    ctx.fillStyle='#2471a3'; ctx.font='8px sans-serif'; ctx.fillText('m',toX(3),toY(3.5));
+    ctx.fillStyle='#c0392b'; ctx.font='8px sans-serif'; ctx.fillText('n',toX(3),toY(9.5));
+  }
+  drawAbs1('gc1t-0', x=>Math.abs(x), x=>Math.abs(x)+6); // correct: n above m by 6
+  drawAbs1('gc1t-1', x=>Math.abs(x)+6, x=>Math.abs(x));  // swapped
+  drawAbs1('gc1t-2', x=>Math.abs(x), x=>2*Math.abs(x)+3); // steeper
+  drawAbs1('gc1t-3', x=>Math.abs(x), x=>Math.abs(x-6)); // shifted right
+});
+
+// ─────────────── Choice interaction ───────────────
+document.querySelectorAll('.choices').forEach(group => {
+  group.querySelectorAll('.choice').forEach(ch => {
+    ch.addEventListener('click', () => {
+      group.querySelectorAll('.choice').forEach(c => c.classList.remove('selected'));
+      ch.classList.add('selected');
+      updateProgress();
+    });
+  });
+});
+document.querySelectorAll('.graph-choices').forEach(group => {
+  group.querySelectorAll('.graph-choice').forEach(ch => {
+    ch.addEventListener('click', () => {
+      group.querySelectorAll('.graph-choice').forEach(c => c.classList.remove('selected'));
+      ch.classList.add('selected');
+      updateProgress();
+    });
+  });
+});
+
+function countAnswered() {
+  let n=0,total=0;
+  document.querySelectorAll('.choices').forEach(g=>{total++; if(g.querySelector('.selected')) n++;});
+  document.querySelectorAll('.graph-choices').forEach(g=>{total++; if(g.querySelector('.selected')) n++;});
+  document.querySelectorAll('input[data-q]').forEach(i=>{total++; if(i.value.trim()) n++;});
+  return {n,total};
+}
+function updateProgress() {
+  const {n,total}=countAnswered();
+  document.getElementById('progressText').textContent=`${n} of ${total} answered`;
+}
+updateProgress();
+
+// ─────────────── Check logic ───────────────
+const qMeta = {
+  q5:{type:'mc',ans:0,label:'Q5 Domain 1/√(x²-1)'},
+  q6:{type:'mc',ans:3,label:'Q6 Domain √(9-x²)'},
+  q8:{type:'open',ans:['{-1}','{–1}','-1','−1'],label:'Q8 Range'},
+  q9a:{type:'open',ans:['t'],label:'Q9 Independent Var'},
+  q9b:{type:'open',ans:['y'],label:'Q9 Dependent Var'},
+  q7c:{type:'mc',ans:1,label:'Q7 Domain f∘g'},
+  q12c:{type:'mc',ans:0,label:'Q12 Composition'},
+  q12f:{type:'open',ans:['450-30t','450 - 30t','C(t)=450-30t'],label:'Q12b Fitness'},
+  q1i:{type:'mc',ans:3,label:'Q1 Inverse'},
+  q2i:{type:'mc',ans:3,label:'Q2 Restrict Domain'},
+  q3i:{type:'mc',ans:1,label:'Q3 Inverse property'},
+  q4i:{type:'open',ans:['sqrt(-3(x+5))','√(-3(x+5))','sqrt(-3x-15)'],label:'Q4 Inverse formula'},
+  q6i:{type:'mc',ans:2,label:'Q6 f⁻¹ Domain/Range'},
+  q3g:{type:'mc',ans:0,label:'Q3 Restrict from graph'},
+  q4v:{type:'mc',ans:1,label:'Q4 Vertex inverse'},
+  q10g:{type:'gcmc',ans:1,label:'Q10 Graph of f & f⁻¹'},
+  q7inv:{type:'gcmc',ans:3,label:'Q7 Invertible graph'},
+  q1t:{type:'gcmc',ans:0,label:'Q1 |x| graph'},
+  q2t:{type:'mc',ans:1,label:'Q2 Vertex of n'},
+  q3t:{type:'open',ans:['u(x+2)-3','u(x+2) - 3'],label:'Q3 Translation'},
+  q4t:{type:'mc',ans:0,label:'Q4 Vertical translation'},
+};
+
+const feedbackText = {
+  q5:'Correct! Need x²>1, so x<-1 or x>1, open intervals since denom=0 excluded.',
+  q6:'Correct! Need 9-x²≥0, so -3≤x≤3 → [-3,3].',
+  q8:'Correct! f(x)=-(x-4)/(x-4)=-1 for all x≠4. Range = {-1}.',
+  q9a:'Correct! t is the input (independent variable).',
+  q9b:'Correct! y is the output (dependent variable).',
+  q7c:'Correct! g(x)=x/(x-1) is undefined only at x=1; f∘g then has all reals except x=1.',
+  q12c:'Correct! f∘g(x)=(3x³+1)²+8=9x⁶+6x³+9; g∘f(x)=3(x²+8)³+1.',
+  q12f:'Correct! C(S(t))=500-10(5+3t)=500-50-30t=450-30t.',
+  q1i:'Correct! f is not one-to-one on ℕ (e.g., f(1)=f(4)=-2), so f⁻¹ does not exist.',
+  q2i:'Correct! Restrict to [0,∞) or to (-∞,1] — one side of axis x=1.',
+  q3i:'Correct! p⁻¹(2)=4 means p(4)=2 by definition of inverse.',
+  q4i:'Correct! Solving: x=-⅓y²-5 → y=√(-3(x+5)), y≥0.',
+  q6i:'Correct! f has VA at x=-5/3, HA at y=1/3. For f⁻¹: domain excludes 1/3, range excludes -5/3.',
+  q3g:'Correct! The parabola has vertex ~(0,3); restrict to [−2,∞) gives monotone (right) branch.',
+  q4v:'Correct! f maps (-∞,-3] → (-∞,8], so f⁻¹ has domain (-∞,8].',
+  q10g:'Correct! f(x)=-1-(x-2)², x≥2 opens down; f⁻¹ is its reflection over y=x.',
+  q7inv:'Correct! The strictly increasing exponential-like curve (Option D) passes HLT.',
+  q1t:'Correct! n=|x|+6 is m shifted up 6 units.',
+  q2t:'Correct! Original vertex of m is at (1,4); n(x)=m(x-3)-4 shifts right 3, down 4 → (4,0).',
+  q3t:'Correct! v is u shifted left 2 and down 3: v(x)=u(x+2)-3.',
+  q4t:'Correct! u(x)=|x|+9; shift up 6 → v(x)=|x|+15.',
+};
+
+function normalize(s){ return s.replace(/\s+/g,'').toLowerCase(); }
+
+function checkAll() {
+  let correct=0, total=0, breakdown=[];
+  Object.entries(qMeta).forEach(([qid,meta])=>{
+    total++;
+    let ok=false;
+    if (meta.type==='mc') {
+      const grp = document.querySelector(`.choices[data-q="${qid}"]`);
+      if (!grp) return;
+      const sel = grp.querySelector('.selected');
+      const ans = sel ? parseInt(sel.dataset.idx) : -1;
+      ok = (ans===meta.ans);
+      grp.querySelectorAll('.choice').forEach(c=>{
+        c.classList.remove('correct','wrong');
+        if(parseInt(c.dataset.idx)===meta.ans) c.classList.add('correct');
+        else if(c.classList.contains('selected')) c.classList.add('wrong');
+      });
+    } else if (meta.type==='gcmc') {
+      const grp = document.querySelector(`.graph-choices[data-q="${qid}"]`);
+      if (!grp) return;
+      const sel = grp.querySelector('.selected');
+      const ans = sel ? parseInt(sel.dataset.idx) : -1;
+      ok = (ans===meta.ans);
+      grp.querySelectorAll('.graph-choice').forEach(c=>{
+        c.classList.remove('correct','wrong');
+        if(parseInt(c.dataset.idx)===meta.ans) c.classList.add('correct');
+        else if(c.classList.contains('selected')) c.classList.add('wrong');
+      });
+    } else if (meta.type==='open') {
+      const inp = document.getElementById('ans-'+qid);
+      if (!inp) return;
+      const val = normalize(inp.value);
+      ok = meta.ans.some(a=>normalize(a)===val);
+      inp.classList.remove('correct','wrong');
+      inp.classList.add(ok?'correct':'wrong');
+    }
+    if(ok) correct++;
+    // feedback
+    const fb = document.getElementById('fb-'+qid);
+    if (fb) {
+      fb.className='q-feedback show '+(ok?'correct-fb':'wrong-fb');
+      fb.textContent = ok ? '✓ '+feedbackText[qid] : '✗ Incorrect. The correct answer is highlighted.';
+    }
+    breakdown.push({label:meta.label, ok});
+  });
+
+  // dialog
+  const pct = Math.round(correct/total*100);
+  document.getElementById('dialogScore').textContent = `${correct}/${total}`;
+  document.getElementById('dialogMsg').textContent = pct>=80 ? 'Excellent work! 🎉' : pct>=50 ? 'Good effort — review the highlighted questions.' : 'Keep practicing — check the feedback on each question.';
+  const ul = document.getElementById('dialogBreakdown');
+  ul.innerHTML = breakdown.map(b=>`<li><span>${b.label}</span><span class="${b.ok?'ok':'no'}">${b.ok?'✓':'✗'}</span></li>`).join('');
+  document.getElementById('resultDialog').classList.add('open');
+  document.getElementById('headerScore').textContent=`${correct}/${total}`;
+  document.getElementById('headerScore').style.display='block';
+}
+
+function closeDialog() {
+  document.getElementById('resultDialog').classList.remove('open');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function resetAll() {
+  document.querySelectorAll('.choice').forEach(c=>c.classList.remove('selected','correct','wrong'));
+  document.querySelectorAll('.graph-choice').forEach(c=>c.classList.remove('selected','correct','wrong'));
+  document.querySelectorAll('input[data-q]').forEach(i=>{i.value=''; i.classList.remove('correct','wrong');});
+  document.querySelectorAll('.q-feedback').forEach(f=>{f.className='q-feedback'; f.textContent='';});
+  document.getElementById('resultDialog').classList.remove('open');
+  document.getElementById('headerScore').style.display='none';
+  updateProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+document.getElementById('resultDialog').addEventListener('click', e=>{
+  if(e.target===document.getElementById('resultDialog')) closeDialog();
+});
+</script>
+</body>
+</html>
