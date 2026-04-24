@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculus Practice Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --cream: #faf8f3;
+    --parchment: #f0ebe0;
+    --gold: #c9a84c;
+    --gold-light: #e8d5a3;
+    --red: #c0392b;
+    --green: #27ae60;
+    --blue: #2c5f8a;
+    --blue-light: #d4e8f7;
+    --border: #c4b99a;
+    --shadow: rgba(26,26,46,0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 27px,
+      rgba(180,160,120,0.08) 28px
+    );
+  }
+  header {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 2.5rem 2rem 2rem;
+    text-align: center;
+    border-bottom: 4px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--gold-light);
+    margin-bottom: 0.4rem;
+  }
+  header p {
+    font-size: 1rem;
+    opacity: 0.75;
+    font-style: italic;
+  }
+  .score-bar {
+    background: var(--parchment);
+    border-bottom: 2px solid var(--border);
+    padding: 0.8rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px var(--shadow);
+  }
+  .score-label { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--ink); opacity: 0.7; }
+  .score-val { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--blue); min-width: 4rem; }
+  .progress-wrap { flex: 1; height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), #52c46e); border-radius: 99px; transition: width 0.5s ease; width: 0%; }
+  main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem 4rem; }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    border-top: 2px solid var(--gold);
+    padding-top: 0.6rem;
+    margin: 2.5rem 0 1.2rem;
+  }
+  .question-card {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 2rem;
+    box-shadow: 3px 3px 0 var(--border), 6px 6px 0 rgba(196,185,154,0.3);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .question-card:hover { box-shadow: 4px 4px 0 var(--gold), 8px 8px 0 rgba(201,168,76,0.2); }
+  .q-header {
+    background: var(--ink);
+    color: var(--gold-light);
+    padding: 0.6rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .q-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+  }
+  .q-topic {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+  }
+  .q-body { padding: 1.4rem 1.6rem; }
+  .q-text { font-size: 0.98rem; margin-bottom: 1rem; line-height: 1.6; }
+  .q-text .fn { font-family: 'JetBrains Mono', monospace; background: var(--blue-light); padding: 0.1em 0.4em; border-radius: 3px; font-size: 0.9rem; }
+  canvas { display: block; margin: 0 auto 1.2rem; border: 1.5px solid var(--border); border-radius: 3px; background: #fff; }
+
+  /* MCQ */
+  .mcq-options { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+  .mcq-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.65rem 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    font-size: 0.93rem;
+    line-height: 1.5;
+  }
+  .mcq-option:hover { border-color: var(--blue); background: var(--blue-light); }
+  .mcq-option input[type=radio] { margin-top: 3px; accent-color: var(--blue); flex-shrink: 0; }
+  .mcq-option.correct { border-color: var(--green) !important; background: #e8f8ee !important; }
+  .mcq-option.wrong { border-color: var(--red) !important; background: #fdecea !important; }
+
+  /* Text answers */
+  .input-row { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.5rem; }
+  .input-label { font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; min-width: 90px; }
+  .ans-input {
+    border: 1.5px solid var(--border);
+    border-radius: 3px;
+    padding: 0.4rem 0.7rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    width: 110px;
+    background: var(--cream);
+    transition: border-color 0.15s;
+  }
+  .ans-input:focus { outline: none; border-color: var(--blue); background: #fff; }
+  .ans-input.correct { border-color: var(--green); background: #e8f8ee; }
+  .ans-input.wrong { border-color: var(--red); background: #fdecea; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: 0.93rem; }
+  th { background: var(--ink); color: var(--gold-light); padding: 0.5rem 0.8rem; font-family: 'Source Serif 4', serif; font-weight: 600; }
+  td { border: 1px solid var(--border); padding: 0.5rem 0.8rem; text-align: center; vertical-align: middle; }
+  tr:nth-child(even) td { background: var(--parchment); }
+  td .ans-input { width: 90px; }
+
+  /* Check button */
+  .check-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 0.55rem 1.3rem;
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    margin-top: 0.5rem;
+    letter-spacing: 0.03em;
+  }
+  .check-btn:hover { background: var(--ink); transform: translateY(-1px); }
+  .check-btn:active { transform: translateY(0); }
+  .feedback {
+    margin-top: 0.7rem;
+    padding: 0.55rem 0.9rem;
+    border-radius: 3px;
+    font-size: 0.9rem;
+    display: none;
+    font-weight: 600;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { background: #e8f8ee; color: var(--green); border: 1px solid var(--green); }
+  .feedback.err { background: #fdecea; color: var(--red); border: 1px solid var(--red); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Calculus Practice Sheet</h1>
+  <p>Rates of Change · Concavity · Instantaneous Rate · Linear Functions</p>
+</header>
+
+<div class="score-bar">
+  <span class="score-label">SCORE</span>
+  <span class="score-val" id="scoreVal">0 / 0</span>
+  <div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+  <span class="score-label" id="pctLabel">—</span>
+</div>
+
+<main>
+
+<!-- ─── SECTION 1 ─── -->
+<div class="section-title">Section 1 — Concavity</div>
+
+<!-- Q1 -->
+<div class="question-card" id="q1">
+  <div class="q-header"><span class="q-num">Q 01</span><span class="q-topic">Concavity from a Formula</span></div>
+  <div class="q-body">
+    <p class="q-text">Consider the function: <span class="fn">f(x) = x⁴ − 2x² + 10</span><br>Based on this, which of the following is true?</p>
+    <canvas id="c1" width="420" height="220"></canvas>
+    <div class="mcq-options" id="opts1">
+      <label class="mcq-option"><input type="radio" name="q1" value="A">
+        f(x) is concave down in the intervals (−1/√3, 1/√3), (−∞, −1/√3) and (1/√3, ∞)
+      </label>
+      <label class="mcq-option"><input type="radio" name="q1" value="B">
+        f(x) is concave down in the interval (1/√3, ∞) and concave up in (−1/√3, 1/√3), (−∞, −1/√3)
+      </label>
+      <label class="mcq-option"><input type="radio" name="q1" value="C">
+        f(x) is concave up in the intervals (−1/√3, 1/√3), (−∞, −1/√3) and (1/√3, ∞)
+      </label>
+      <label class="mcq-option"><input type="radio" name="q1" value="D">
+        f(x) is concave up in (−∞, −1/√3) and (1/√3, ∞). And f(x) is concave down in (−1/√3, 1/√3)
+      </label>
+    </div>
+    <button class="check-btn" onclick="checkMCQ('q1','D','opts1','fb1','q1score')">✦ Check Answer</button>
+    <div class="feedback" id="fb1"></div>
+  </div>
+</div>
+
+<!-- Q2 -->
+<div class="question-card" id="q2">
+  <div class="q-header"><span class="q-num">Q 02</span><span class="q-topic">Increasing / Decreasing from a Graph</span></div>
+  <div class="q-body">
+    <p class="q-text">Consider the graph of a function f(x) as shown below. Which statement is true?</p>
+    <canvas id="c2" width="420" height="220"></canvas>
+    <div class="mcq-options" id="opts2">
+      <label class="mcq-option"><input type="radio" name="q2" value="A">f(x) changes from decreasing to increasing over the interval (−3, 3).</label>
+      <label class="mcq-option"><input type="radio" name="q2" value="B">f(x) changes from increasing to decreasing over the interval (−5, 0).</label>
+      <label class="mcq-option"><input type="radio" name="q2" value="C">f(x) changes from decreasing to increasing over the interval (3, 6).</label>
+      <label class="mcq-option"><input type="radio" name="q2" value="D">f(x) changes from increasing to decreasing over the interval (0, 3).</label>
+    </div>
+    <button class="check-btn" onclick="checkMCQ('q2','D','opts2','fb2','q2score')">✦ Check Answer</button>
+    <div class="feedback" id="fb2"></div>
+  </div>
+</div>
+
+<!-- Q11 -->
+<div class="question-card" id="q11">
+  <div class="q-header"><span class="q-num">Q 03</span><span class="q-topic">Concavity from Leading Coefficient</span></div>
+  <div class="q-body">
+    <p class="q-text">Consider the quadratic function: <span class="fn">f(x) = −11x² + 10x + 6</span><br>Based on this, which of the following is true?</p>
+    <canvas id="c11" width="420" height="220"></canvas>
+    <div class="mcq-options" id="opts11">
+      <label class="mcq-option"><input type="radio" name="q11" value="A">Function is concave down as the average rate of change is decreasing.</label>
+      <label class="mcq-option"><input type="radio" name="q11" value="B">Function is concave up as the average rate of change is decreasing.</label>
+      <label class="mcq-option"><input type="radio" name="q11" value="C">Function is concave down as the average rate of change is increasing.</label>
+      <label class="mcq-option"><input type="radio" name="q11" value="D">Function is concave up as the average rate of change is increasing.</label>
+    </div>
+    <button class="check-btn" onclick="checkMCQ('q11','A','opts11','fb11','q11score')">✦ Check Answer</button>
+    <div class="feedback" id="fb11"></div>
+  </div>
+</div>
+
+<!-- Q12 -->
+<div class="question-card" id="q12">
+  <div class="q-header"><span class="q-num">Q 04</span><span class="q-topic">Concavity from a Graph (Quadratic)</span></div>
+  <div class="q-body">
+    <p class="q-text">Consider the given quadratic function graph below. Based on this, which of the following is true?</p>
+    <canvas id="c12" width="420" height="220"></canvas>
+    <div class="mcq-options" id="opts12">
+      <label class="mcq-option"><input type="radio" name="q12" value="A">Function is concave down as the average rate of change is increasing.</label>
+      <label class="mcq-option"><input type="radio" name="q12" value="B">Function is concave up as the average rate of change is increasing.</label>
+      <label class="mcq-option"><input type="radio" name="q12" value="C">Function is concave down as the average rate of change is decreasing.</label>
+      <label class="mcq-option"><input type="radio" name="q12" value="D">Function is concave up as the average rate of change is decreasing.</label>
+    </div>
+    <button class="check-btn" onclick="checkMCQ('q12','C','opts12','fb12','q12score')">✦ Check Answer</button>
+    <div class="feedback" id="fb12"></div>
+  </div>
+</div>
+
+<!-- ─── SECTION 2 ─── -->
+<div class="section-title">Section 2 — Instantaneous Rate of Change</div>
+
+<!-- Q3 -->
+<div class="question-card" id="q3">
+  <div class="q-header"><span class="q-num">Q 05</span><span class="q-topic">Instantaneous Rate of Change</span></div>
+  <div class="q-body">
+    <p class="q-text">Suppose <span class="fn">f(x) = x² + 5x − 10</span>. Estimate the instantaneous rate of change of f at <span class="fn">x = 2</span>.</p>
+    <div class="mcq-options" id="opts3">
+      <label class="mcq-option"><input type="radio" name="q3" value="A">7</label>
+      <label class="mcq-option"><input type="radio" name="q3" value="B">8</label>
+      <label class="mcq-option"><input type="radio" name="q3" value="C">10</label>
+      <label class="mcq-option"><input type="radio" name="q3" value="D">9</label>
+    </div>
+    <button class="check-btn" onclick="checkMCQ('q3','D','opts3','fb3','q3score')">✦ Check Answer</button>
+    <div class="feedback" id="fb3"></div>
+  </div>
+</div>
+
+<!-- ─── SECTION 3 ─── -->
+<div class="section-title">Section 3 — Average Rate of Change</div>
+
+<!-- Q4 -->
+<div class="question-card" id="q4">
+  <div class="q-header"><span class="q-num">Q 06</span><span class="q-topic">Average Rate of Change from a Graph</span></div>
+  <div class="q-body">
+    <p class="q-text">Consider the given function graph (near-vertical line). Complete the table below. Use the formula <span class="fn">AROC = [f(b)−f(a)] / (b−a)</span>.</p>
+    <canvas id="c4" width="420" height="220"></canvas>
+    <p style="font-size:0.85rem;color:#888;margin-bottom:0.8rem;font-style:italic;">Hint: The graph appears to be a steep line. Read off f(−2), f(0), f(−1) from the graph. f(−2)≈−3, f(−1)≈3.5, f(0)≈11.</p>
+    <table>
+      <tr><th>Interval</th><th>Average Rate of Change</th></tr>
+      <tr>
+        <td>[−2, 0]</td>
+        <td><input class="ans-input" id="q4a" placeholder="?"></td>
+      </tr>
+      <tr>
+        <td>[−2, −1]</td>
+        <td><input class="ans-input" id="q4b" placeholder="?"></td>
+      </tr>
+    </table>
+    <button class="check-btn" onclick="checkTable4()">✦ Check Answer</button>
+    <div class="feedback" id="fb4"></div>
+  </div>
+</div>
+
+<!-- Q8 -->
+<div class="question-card" id="q8">
+  <div class="q-header"><span class="q-num">Q 07</span><span class="q-topic">Average Rate of Change Table — Parabola</span></div>
+  <div class="q-body">
+    <p class="q-text">Consider the given function graph (parabola). Complete the table below including the <em>change</em> in average rate of change.</p>
+    <canvas id="c8" width="420" height="220"></canvas>
+    <table>
+      <tr><th>Interval</th><th>Avg Rate of Change</th><th>Change in Avg RoC</th></tr>
+      <tr>
+        <td>[−1, 0]</td>
+        <td><input class="ans-input" id="q8a" placeholder="?"></td>
+        <td><input class="ans-input" id="q8b" placeholder="?"></td>
+      </tr>
+      <tr>
+        <td>[0, 1]</td>
+        <td><input class="ans-input" id="q8c" placeholder="?"></td>
+        <td><input class="ans-input" id="q8d" placeholder="?"></td>
+      </tr>
+      <tr>
+        <td>[1, 2]</td>
+        <td><input class="ans-input" id="q8e" placeholder="?"></td>
+        <td></td>
+      </tr>
+    </table>
+    <p style="font-size:0.82rem;color:#888;font-style:italic;margin-bottom:0.5rem;">Hint: The graph is f(x)=2x²−2. Read: f(−1)=0, f(0)=−2, f(1)=0, f(2)=6</p>
+    <button class="check-btn" onclick="checkTable8()">✦ Check Answer</button>
+    <div class="feedback" id="fb8"></div>
+  </div>
+</div>
+
+<!-- Q9 -->
+<div class="question-card" id="q9">
+  <div class="q-header"><span class="q-num">Q 08</span><span class="q-topic">Average Rate of Change — Quadratic Formula</span></div>
+  <div class="q-body">
+    <p class="q-text">Consider: <span class="fn">f(x) = 4x² − 10x + 6</span>. Complete the following table:</p>
+    <table>
+      <tr><th>Interval</th><th>Average Rate of Change</th></tr>
+      <tr><td>[0, 1]</td><td><input class="ans-input" id="q9a" placeholder="?"></td></tr>
+      <tr><td>[1, 2]</td><td><input class="ans-input" id="q9b" placeholder="?"></td></tr>
+      <tr><td>[2, 3]</td><td><input class="ans-input" id="q9c" placeholder="?"></td></tr>
+    </table>
+    <button class="check-btn" onclick="checkTable9()">✦ Check Answer</button>
+    <div class="feedback" id="fb9"></div>
+  </div>
+</div>
+
+<!-- Q10 -->
+<div class="question-card" id="q10">
+  <div class="q-header"><span class="q-num">Q 09</span><span class="q-topic">Average Rate of Change — Another Quadratic</span></div>
+  <div class="q-body">
+    <p class="q-text">Consider: <span class="fn">f(x) = 5x² − 8x + 10</span>. Complete the following table:</p>
+    <table>
+      <tr><th>Interval</th><th>Average Rate of Change</th></tr>
+      <tr><td>[2, 4]</td><td><input class="ans-input" id="q10a" placeholder="?"></td></tr>
+      <tr><td>[4, 6]</td><td><input class="ans-input" id="q10b" placeholder="?"></td></tr>
+      <tr><td>[6, 8]</td><td><input class="ans-input" id="q10c" placeholder="?"></td></tr>
+    </table>
+    <button class="check-btn" onclick="checkTable10()">✦ Check Answer</button>
+    <div class="feedback" id="fb10"></div>
+  </div>
+</div>
+
+<!-- ─── SECTION 4 ─── -->
+<div class="section-title">Section 4 — Linear Functions</div>
+
+<!-- Q5 -->
+<div class="question-card" id="q5">
+  <div class="q-header"><span class="q-num">Q 10</span><span class="q-topic">Linear Function Identification — Vehicle Speed</span></div>
+  <div class="q-body">
+    <p class="q-text">The speed of a vehicle is measured over two intervals:</p>
+    <table>
+      <tr><th>Interval</th><th>Avg Rate of Change (miles/hour)</th></tr>
+      <tr><td>(0, 5)</td><td>60</td></tr>
+      <tr><td>(5, 10)</td><td>62</td></tr>
+    </table>
+    <p class="q-text" style="margin-top:0.8rem;">Based on this, which of the following is true?</p>
+    <div class="mcq-options" id="opts5">
+      <label class="mcq-option"><input type="radio" name="q5" value="A">The vehicle's speed doesn't represent a linear function as the average rate of change is not constant.</label>
+      <label class="mcq-option"><input type="radio" name="q5" value="B">The vehicle's speed represents a linear function as the average rate of change is constant.</label>
+      <label class="mcq-option"><input type="radio" name="q5" value="C">The vehicle's speed represents a linear function as the average rate of change is not constant.</label>
+      <label class="mcq-option"><input type="radio" name="q5" value="D">The vehicle's speed doesn't represent a linear function as the average rate of change is constant.</label>
+    </div>
+    <button class="check-btn" onclick="checkMCQ('q5','A','opts5','fb5','q5score')">✦ Check Answer</button>
+    <div class="feedback" id="fb5"></div>
+  </div>
+</div>
+
+<!-- Q6 -->
+<div class="question-card" id="q6">
+  <div class="q-header"><span class="q-num">Q 11</span><span class="q-topic">Linear Function Identification — Temperature</span></div>
+  <div class="q-body">
+    <p class="q-text">The temperature in a room is recorded at various times:</p>
+    <table>
+      <tr><th>Interval</th><th>Avg Rate of Change (°F/hour)</th></tr>
+      <tr><td>(1, 3)</td><td>4</td></tr>
+      <tr><td>(4, 6)</td><td>4</td></tr>
+    </table>
+    <p class="q-text" style="margin-top:0.8rem;">Based on this, which of the following is true?</p>
+    <div class="mcq-options" id="opts6">
+      <label class="mcq-option"><input type="radio" name="q6" value="A">The temperature represents a linear function as the average rate of change is constant.</label>
+      <label class="mcq-option"><input type="radio" name="q6" value="B">The temperature does not represent a linear function as the average rate of change is not constant.</label>
+      <label class="mcq-option"><input type="radio" name="q6" value="C">The temperature represents a linear function as the average rate of change is not constant.</label>
+      <label class="mcq-option"><input type="radio" name="q6" value="D">The temperature does not represent a linear function as the average rate of change is constant.</label>
+    </div>
+    <button class="check-btn" onclick="checkMCQ('q6','A','opts6','fb6','q6score')">✦ Check Answer</button>
+    <div class="feedback" id="fb6"></div>
+  </div>
+</div>
+
+<!-- Q7 -->
+<div class="question-card" id="q7">
+  <div class="q-header"><span class="q-num">Q 12</span><span class="q-topic">Linear Function Identification — Fuel Consumption</span></div>
+  <div class="q-body">
+    <p class="q-text">The fuel consumption of a car is tracked:</p>
+    <table>
+      <tr><th>Interval</th><th>Avg Rate of Change (miles/gallon)</th></tr>
+      <tr><td>(2, 5)</td><td>30</td></tr>
+      <tr><td>(7, 9)</td><td>28</td></tr>
+    </table>
+    <p class="q-text" style="margin-top:0.8rem;">Based on this, which of the following is true?</p>
+    <div class="mcq-options" id="opts7">
+      <label class="mcq-option"><input type="radio" name="q7" value="A">The fuel consumption represents a linear function as the average rate of change is constant.</label>
+      <label class="mcq-option"><input type="radio" name="q7" value="B">The fuel consumption does not represent a linear function as the average rate of change is not constant.</label>
+      <label class="mcq-option"><input type="radio" name="q7" value="C">The fuel consumption does not represent a linear function as the average rate of change is constant.</label>
+      <label class="mcq-option"><input type="radio" name="q7" value="D">The fuel consumption represents a linear function as the average rate of change is not constant.</label>
+    </div>
+    <button class="check-btn" onclick="checkMCQ('q7','B','opts7','fb7','q7score')">✦ Check Answer</button>
+    <div class="feedback" id="fb7"></div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ──────────── SCORING ────────────
+const scores = {};
+const TOTAL = 12;
+function updateScore() {
+  const correct = Object.values(scores).filter(Boolean).length;
+  const attempted = Object.keys(scores).length;
+  document.getElementById('scoreVal').textContent = correct + ' / ' + attempted;
+  const pct = attempted > 0 ? Math.round(correct/attempted*100) : 0;
+  document.getElementById('progressFill').style.width = (correct/TOTAL*100) + '%';
+  document.getElementById('pctLabel').textContent = attempted > 0 ? pct + '%' : '—';
+}
+
+// ──────────── MCQ CHECKER ────────────
+function checkMCQ(qId, correct, optsId, fbId, scoreKey) {
+  const selected = document.querySelector(`input[name="${qId}"]:checked`);
+  const fb = document.getElementById(fbId);
+  if (!selected) { fb.className='feedback show err'; fb.textContent='Please select an answer first.'; return; }
+  const opts = document.querySelectorAll(`#${optsId} .mcq-option`);
+  opts.forEach(o => { o.classList.remove('correct','wrong'); });
+  const val = selected.value;
+  opts.forEach(o => {
+    const inp = o.querySelector('input');
+    if (inp.value === correct) o.classList.add('correct');
+    else if (inp.value === val && val !== correct) o.classList.add('wrong');
+    inp.disabled = true;
+  });
+  const isOk = val === correct;
+  scores[scoreKey || qId] = isOk;
+  fb.className = 'feedback show ' + (isOk ? 'ok' : 'err');
+  fb.textContent = isOk ? '✓ Correct!' : '✗ Incorrect. The correct answer is highlighted in green.';
+  updateScore();
+}
+
+// ──────────── TABLE CHECKER HELPER ────────────
+function approx(a, b, tol=0.6) { return Math.abs(parseFloat(a) - parseFloat(b)) <= tol; }
+
+function markInput(id, correct, tol=0.6) {
+  const el = document.getElementById(id);
+  el.classList.remove('correct','wrong');
+  const ok = approx(el.value, correct, tol);
+  el.classList.add(ok ? 'correct' : 'wrong');
+  el.disabled = true;
+  return ok;
+}
+
+// Q4
+function checkTable4() {
+  // f(x) appears to be a steep line. f(-2)≈-3, f(0)≈11, f(-1)≈3.5 (approx from graph, steep line near x=0)
+  // Actually graph shows steep line: looks like f(x)=7x+11. f(-2)=-3, f(0)=11, f(-1)=4
+  // AROC[-2,0] = (11-(-3))/(0-(-2)) = 14/2 = 7
+  // AROC[-2,-1] = (4-(-3))/(-1-(-2)) = 7/1 = 7
+  const a = markInput('q4a', 7, 1);
+  const b = markInput('q4b', 7, 1);
+  const fb = document.getElementById('fb4');
+  const ok = a && b;
+  scores['q4'] = ok;
+  fb.className = 'feedback show ' + (ok ? 'ok' : 'err');
+  fb.textContent = ok ? '✓ Both correct! AROC = 7 for both intervals.' : '✗ Check your values. AROC[−2,0] = 7, AROC[−2,−1] = 7.';
+  updateScore();
+}
+
+// Q8 — f(x) = 2x²−2
+function checkTable8() {
+  // f(-1)=0, f(0)=-2, f(1)=0, f(2)=6
+  // AROC[-1,0] = (-2-0)/1 = -2
+  // AROC[0,1] = (0-(-2))/1 = 2
+  // AROC[1,2] = (6-0)/1 = 6
+  // Change in AROC: from [-1,0] to [0,1]: 2-(-2)=4; from [0,1] to [1,2]: 6-2=4
+  const r = [
+    markInput('q8a', -2, 0.5),
+    markInput('q8b', 4, 0.5),
+    markInput('q8c', 2, 0.5),
+    markInput('q8d', 4, 0.5),
+    markInput('q8e', 6, 0.5),
+  ];
+  const ok = r.every(Boolean);
+  scores['q8'] = ok;
+  const fb = document.getElementById('fb8');
+  fb.className = 'feedback show ' + (ok ? 'ok' : 'err');
+  fb.textContent = ok ? '✓ All correct!' : '✗ Some values are off. AROC: −2, 2, 6. Change in AROC: 4, 4.';
+  updateScore();
+}
+
+// Q9 — f(x)=4x²−10x+6
+function calcQ9(a,b){
+  const f=x=>4*x*x-10*x+6;
+  return (f(b)-f(a))/(b-a);
+}
+function checkTable9(){
+  // [0,1]: (0-6)/1=-6; [1,2]:(8-0)/1=8; [2,3]:(24-8)/1=16 — wait let me recalc
+  // f(0)=6, f(1)=0, f(2)=2, f(3)=18
+  // [0,1]=(0-6)/1=-6; [1,2]=(2-0)/1=2; [2,3]=(18-2)/1=16
+  const r=[
+    markInput('q9a', -6, 0.5),
+    markInput('q9b', 2, 0.5),
+    markInput('q9c', 16, 0.5),
+  ];
+  const ok=r.every(Boolean);
+  scores['q9']=ok;
+  const fb=document.getElementById('fb9');
+  fb.className='feedback show '+(ok?'ok':'err');
+  fb.textContent=ok?'✓ All correct!':'✗ Some values are off. f(0)=6, f(1)=0, f(2)=2, f(3)=18. AROC: −6, 2, 16.';
+  updateScore();
+}
+
+// Q10 — f(x)=5x²−8x+10
+function checkTable10(){
+  // f(2)=5*4-16+10=14, f(4)=80-32+10=58, f(6)=180-48+10=142, f(8)=320-64+10=266
+  // [2,4]=(58-14)/2=22; [4,6]=(142-58)/2=42; [6,8]=(266-142)/2=62
+  const r=[
+    markInput('q10a', 22, 0.5),
+    markInput('q10b', 42, 0.5),
+    markInput('q10c', 62, 0.5),
+  ];
+  const ok=r.every(Boolean);
+  scores['q10']=ok;
+  const fb=document.getElementById('fb10');
+  fb.className='feedback show '+(ok?'ok':'err');
+  fb.textContent=ok?'✓ All correct!':'✗ AROC values: [2,4]=22, [4,6]=42, [6,8]=62.';
+  updateScore();
+}
+
+// ──────────── CANVAS GRAPHS ────────────
+function setupCanvas(id) {
+  const c = document.getElementById(id);
+  const ctx = c.getContext('2d');
+  const W = c.width, H = c.height;
+  return { ctx, W, H };
+}
+
+function drawAxes(ctx, W, H, xMin, xMax, yMin, yMax, xStep=1, yStep=2) {
+  const toX = x => (x - xMin)/(xMax - xMin) * W;
+  const toY = y => H - (y - yMin)/(yMax - yMin) * H;
+  ctx.clearRect(0,0,W,H);
+  // grid
+  ctx.strokeStyle = '#e8e0d0'; ctx.lineWidth = 0.8;
+  for(let x=Math.ceil(xMin); x<=xMax; x+=xStep){ ctx.beginPath(); ctx.moveTo(toX(x),0); ctx.lineTo(toX(x),H); ctx.stroke(); }
+  for(let y=Math.ceil(yMin); y<=yMax; y+=yStep){ ctx.beginPath(); ctx.moveTo(0,toY(y)); ctx.lineTo(W,toY(y)); ctx.stroke(); }
+  // axes
+  ctx.strokeStyle = '#333'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(toX(xMin),toY(0)); ctx.lineTo(toX(xMax),toY(0)); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(toX(0),toY(yMin)); ctx.lineTo(toX(0),toY(yMax)); ctx.stroke();
+  // labels
+  ctx.fillStyle='#555'; ctx.font='10px JetBrains Mono,monospace'; ctx.textAlign='center';
+  for(let x=Math.ceil(xMin); x<=xMax; x+=xStep){ if(x!==0) { ctx.fillText(x, toX(x), toY(0)+13); } }
+  ctx.textAlign='right';
+  for(let y=Math.ceil(yMin); y<=yMax; y+=yStep){ if(y!==0) { ctx.fillText(y, toX(0)-4, toY(y)+4); } }
+  return { toX, toY };
+}
+
+function plotFn(ctx, fn, xMin, xMax, toX, toY, color='#2c5f8a', lw=2) {
+  ctx.strokeStyle = color; ctx.lineWidth = lw; ctx.lineJoin = 'round';
+  ctx.beginPath();
+  let first = true;
+  for(let i=0; i<=500; i++){
+    const x = xMin + i/500*(xMax-xMin);
+    const y = fn(x);
+    const px = toX(x), py = toY(y);
+    if(first){ ctx.moveTo(px,py); first=false; } else ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+}
+
+// Graph 1: f(x)=x^4-2x^2+10
+(function(){
+  const {ctx,W,H}=setupCanvas('c1');
+  const {toX,toY}=drawAxes(ctx,W,H,-2,2,8,13,1,1);
+  plotFn(ctx,x=>x**4-2*x**2+10,-2,2,toX,toY);
+  // inflection markers
+  const inv3=1/Math.sqrt(3);
+  [inv3,-inv3].forEach(xi=>{
+    ctx.fillStyle='#c9a84c'; ctx.beginPath(); ctx.arc(toX(xi),toY(xi**4-2*xi**2+10),4,0,Math.PI*2); ctx.fill();
+  });
+  ctx.fillStyle='#555'; ctx.font='10px JetBrains Mono,monospace'; ctx.textAlign='center';
+  ctx.fillText('x=1/√3', toX(inv3), toY(inv3**4-2*inv3**2+10)-10);
+  ctx.fillText('x=−1/√3', toX(-inv3), toY((-inv3)**4-2*(-inv3)**2+10)-10);
+})();
+
+// Graph 2: sigmoid-like wave as per image
+(function(){
+  const {ctx,W,H}=setupCanvas('c2');
+  const {toX,toY}=drawAxes(ctx,W,H,-6,7,-4,5,1,1);
+  // piecewise: decreasing -5 to 0, peak-ish at 1-3, then down
+  const pts=[[-5,1],[-3,1],[0,0.5],[1,2],[2,4.5],[3,4],[4,2],[5,0],[6,-3]];
+  // smooth bezier
+  ctx.strokeStyle='#2c5f8a'; ctx.lineWidth=2;
+  ctx.beginPath();
+  ctx.moveTo(toX(-5),toY(1));
+  // draw open circle at -5
+  for(let i=1;i<pts.length;i++){
+    const [x,y]=pts[i];
+    ctx.lineTo(toX(x),toY(y));
+  }
+  ctx.stroke();
+  // dots
+  ctx.fillStyle='#1a1a2e'; ctx.beginPath(); ctx.arc(toX(-5),toY(1),4,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#c0392b'; ctx.beginPath(); ctx.arc(toX(6),toY(-3),5,0,Math.PI*2); ctx.fill();
+})();
+
+// Graph 4: steep line near x=0, like f(x)=7x+11
+(function(){
+  const {ctx,W,H}=setupCanvas('c4');
+  const {toX,toY}=drawAxes(ctx,W,H,-11,10,-4,11,2,2);
+  plotFn(ctx,x=>7*x+11,-2.1,0.1,toX,toY);
+})();
+
+// Graph 8: parabola f(x)=2x²-2
+(function(){
+  const {ctx,W,H}=setupCanvas('c8');
+  const {toX,toY}=drawAxes(ctx,W,H,-6,7,-3,6,1,1);
+  plotFn(ctx,x=>2*x*x-2,-1.9,2.5,toX,toY);
+})();
+
+// Graph 11: f(x)=-11x²+10x+6
+(function(){
+  const {ctx,W,H}=setupCanvas('c11');
+  const {toX,toY}=drawAxes(ctx,W,H,-1,2,-10,9,0.5,2);
+  plotFn(ctx,x=>-11*x*x+10*x+6,-0.6,1.6,toX,toY);
+})();
+
+// Graph 12: downward parabola, steep, concave down
+(function(){
+  const {ctx,W,H}=setupCanvas('c12');
+  const {toX,toY}=drawAxes(ctx,W,H,-5,7,-1,9,1,2);
+  plotFn(ctx,x=>-8*(x-1.2)*(x-1.2)+8.5,0,2.5,toX,toY);
+})();
+
+updateScore();
+</script>
+</body>
+</html>
