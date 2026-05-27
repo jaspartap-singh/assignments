@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Worksheet | Satya Bharti School, Mohie</title>
+    <style>
+        /* Royal, Vibrant, and Artistic Aesthetic */
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #31103f 100%);
+            font-family: 'Georgia', serif;
+            color: #333;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fdfaf6;
+            border: 6px double #d4af37;
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            padding: 40px;
+            position: relative;
+        }
+
+        .container::before {
+            content: "✦";
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 24px;
+            color: #d4af37;
+        }
+
+        .container::after {
+            content: "✦";
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            color: #d4af37;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4a154b;
+            font-size: 32px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #8b6508;
+            font-size: 20px;
+            margin-top: 0;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .question-card {
+            background: #fff;
+            border: 2px solid #e0c98f;
+            border-left: 6px solid #d4af37;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: 2px 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 2px 6px 15px rgba(0,0,0,0.1);
+        }
+
+        .question-text {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #2c1e4a;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        input[type="number"] {
+            padding: 8px 12px;
+            font-size: 16px;
+            border: 2px solid #b89947;
+            border-radius: 4px;
+            background-color: #fffdf5;
+            width: 100px;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            outline: none;
+        }
+
+        input[type="number"]:focus {
+            border-color: #4a154b;
+            box-shadow: 0 0 5px rgba(74, 21, 75, 0.3);
+        }
+
+        button {
+            background: linear-gradient(to bottom, #d4af37, #a67c00);
+            border: 2px solid #6b5000;
+            color: white;
+            padding: 8px 20px;
+            font-size: 16px;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            transition: background 0.3s, transform 0.1s;
+        }
+
+        button:hover {
+            background: linear-gradient(to bottom, #e3c04d, #b58800);
+        }
+
+        button:active {
+            transform: scale(0.97);
+        }
+
+        .feedback {
+            font-size: 16px;
+            font-weight: bold;
+            margin-left: 10px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .correct {
+            color: #155724;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            display: inline-block;
+        }
+
+        .incorrect {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Satya Bharti School, Mohie</h1>
+    <h2>Surface Area & Volume Practice Sheet</h2>
+
+    <!-- Question 1 -->
+    <div class="question-card">
+        <div class="question-text">
+            1. The surface area of a cuboid is 236 m&sup2;. Find its height if the area of its base is 48 m&sup2; and the perimeter of the base is 28 m.
+        </div>
+        <div class="input-group">
+            <input type="number" id="q1_input" placeholder="Value"> m
+            <button onclick="checkSingleAnswer('q1_input', 5, 'q1_feedback')">Check Answer</button>
+            <span id="q1_feedback" class="feedback"></span>
+        </div>
+    </div>
+
+    <!-- Question 2 -->
+    <div class="question-card">
+        <div class="question-text">
+            2. The diagonal of the face of a cube measures 6 cm. Find its surface area.
+        </div>
+        <div class="input-group">
+            <input type="number" id="q2_input" placeholder="Value"> cm&sup2;
+            <button onclick="checkSingleAnswer('q2_input', 108, 'q2_feedback')">Check Answer</button>
+            <span id="q2_feedback" class="feedback"></span>
+        </div>
+    </div>
+
+    <!-- Question 3 -->
+    <div class="question-card">
+        <div class="question-text">
+            3. The length, breadth and the height of a cuboid are in the ratio 3 : 1 : 1. If its body diagonal measures 22 cm, find its surface area.
+        </div>
+        <div class="input-group">
+            <input type="number" id="q3_input" placeholder="Value"> cm&sup2;
+            <button onclick="checkSingleAnswer('q3_input', 616, 'q3_feedback')">Check Answer</button>
+            <span id="q3_feedback" class="feedback"></span>
+        </div>
+    </div>
+
+    <!-- Question 4 -->
+    <div class="question-card">
+        <div class="question-text">
+            4. Find the surface area of a cuboid of length 6 cm, breadth 3 cm, and height 2 cm.
+        </div>
+        <div class="input-group">
+            <input type="number" id="q4_input" placeholder="Value"> cm&sup2;
+            <button onclick="checkSingleAnswer('q4_input', 72, 'q4_feedback')">Check Answer</button>
+            <span id="q4_feedback" class="feedback"></span>
+        </div>
+    </div>
+
+    <!-- Question 5 -->
+    <div class="question-card">
+        <div class="question-text">
+            5. Find the surface area of a cube of side length 2 m.
+        </div>
+        <div class="input-group">
+            <input type="number" id="q5_input" placeholder="Value"> m&sup2;
+            <button onclick="checkSingleAnswer('q5_input', 24, 'q5_feedback')">Check Answer</button>
+            <span id="q5_feedback" class="feedback"></span>
+        </div>
+    </div>
+
+    <!-- Question 6 -->
+    <div class="question-card">
+        <div class="question-text">
+            6. The areas of the three faces of a cuboid are 32 cm&sup2;, 16 cm&sup2;, and 8 cm&sup2;. Find the dimensions of the cuboid (in increasing order).
+        </div>
+        <div class="input-group">
+            <input type="number" id="q6_1" placeholder="cm" style="width: 60px;"> cm, 
+            <input type="number" id="q6_2" placeholder="cm" style="width: 60px;"> cm, 
+            <input type="number" id="q6_3" placeholder="cm" style="width: 60px;"> cm
+            <button onclick="checkMultiAnswer(['q6_1', 'q6_2', 'q6_3'], [2, 4, 8], 'q6_feedback')">Check Answer</button>
+            <span id="q6_feedback" class="feedback"></span>
+        </div>
+    </div>
+
+    <!-- Question 7 -->
+    <div class="question-card">
+        <div class="question-text">
+            7. How much area of cardboard sheet will be required to make the following boxes / covers? (Base dimensions: Length = 4, Breadth = 3, Height = 2)
+        </div>
+        <div class="input-group" style="margin-bottom: 10px;">
+            A) Box open at the top: 
+            <input type="number" id="q7_1" placeholder="Value"> cm&sup2;
+        </div>
+        <div class="input-group" style="margin-bottom: 10px;">
+            B) Box open at two adjacent faces (Top and Front): 
+            <input type="number" id="q7_2" placeholder="Value"> cm&sup2;
+        </div>
+        <div class="input-group" style="margin-bottom: 10px;">
+            C) Box open at the front and back: 
+            <input type="number" id="q7_3" placeholder="Value"> cm&sup2;
+        </div>
+        <div class="input-group" style="margin-bottom: 15px;">
+            D) Box open at three adjacent faces (Top, Front, and Right): 
+            <input type="number" id="q7_4" placeholder="Value"> cm&sup2;
+        </div>
+        <button onclick="checkMultiAnswer(['q7_1', 'q7_2', 'q7_3', 'q7_4'], [40, 32, 36, 26], 'q7_feedback')">Check All Parts</button>
+        <span id="q7_feedback" class="feedback"></span>
+    </div>
+
+    <!-- Question 8 -->
+    <div class="question-card">
+        <div class="question-text">
+            8. Following is a cuboid of length 8 cm, breadth 6 cm, and height 4 cm. Such identical cuboids are joined in different ways. Find the surface areas of the resulting solids:
+        </div>
+        <div class="input-group" style="margin-bottom: 10px;">
+            A) Stacked vertically (3 blocks high): 
+            <input type="number" id="q8_1" placeholder="Value"> cm&sup2;
+        </div>
+        <div class="input-group" style="margin-bottom: 10px;">
+            B) 2x2 Wall stack (2 wide along the length, 2 high): 
+            <input type="number" id="q8_2" placeholder="Value"> cm&sup2;
+        </div>
+        <div class="input-group" style="margin-bottom: 15px;">
+            C) 2x2 Flat grid (2 wide along the length, 2 deep along the breadth): 
+            <input type="number" id="q8_3" placeholder="Value"> cm&sup2;
+        </div>
+        <button onclick="checkMultiAnswer(['q8_1', 'q8_2', 'q8_3'], [432, 544, 608], 'q8_feedback')">Check All Parts</button>
+        <span id="q8_feedback" class="feedback"></span>
+    </div>
+
+</div>
+
+<script>
+    function checkSingleAnswer(inputId, correctValue, feedbackId) {
+        const input = document.getElementById(inputId).value;
+        const feedback = document.getElementById(feedbackId);
+        
+        if (input == correctValue) {
+            feedback.textContent = "✓ Correct!";
+            feedback.className = "feedback correct";
+        } else {
+            feedback.textContent = "✗ Try Again";
+            feedback.className = "feedback incorrect";
+        }
+    }
+
+    function checkMultiAnswer(inputIds, correctValues, feedbackId) {
+        let allCorrect = true;
+        let anyEmpty = false;
+
+        for (let i = 0; i < inputIds.length; i++) {
+            const val = document.getElementById(inputIds[i]).value;
+            if (val === "") {
+                anyEmpty = true;
+                allCorrect = false;
+                break;
+            }
+            if (parseFloat(val) !== correctValues[i]) {
+                allCorrect = false;
+            }
+        }
+
+        const feedback = document.getElementById(feedbackId);
+        
+        if (anyEmpty) {
+            feedback.textContent = "Please fill in all fields.";
+            feedback.className = "feedback incorrect";
+        } else if (allCorrect) {
+            feedback.textContent = "✓ All parts correct!";
+            feedback.className = "feedback correct";
+        } else {
+            feedback.textContent = "✗ One or more parts are incorrect. Try again.";
+            feedback.className = "feedback incorrect";
+        }
+    }
+</script>
+
+</body>
+</html>
