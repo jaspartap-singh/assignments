@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cone Surface Area Practice Sheet</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a, #1e293b, #111827);
+      color: white;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      font-size: 3rem;
+      background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      color: #cbd5e1;
+      font-size: 1.1rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 25px;
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(56,189,248,0.25);
+    }
+
+    .question-number {
+      background: linear-gradient(to right, #38bdf8, #8b5cf6);
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .question {
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      color: #f1f5f9;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      margin-bottom: 15px;
+      background: #f8fafc;
+      color: #111827;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(to right, #0ea5e9, #8b5cf6);
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      opacity: 0.9;
+      transform: scale(1.02);
+    }
+
+    .result {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 1rem;
+      min-height: 24px;
+    }
+
+    .correct {
+      color: #22c55e;
+    }
+
+    .wrong {
+      color: #f87171;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+
+    .score-box {
+      background: rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 35px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .score-box h2 {
+      margin-bottom: 10px;
+      color: #38bdf8;
+    }
+
+    .score {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #f8fafc;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Interactive Cone Practice Sheet</h1>
+      <p>Practice Curved Surface Area, Total Surface Area & Cone Geometry</p>
+    </div>
+
+    <div class="score-box">
+      <h2>Your Score</h2>
+      <div class="score" id="score">0 / 10</div>
+    </div>
+
+    <div class="grid" id="questionContainer"></div>
+
+    <div class="footer">
+      Designed for interactive math learning 🚀
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        q: 'The radius of a cone is 7 cm and its curved surface area is 176 cm². Find the slant height. (Take π = 22/7)',
+        ans: '8'
+      },
+      {
+        q: 'The radius and slant height are in the ratio 1:7. If the curved surface area is 198 cm², find the radius. (Take π = 22/7)',
+        ans: '3'
+      },
+      {
+        q: 'The slant height of a cone is 13 cm and diameter is 10 cm. Find the height of the cone.',
+        ans: '12'
+      },
+      {
+        q: 'The radius and slant height are in the ratio 3:5. If the height is 12 cm, find the curved surface area in terms of π.',
+        ans: '216π'
+      },
+      {
+        q: 'The curved surface area of a cone is 2992/7 cm². If slant height is 17 cm, find the height. (Take π = 22/7)',
+        ans: '15'
+      },
+      {
+        q: 'The total surface area of a cone is 678.24 m². Radius = 9 m. Find the height. (Take π = 3.14)',
+        ans: '12'
+      },
+      {
+        q: 'The total surface area of a cone is 90π. If radius = 5, find the curved surface area.',
+        ans: '65π'
+      },
+      {
+        q: 'The curved surface area of a cone with slant height 60 cm and radius 21 cm equals?',
+        ans: '3960'
+      },
+      {
+        q: 'Radius of cone = 5 cm and height = 12 cm. Find total surface area. (Take π = 3.14)',
+        ans: '282.6'
+      },
+      {
+        q: 'The radius and the slant height of a cone are in the ratio 3:5. If the cone’s height is 4 cm, find the curved surface area. (Take π = 3.14)',
+        ans: '75.36'
+      },
+      {
+        q: 'The ratio of the curved surface area and total surface area of a cone is 17:25. Find the ratio of slant height and radius.',
+        ans: '17:8'
+      },
+      {
+        q: 'The ratio of the curved surface area and total surface area of a cone is 17:25. Find the ratio of height and radius.',
+        ans: '15:8'
+      },
+      {
+        q: 'By what factor does curved surface area increase if slant height is doubled?',
+        ans: '2'
+      },
+      {
+        q: 'By what factor does curved surface area increase if radius is doubled and slant height tripled?',
+        ans: '6'
+      }
+    ];
+
+    let score = 0;
+
+    const container = document.getElementById('questionContainer');
+
+    questions.forEach((item, index) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      card.innerHTML = `
+        <div class="question-number">${index + 1}</div>
+        <div class="question">${item.q}</div>
+        <input type="text" id="input-${index}" placeholder="Enter your answer here" />
+        <button onclick="checkAnswer(${index}, '${item.ans}')">Check Answer</button>
+        <div class="result" id="result-${index}"></div>
+      `;
+
+      container.appendChild(card);
+    });
+
+    function normalize(str) {
+      return str.toLowerCase().replace(/\s+/g, '').replace('*','');
+    }
+
+    function checkAnswer(index, answer) {
+      const input = document.getElementById(`input-${index}`).value;
+      const result = document.getElementById(`result-${index}`);
+
+      if (normalize(input) === normalize(answer)) {
+        if (!result.classList.contains('correct')) {
+          score++;
+        }
+
+        result.innerHTML = '✅ Correct Answer!';
+        result.className = 'result correct';
+      } else {
+        result.innerHTML = `❌ Incorrect. Correct Answer: ${answer}`;
+        result.className = 'result wrong';
+      }
+
+      document.getElementById('score').innerText = `${score} / ${questions.length}`;
+    }
+  </script>
+</body>
+</html>
