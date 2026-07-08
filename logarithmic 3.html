@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properties of Logarithms Practice Sheet</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #ec4899;
+            --accent-hover: #db2777;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --error: #ef4444;
+            --border: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 2rem 1rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1.5rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #fbcfe8;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.75rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card:hover {
+            border-color: var(--accent-color);
+        }
+
+        .q-num {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .q-text {
+            font-size: 1.15rem;
+            margin-bottom: 1.25rem;
+            font-weight: 500;
+        }
+
+        .formula {
+            background-color: #0f172a;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+            margin: 1rem 0;
+            color: #e2e8f0;
+            font-size: 1.1rem;
+        }
+
+        /* Inputs and Interactive Elements */
+        .input-group {
+            margin-top: 1rem;
+        }
+
+        .text-input {
+            width: 100%;
+            max-width: 300px;
+            padding: 0.75rem;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .text-input:focus {
+            border-color: var(--accent-color);
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover {
+            background-color: #1e293b;
+            border-color: #475569;
+        }
+
+        .option-label input {
+            margin-right: 1rem;
+            accent-color: var(--accent-color);
+            transform: scale(1.2);
+        }
+
+        /* Feedback styling */
+        .feedback {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .feedback.correct {
+            display: block;
+            background-color: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .feedback.incorrect {
+            display: block;
+            background-color: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        /* Bottom Action Bar */
+        .actions {
+            text-align: center;
+            margin-top: 3rem;
+            margin-bottom: 5rem;
+        }
+
+        .btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.85rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 6px rgba(236, 72, 153, 0.2);
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .score-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 1.5rem;
+            color: #fbcfe8;
+        }
+
+        sub { font-size: 0.75em; }
+        sup { font-size: 0.75em; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Properties of Logarithms</h1>
+        <p>Interactive Mastery & Practice Sheet II</p>
+    </header>
+
+    <form id="quizForm">
+        <!-- Question 1 -->
+        <div class="card" data-type="text" data-answer="-3">
+            <span class="q-num">Question 1</span>
+            <div class="q-text">Evaluate log<sub>5</sub>(1/125).</div>
+            <div class="input-group">
+                <input type="text" class="text-input" placeholder="Your answer...">
+            </div>
+            <div class="feedback"></div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="card" data-type="radio" data-answer="B">
+            <span class="q-num">Question 2</span>
+            <div class="q-text">Which of the following has the same value as 3 log<sub>2</sub> 5?</div>
+            <div class="options-grid">
+                <label class="option-label"><input type="radio" name="q2" value="A"> <span>log<sub>2</sub> 15</span></label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> <span>log<sub>2</sub> 125</span></label>
+                <label class="option-label"><input type="radio" name="q2" value="C"> <span>log<sub>6</sub> 5</span></label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> <span>log<sub>2</sub> 8</span></label>
+            </div>
+            <div class="feedback"></div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="card" data-type="text" data-answer="4">
+            <span class="q-num">Question 3</span>
+            <div class="q-text">Using properties of logarithms or change of base, evaluate the expression: <b>log 16 / log 2</b>.</div>
+            <div class="input-group">
+                <input type="text" class="text-input" placeholder="Your answer...">
+            </div>
+            <div class="feedback"></div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="card" data-type="radio" data-answer="B">
+            <span class="q-num">Question 4</span>
+            <div class="q-text">Which of the following expressions is equivalent to <b>log(4x<sup>2</sup> / y)</b>?</div>
+            <div class="options-grid">
+                <label class="option-label"><input type="radio" name="q4" value="A"> <span>log 4 + 2 log x + log y</span></label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> <span>log 4 + 2 log x - log y</span></label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> <span>2 log(4x / y)</span></label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> <span>log 4 + log 2 + log x - log y</span></label>
+            </div>
+            <div class="feedback"></div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="card" data-type="radio" data-answer="A">
+            <span class="q-num">Question 5</span>
+            <div class="q-text">Expand the expression completely: <b>log<sub>2</sub>(&sup4;&radic;(x y<sup>3</sup>))</b>.</div>
+            <div class="options-grid">
+                <label class="option-label"><input type="radio" name="q5" value="A"> <span>&frac14; log<sub>2</sub> x + &frac34; log<sub>2</sub> y</span></label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> <span>&frac14; log<sub>2</sub> x &bull; &frac34; log<sub>2</sub> y</span></label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> <span>&frac14;(log<sub>2</sub> x + log<sub>2</sub> y)</span></label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> <span>&frac14; + log<sub>2</sub> x + &frac34; log<sub>2</sub> y</span></label>
+            </div>
+            <div class="feedback"></div>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="card" data-type="radio" data-answer="A">
+            <span class="q-num">Question 6</span>
+            <div class="q-text">Condense the expression into a single logarithm: <b>&frac12; log<sub>3</sub> x - &frac43; log<sub>3</sub> y</b>.</div>
+            <div class="options-grid">
+                <label class="option-label"><input type="radio" name="q6" value="A"> <span>log<sub>3</sub>(&radic;x / &sup3;&radic;y<sup>4</sup>)</span></label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> <span>log<sub>3</sub>(&radic;x - &sup3;&radic;y<sup>4</sup>)</span></label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> <span>log<sub>3</sub>(&radic;x / y<sup>4</sup>)</span></label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> <span>log<sub>3</sub>(&radic;(x y<sup>4</sup>))</span></label>
+            </div>
+            <div class="feedback"></div>
+        </div>
+
+        <!-- Question 7 -->
+        <div class="card" data-type="radio" data-answer="B">
+            <span class="q-num">Question 7</span>
+            <div class="q-text">Which of the following equations is mathematically correct?</div>
+            <div class="options-grid">
+                <label class="option-label"><input type="radio" name="q7" value="A"> <span>log<sub>3</sub>(x<sup>2</sup>) - log<sub>3</sub>(y<sup>2</sup>) = log<sub>3</sub>(x<sup>2</sup> - y<sup>2</sup>)</span></label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> <span>3 log x + 2 log y = log(x<sup>3</sup> y<sup>2</sup>)</span></label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> <span>&frac13; log<sub>5</sub> x - 3 log<sub>5</sub> y = log<sub>5</sub>(x / 3y<sup>3</sup>)</span></label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> <span>log<sub>2</sub> x + log<sub>2</sub>(y<sup>3</sup>) = (log<sub>2</sub>(xy))<sup>3</sup></span></label>
+            </div>
+            <div class="feedback"></div>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="card" data-type="text" data-answer="1.065">
+            <span class="q-num">Question 8</span>
+            <div class="q-text">Use the change-of-base formula to evaluate: <b>log<sub>4</sub>(35/8)</b>. (Round off your answer to three decimal places)</div>
+            <div class="input-group">
+                <input type="text" class="text-input" placeholder="e.g. 1.234">
+            </div>
+            <div class="feedback"></div>
+        </div>
+
+        <!-- Question 9 -->
+        <div class="card" data-type="text" data-answer="2.773">
+            <span class="q-num">Question 9</span>
+            <div class="q-text">The height <i>h</i> (in meters) of a tree species can be modeled by <b><i>h(t)</i> = 4 ln(5t)</b>, where <i>t</i> is the time in years. By how many meters does the height increase when the time <i>t</i> doubles? (Round your answer to three decimal places)</div>
+            <div class="input-group">
+                <input type="text" class="text-input" placeholder="e.g. 2.543">
+            </div>
+            <div class="feedback"></div>
+        </div>
+
+        <!-- Question 10 -->
+        <div class="card" data-type="radio" data-answer="C">
+            <span class="q-num">Question 10</span>
+            <div class="q-text">Which of the following is equivalent to rewriting the function <b><i>h(t)</i> = 4 ln(5t)</b> in terms of the common logarithm (log)?</div>
+            <div class="options-grid">
+                <label class="option-label"><input type="radio" name="q10" value="A"> <span>h(t) = 4 log(5t)</span></label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> <span>h(t) = 4 log(e) / log(5t)</span></label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> <span>h(t) = 4 log(5t) / log(e)</span></label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> <span>h(t) = log(5t) / 4 log(e)</span></label>
+            </div>
+            <div class="feedback"></div>
+        </div>
+
+        <div class="actions">
+            <button type="button" class="btn" onclick="checkAnswers()">Submit Sheet</button>
+            <div id="scoreResult" class="score-display"></div>
+        </div>
+    </form>
+</div>
+
+<script>
+    function checkAnswers() {
+        const cards = document.querySelectorAll('.card');
+        let score = 0;
+        let total = 0;
+
+        cards.forEach(card => {
+            const type = card.getAttribute('data-type');
+            const feedback = card.querySelector('.feedback');
+            let isCorrect = false;
+            total++;
+
+            if (type === 'text') {
+                const input = card.querySelector('.text-input').value.trim();
+                const expected = card.getAttribute('data-answer');
+                if (input === expected) {
+                    isCorrect = true;
+                    score++;
+                }
+                feedback.className = isCorrect ? 'feedback correct' : 'feedback incorrect';
+                feedback.innerText = isCorrect ? 'Correct!' : 'Incorrect. The correct answer is ' + expected + '.';
+            } 
+            else if (type === 'radio') {
+                const selected = card.querySelector('input[type="radio"]:checked');
+                const expected = card.getAttribute('data-answer');
+                
+                if (selected && selected.value === expected) {
+                    isCorrect = true;
+                    score++;
+                }
+                feedback.className = isCorrect ? 'feedback correct' : 'feedback incorrect';
+                
+                const labels = card.querySelectorAll('.option-label');
+                let correctText = '';
+                labels.forEach(label => {
+                    if(label.querySelector('input').value === expected) {
+                        correctText = label.querySelector('span').innerText;
+                    }
+                });
+                
+                feedback.innerText = isCorrect ? 'Correct!' : 'Incorrect. Correct option: ' + correctText;
+            }
+        });
+
+        const scoreDiv = document.getElementById('scoreResult');
+        scoreDiv.innerText = `Your Score: ${score} / ${total}`;
+    }
+</script>
+
+</body>
+</html>
