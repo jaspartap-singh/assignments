@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exponential & Logarithmic Equations Practice Sheet</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --accent-vibrant: #ff007f;
+            --secondary: #06b6d4;
+            --success: #10b981;
+            --error: #ef4444;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+            padding: 2.5rem;
+            border-radius: 24px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.25rem;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .quiz-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+        }
+
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .question-meta {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--secondary);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #334155;
+            line-height: 1.5;
+        }
+
+        .math-display {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.75rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            color: #0f172a;
+            user-select: none;
+        }
+
+        .math-display var {
+            font-style: italic;
+        }
+
+        .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .input-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .input-field {
+            padding: 0.6rem 1rem;
+            font-size: 1.1rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            width: 140px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        .btn-check {
+            background: linear-gradient(135deg, var(--primary), #6366f1);
+            color: white;
+            border: none;
+            padding: 0.65rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+        }
+
+        .btn-check:hover {
+            opacity: 0.95;
+        }
+
+        .btn-check:active {
+            transform: scale(0.98);
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .feedback.correct {
+            color: var(--success);
+        }
+
+        .feedback.incorrect {
+            color: var(--error);
+        }
+
+        /* Dialogue Box / Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 24px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .modal-message {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .btn-modal {
+            background: var(--text-main);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .score-board {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border: 2px solid var(--primary);
+            z-index: 100;
+        }
+
+        .score-badge {
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .score-board {
+                bottom: 1rem;
+                right: 1rem;
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Interactive Practice Sheet</h1>
+            <p>Mastering Exponential & Logarithmic Equations</p>
+        </header>
+
+        <div class="quiz-container">
+            <!-- Q1 -->
+            <div class="question-card" id="q1">
+                <div class="question-meta">Question 1</div>
+                <div class="question-text">Solve the equation.</div>
+                <div class="math-display">3<sup>4<var>x</var> &minus; 8</sup> = 3<sup>7 &minus; <var>x</var></sup></div>
+                <div class="input-group">
+                    <span class="input-label"><var>x</var> =</span>
+                    <input type="text" class="input-field" data-ans="3" placeholder="Answer">
+                    <button class="btn-check" onclick="checkAnswer('q1')">Check Answer</button>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="question-card" id="q2">
+                <div class="question-meta">Question 2</div>
+                <div class="question-text">Solve the equation. (Round your answer to the nearest thousandth.)</div>
+                <div class="math-display">13<var>e</var><sup>6<var>x</var></sup> + 2 = 54</div>
+                <div class="input-group">
+                    <span class="input-label"><var>x</var> &approx;</span>
+                    <input type="text" class="input-field" data-ans="0.231" placeholder="0.000">
+                    <button class="btn-check" onclick="checkAnswer('q2')">Check Answer</button>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="question-card" id="q3">
+                <div class="question-meta">Question 3</div>
+                <div class="question-text">Solve the equation. (Enter &phi; if the solution does not exist. In case of multiple answers, use a comma-separated list. Round your answers to the nearest hundredth.)</div>
+                <div class="math-display">3<sup>2<var>x</var></sup> &minus; 14 &middot; 3<sup><var>x</var></sup> + 45 = 0</div>
+                <div class="input-group">
+                    <span class="input-label">Valid solution(s): <var>x</var> =</span>
+                    <input type="text" class="input-field" data-ans="2, 1.46" placeholder="e.g. 2, 1.46" style="width: 180px;">
+                </div>
+                <div class="input-group" style="margin-top: 1rem;">
+                    <span class="input-label">Extraneous solution(s): <var>x</var> =</span>
+                    <input type="text" class="input-field" id="q3-ext" data-ans="phi" placeholder="&phi;">
+                    <button class="btn-check" onclick="checkMultiAnswer('q3')">Check Answer</button>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="question-card" id="q4">
+                <div class="question-meta">Question 4</div>
+                <div class="question-text">You invest $1500 in a retirement fund that earns 4.5% annual interest. How long will it take for the balance to reach $4000 for each frequency of compounding? (Round your answers to the nearest tenth.)</div>
+                <div class="input-group">
+                    <span class="input-label">(a) Quarterly:</span>
+                    <input type="text" class="input-field" id="q4-a" data-ans="21.9" placeholder="0.0">
+                    <span class="input-label">years</span>
+                </div>
+                <div class="input-group" style="margin-top: 1rem;">
+                    <span class="input-label">(b) Continuously:</span>
+                    <input type="text" class="input-field" id="q4-b" data-ans="21.8" placeholder="0.0">
+                    <span class="input-label">years</span>
+                    <button class="btn-check" onclick="checkCompoundAnswer('q4')">Check Answer</button>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="question-card" id="q5">
+                <div class="question-meta">Question 5</div>
+                <div class="question-text">Solve the equation.</div>
+                <div class="math-display">ln(8<var>x</var> &minus; 3) = ln(5<var>x</var> + 12)</div>
+                <div class="input-group">
+                    <span class="input-label"><var>x</var> =</span>
+                    <input type="text" class="input-field" data-ans="5" placeholder="Answer">
+                    <button class="btn-check" onclick="checkAnswer('q5')">Check Answer</button>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="question-card" id="q6">
+                <div class="question-meta">Question 6</div>
+                <div class="question-text">Solve the equation.</div>
+                <div class="math-display">log<sub>6</sub>(7<var>x</var> + 1) = 2</div>
+                <div class="input-group">
+                    <span class="input-label"><var>x</var> =</span>
+                    <input type="text" class="input-field" data-ans="5" placeholder="Answer">
+                    <button class="btn-check" onclick="checkAnswer('q6')">Check Answer</button>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <!-- Q7 -->
+            <div class="question-card" id="q7">
+                <div class="question-meta">Question 7</div>
+                <div class="question-text">Solve the equation.</div>
+                <div class="math-display">log<sub>5</sub>(<var>x</var> &minus; 8) = log<sub>25</sub>(4<var>x</var>)</div>
+                <div class="input-group">
+                    <span class="input-label"><var>x</var> =</span>
+                    <input type="text" class="input-field" data-ans="16" placeholder="Answer">
+                    <button class="btn-check" onclick="checkAnswer('q7')">Check Answer</button>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <!-- Q8 -->
+            <div class="question-card" id="q8">
+                <div class="question-meta">Question 8</div>
+                <div class="question-text">The loudness of a sound is measured in decibels (dB). The minimum loudness <var>L</var> detectable by a microphone is given by <var>L</var> = 4 log <var>D</var> + 8, where <var>D</var> is the diameter (in mm) of the microphone's diaphragm. What is the diameter of the diaphragm needed to detect a sound at a loudness level of 20 dB?</div>
+                <div class="input-group">
+                    <span class="input-label">Diameter =</span>
+                    <input type="text" class="input-field" data-ans="1000" placeholder="Answer">
+                    <span class="input-label">mm</span>
+                    <button class="btn-check" onclick="checkAnswer('q8')">Check Answer</button>
+                </div>
+                <div class="feedback"></div>
+            </div>
+
+            <!-- Q9 -->
+            <div class="question-card" id="q9">
+                <div class="question-meta">Question 9</div>
+                <div class="question-text">Solve the inequality.</div>
+                <div class="math-display">&minus;6 log<sub>10</sub>(<var>x</var>) + 9 &ge; 21</div>
+                <div class="input-group">
+                    <input type="text" class="input-field" id="q9-1" data-ans="0" placeholder="0" style="width: 90px;">
+                    <span class="input-label"> &lt; <var>x</var> &le; </span>
+                    <input type="text" class="input-field" id="q9-2" data-ans="0.01" placeholder="0.01" style="width: 90px;">
+                    <button class="btn-check" onclick="checkInequalityAnswer('q9')">Check Answer</button>
+                </div>
+                <div class="feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Score Counter Box -->
+    <div class="score-board">
+        <span>Score:</span>
+        <span class="score-badge" id="score-display">0 / 9</span>
+    </div>
+
+    <!-- Dialogue Box (Modal) -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal-box">
+            <div class="modal-icon" id="modal-icon">🎉</div>
+            <div class="modal-title" id="modal-title">Correct!</div>
+            <div class="modal-message" id="modal-message">Fantastic job! You solved it perfectly.</div>
+            <button class="btn-modal" onclick="closeModal()">Continue</button>
+        </div>
+    </div>
+
+    <script>
+        let solvedQuestions = new Set();
+
+        function updateScore() {
+            document.getElementById('score-display').innerText = solvedQuestions.size + " / 9";
+        }
+
+        function showModal(isCorrect, message) {
+            const modal = document.getElementById('modal');
+            const icon = document.getElementById('modal-icon');
+            const title = document.getElementById('modal-title');
+            const msg = document.getElementById('modal-message');
+
+            if (isCorrect) {
+                icon.innerText = "🎉";
+                title.innerText = "Correct!";
+                title.style.color = "var(--success)";
+                msg.innerText = message || "Fantastic job! You solved it perfectly.";
+            } else {
+                icon.innerText = "❌";
+                title.innerText = "Not Quite!";
+                title.style.color = "var(--error)";
+                msg.innerText = message || "Review your steps and try again.";
+            }
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        function cleanString(str) {
+            return str.replace(/\s+/g, '').toLowerCase().replace(/phi|&phi;|∅/g, 'phi');
+        }
+
+        function checkAnswer(id) {
+            const card = document.getElementById(id);
+            const input = card.querySelector('.input-field');
+            const feedback = card.querySelector('.feedback');
+            
+            const userAns = cleanString(input.value);
+            const correctAns = cleanString(input.getAttribute('data-ans'));
+
+            if (userAns === correctAns) {
+                feedback.innerHTML = "✨ Correct!";
+                feedback.className = "feedback correct";
+                if (!solvedQuestions.has(id)) {
+                    solvedQuestions.add(id);
+                    updateScore();
+                }
+                showModal(true, "Excellent! Your answer is absolutely correct.");
+            } else {
+                feedback.innerHTML = "✕ Try again!";
+                feedback.className = "feedback incorrect";
+                showModal(false, "Double-check your calculations and try again!");
+            }
+        }
+
+        function checkMultiAnswer(id) {
+            const card = document.getElementById(id);
+            const inputs = card.querySelectorAll('.input-field');
+            const feedback = card.querySelector('.feedback');
+            
+            // Q3 specific
+            let validAns = cleanString(inputs[0].value);
+            let extAns = cleanString(inputs[1].value);
+
+            // check validAns has both 2 and 1.46
+            let has2 = validAns.includes('2');
+            let has146 = validAns.includes('1.46');
+            let isExtCorrect = (extAns === 'phi' || extAns === 'o' || extAns === '');
+
+            if (has2 && has146 && isExtCorrect) {
+                feedback.innerHTML = "✨ Correct!";
+                feedback.className = "feedback correct";
+                if (!solvedQuestions.has(id)) {
+                    solvedQuestions.add(id);
+                    updateScore();
+                }
+                showModal(true, "Fantastic! You found both real solutions and identified that there are no extraneous solutions.");
+            } else {
+                feedback.innerHTML = "✕ Try again!";
+                feedback.className = "feedback incorrect";
+                showModal(false, "Hint: Make sure to include both roots rounded to the nearest hundredth, separated by a comma.");
+            }
+        }
+
+        function checkCompoundAnswer(id) {
+            const card = document.getElementById(id);
+            const ansA = cleanString(document.getElementById('q4-a').value);
+            const ansB = cleanString(document.getElementById('q4-b').value);
+            const feedback = card.querySelector('.feedback');
+
+            if (ansA === '21.9' && ansB === '21.8') {
+                feedback.innerHTML = "✨ Correct!";
+                feedback.className = "feedback correct";
+                if (!solvedQuestions.has(id)) {
+                    solvedQuestions.add(id);
+                    updateScore();
+                }
+                showModal(true, "Spot on! 21.9 years for quarterly and 21.8 years for continuous compounding.");
+            } else {
+                feedback.innerHTML = "✕ Try again!";
+                feedback.className = "feedback incorrect";
+                showModal(false, "Check your rounding! Ensure they are rounded to the nearest tenth.");
+            }
+        }
+
+        function checkInequalityAnswer(id) {
+            const card = document.getElementById(id);
+            const ans1 = cleanString(document.getElementById('q9-1').value);
+            const ans2 = cleanString(document.getElementById('q9-2').value);
+            const feedback = card.querySelector('.feedback');
+
+            if ((ans1 === '0' || ans1 === '0.0') && (ans2 === '0.01' || ans2 === '.01')) {
+                feedback.innerHTML = "✨ Correct!";
+                feedback.className = "feedback correct";
+                if (!solvedQuestions.has(id)) {
+                    solvedQuestions.add(id);
+                    updateScore();
+                }
+                showModal(true, "Perfect! Because the domain of a logarithm must be strictly positive, x must be greater than 0.");
+            } else {
+                feedback.innerHTML = "✕ Try again!";
+                feedback.className = "feedback incorrect";
+                showModal(false, "Don't forget the domain constraint for logarithmic functions!");
+            }
+        }
+    </script>
+</body>
+</html>
