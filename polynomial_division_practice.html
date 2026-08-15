@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Polynomial Division Practice Sheet</title>
+  
+  <!-- MathJax Configuration & Loader -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Charis+SIL:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-page: #f6f3ea;
+      --card-bg: #ffffff;
+      --border-color: #e5e0d3;
+      --text-color: #2b2b2b;
+      --text-muted: #6b7280;
+      --badge-bg: #ffd659;
+      --badge-text: #1c1917;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --success-bg: #ecfdf5;
+      --success-border: #86efac;
+      --danger-bg: #fef2f2;
+      --danger-border: #fca5a5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      font-family: 'Charis SIL', Georgia, serif;
+      color: var(--text-color);
+      min-height: 100vh;
+      padding: 2.5rem 1rem 5rem;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .sheet-header {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .sheet-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+    }
+
+    .sheet-subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* Score Bar */
+    .top-bar {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .stat-pill {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #1e293b;
+    }
+
+    .stat-pill span {
+      color: var(--primary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .btn-reset {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .btn-reset:hover {
+      background: #e2e8f0;
+    }
+
+    /* Question Cards */
+    .question-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 2rem;
+      margin-bottom: 2.25rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+    }
+
+    .badge-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--badge-bg);
+      color: var(--badge-text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      min-width: 44px;
+      height: 44px;
+      padding: 0 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    }
+
+    .status-badge {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 6px;
+      display: none;
+    }
+
+    .status-badge.correct {
+      display: inline-block;
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid var(--success-border);
+    }
+
+    .status-badge.incorrect {
+      display: inline-block;
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid var(--danger-border);
+    }
+
+    .question-body {
+      font-size: 1.24rem;
+      color: #1f2937;
+      margin-bottom: 1.5rem;
+      line-height: 1.75;
+    }
+
+    .expression-display {
+      margin: 1.25rem 0 1.75rem;
+      text-align: center;
+      font-size: 1.3rem;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.9rem;
+      font-size: 1.2rem;
+    }
+
+    .input-label {
+      min-width: 105px;
+      font-family: 'Charis SIL', Georgia, serif;
+    }
+
+    /* Clean input boxes without answer spoilers */
+    .input-box {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.05rem;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 0.5rem 0.9rem;
+      background: #fff;
+      color: #1e293b;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 220px;
+    }
+
+    .input-box:focus {
+      border-color: var(--primary);
+    }
+
+    /* Card Actions */
+    .card-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-top: 1.5rem;
+    }
+
+    .btn-check {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      background: #1e293b;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.65rem 1.45rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-check:hover {
+      background: var(--primary);
+    }
+
+    .inline-feedback {
+      display: none;
+      margin-top: 1.25rem;
+      padding: 1.1rem 1.35rem;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+
+    .inline-feedback.correct {
+      display: block;
+      background: var(--success-bg);
+      border: 1.5px solid var(--success-border);
+      color: #14532d;
+    }
+
+    .inline-feedback.incorrect {
+      display: block;
+      background: var(--danger-bg);
+      border: 1.5px solid var(--danger-border);
+      color: #7f1d1d;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header class="sheet-header">
+      <h1 class="sheet-title">Polynomial Long & Synthetic Division</h1>
+      <p class="sheet-subtitle">Interactive Practice Sheet — Enter the quotient and remainder for each polynomial division</p>
+    </header>
+
+    <div class="top-bar">
+      <div class="stat-pill">Progress: <span id="progress-text">0 / 10</span></div>
+      <div class="stat-pill">Score: <span id="score-text">0</span></div>
+      <button class="btn-reset" onclick="resetAll()">Reset All</button>
+    </div>
+
+    <!-- ================= QUESTION 1 ================= -->
+    <div class="question-card" id="card-1">
+      <div class="card-top">
+        <div class="badge-number">1</div>
+        <div class="status-badge" id="badge-1"></div>
+      </div>
+      <div class="question-body">
+        <p>Use long division to divide. Write your answer as a quotient and a remainder.</p>
+        <div class="expression-display">
+          $$ (2x^3 + 3x^2 - 5x + 7) \div (x^2 - 2) $$
+        </div>
+        <div class="input-row">
+          <span class="input-label">Quotient:</span>
+          <input type="text" id="q1-quot" class="input-box" placeholder="" />
+        </div>
+        <div class="input-row">
+          <span class="input-label">Remainder:</span>
+          <input type="text" id="q1-rem" class="input-box" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkDivision(1, '2x+3', '-x+13', 'Quotient: $2x + 3$, Remainder: $-x + 13$. Division step: $2x(x^2 - 2) = 2x^3 - 4x$, leaving $3x^2 - x + 7$; then $3(x^2 - 2) = 3x^2 - 6$, leaving remainder $-x + 13$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-1"></div>
+    </div>
+
+    <!-- ================= QUESTION 2 ================= -->
+    <div class="question-card" id="card-2">
+      <div class="card-top">
+        <div class="badge-number">2</div>
+        <div class="status-badge" id="badge-2"></div>
+      </div>
+      <div class="question-body">
+        <p>Use long division to divide. Write your answer as a quotient and a remainder.</p>
+        <div class="expression-display">
+          $$ (3x^4 - 2x^3 + 5x^2 - 4x + 6) \div (x^2 + x + 2) $$
+        </div>
+        <div class="input-row">
+          <span class="input-label">Quotient:</span>
+          <input type="text" id="q2-quot" class="input-box" placeholder="" />
+        </div>
+        <div class="input-row">
+          <span class="input-label">Remainder:</span>
+          <input type="text" id="q2-rem" class="input-box" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkDivision(2, '3x^2-5x+4', '2x-2', 'Quotient: $3x^2 - 5x + 4$, Remainder: $2x - 2$. Step-by-step long division eliminates $3x^4$, then $-5x^3$, then $4x^2$, leaving remainder $2x - 2$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-2"></div>
+    </div>
+
+    <!-- ================= QUESTION 3 ================= -->
+    <div class="question-card" id="card-3">
+      <div class="card-top">
+        <div class="badge-number">3</div>
+        <div class="status-badge" id="badge-3"></div>
+      </div>
+      <div class="question-body">
+        <p>Write the quotient and a remainder of the following:</p>
+        <div class="expression-display">
+          $$ (4x^4 + 3x^3 - 6x^2 + 2x - 5) \div (x^2 + 3) $$
+        </div>
+        <div class="input-row">
+          <span class="input-label">Quotient:</span>
+          <input type="text" id="q3-quot" class="input-box" placeholder="" />
+        </div>
+        <div class="input-row">
+          <span class="input-label">Remainder:</span>
+          <input type="text" id="q3-rem" class="input-box" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkDivision(3, '4x^2+3x-18', '-7x+49', 'Quotient: $4x^2 + 3x - 18$, Remainder: $-7x + 49$. Divide successive leading terms by $x^2$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-3"></div>
+    </div>
+
+    <!-- ================= QUESTION 4 ================= -->
+    <div class="question-card" id="card-4">
+      <div class="card-top">
+        <div class="badge-number">4</div>
+        <div class="status-badge" id="badge-4"></div>
+      </div>
+      <div class="question-body">
+        <p>Use synthetic division to divide. Write your answer as a quotient and a remainder.</p>
+        <div class="expression-display">
+          $$ (3x^2 - 7x + 4) \div (x - 3) $$
+        </div>
+        <div class="input-row">
+          <span class="input-label">Quotient:</span>
+          <input type="text" id="q4-quot" class="input-box" placeholder="" />
+        </div>
+        <div class="input-row">
+          <span class="input-label">Remainder:</span>
+          <input type="text" id="q4-rem" class="input-box" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkDivision(4, '3x+2', '10', 'Using synthetic division with $c = 3$: Coefficients $[3, -7, 4] \\rightarrow 3 \\times 3 = 9; -7 + 9 = 2; 2 \\times 3 = 6; 4 + 6 = 10$. Quotient: $3x + 2$, Remainder: $10$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-4"></div>
+    </div>
+
+    <!-- ================= QUESTION 5 ================= -->
+    <div class="question-card" id="card-5">
+      <div class="card-top">
+        <div class="badge-number">5</div>
+        <div class="status-badge" id="badge-5"></div>
+      </div>
+      <div class="question-body">
+        <p>Use synthetic division to divide. Write your answer as a quotient and a remainder.</p>
+        <div class="expression-display">
+          $$ (2x^2 + 9x - 5) \div (x + 4) $$
+        </div>
+        <div class="input-row">
+          <span class="input-label">Quotient:</span>
+          <input type="text" id="q5-quot" class="input-box" placeholder="" />
+        </div>
+        <div class="input-row">
+          <span class="input-label">Remainder:</span>
+          <input type="text" id="q5-rem" class="input-box" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkDivision(5, '2x+1', '-9', 'Using synthetic division with $c = -4$: Coefficients $[2, 9, -5] \\rightarrow 2 \\times (-4) = -8; 9 + (-8) = 1; 1 \\times (-4) = -4; -5 + (-4) = -9$. Quotient: $2x + 1$, Remainder: $-9$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-5"></div>
+    </div>
+
+    <!-- ================= QUESTION 6 ================= -->
+    <div class="question-card" id="card-6">
+      <div class="card-top">
+        <div class="badge-number">6</div>
+        <div class="status-badge" id="badge-6"></div>
+      </div>
+      <div class="question-body">
+        <p>Find the quotient and remainder of the following division.</p>
+        <div class="expression-display">
+          $$ (2x^3 - 5x^2 + 3x - 8) \div (x - 2) $$
+        </div>
+        <div class="input-row">
+          <span class="input-label">Quotient:</span>
+          <input type="text" id="q6-quot" class="input-box" placeholder="" />
+        </div>
+        <div class="input-row">
+          <span class="input-label">Remainder:</span>
+          <input type="text" id="q6-rem" class="input-box" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkDivision(6, '2x^2-x+1', '-6', 'Using synthetic division with $c = 2$: Coefficients $[2, -5, 3, -8] \\rightarrow 2 \\times 2 = 4; -5 + 4 = -1; -1 \\times 2 = -2; 3 - 2 = 1; 1 \\times 2 = 2; -8 + 2 = -6$. Quotient: $2x^2 - x + 1$, Remainder: $-6$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-6"></div>
+    </div>
+
+    <!-- ================= QUESTION 7 ================= -->
+    <div class="question-card" id="card-7">
+      <div class="card-top">
+        <div class="badge-number">7</div>
+        <div class="status-badge" id="badge-7"></div>
+      </div>
+      <div class="question-body">
+        <p>Use synthetic division to divide. Write your answer as a quotient and a remainder.</p>
+        <div class="expression-display">
+          $$ (3x^3 + 8x^2 - 2x + 5) \div (x + 3) $$
+        </div>
+        <div class="input-row">
+          <span class="input-label">Quotient:</span>
+          <input type="text" id="q7-quot" class="input-box" placeholder="" />
+        </div>
+        <div class="input-row">
+          <span class="input-label">Remainder:</span>
+          <input type="text" id="q7-rem" class="input-box" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkDivision(7, '3x^2-x+1', '2', 'Using synthetic division with $c = -3$: Coefficients $[3, 8, -2, 5] \\rightarrow 3 \\times (-3) = -9; 8 - 9 = -1; -1 \\times (-3) = 3; -2 + 3 = 1; 1 \\times (-3) = -3; 5 - 3 = 2$. Quotient: $3x^2 - x + 1$, Remainder: $2$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-7"></div>
+    </div>
+
+    <!-- ================= QUESTION 8 ================= -->
+    <div class="question-card" id="card-8">
+      <div class="card-top">
+        <div class="badge-number">8</div>
+        <div class="status-badge" id="badge-8"></div>
+      </div>
+      <div class="question-body">
+        <p>Find the quotient and remainder of the following division.</p>
+        <div class="expression-display">
+          $$ (x^4 - 3x^3 + 2x^2 + 4x - 9) \div (x - 2) $$
+        </div>
+        <div class="input-row">
+          <span class="input-label">Quotient:</span>
+          <input type="text" id="q8-quot" class="input-box" placeholder="" />
+        </div>
+        <div class="input-row">
+          <span class="input-label">Remainder:</span>
+          <input type="text" id="q8-rem" class="input-box" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkDivision(8, 'x^3-x^2+4', '-1', 'Using synthetic division with $c = 2$: Coefficients $[1, -3, 2, 4, -9] \\rightarrow 1; -3 + 2 = -1; 2 - 2 = 0; 4 + 0 = 4; -9 + 8 = -1$. Quotient: $x^3 - x^2 + 4$, Remainder: $-1$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-8"></div>
+    </div>
+
+    <!-- ================= QUESTION 9 ================= -->
+    <div class="question-card" id="card-9">
+      <div class="card-top">
+        <div class="badge-number">9</div>
+        <div class="status-badge" id="badge-9"></div>
+      </div>
+      <div class="question-body">
+        <p>Use synthetic division to divide. Write your answer as a quotient and a remainder.</p>
+        <div class="expression-display">
+          $$ (2x^4 - 7x^3 + 6x - 4) \div (x + 1) $$
+        </div>
+        <div class="input-row">
+          <span class="input-label">Quotient:</span>
+          <input type="text" id="q9-quot" class="input-box" placeholder="" />
+        </div>
+        <div class="input-row">
+          <span class="input-label">Remainder:</span>
+          <input type="text" id="q9-rem" class="input-box" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkDivision(9, '2x^3-9x^2+9x-3', '-1', 'Include 0 coefficient for $x^2$: $[2, -7, 0, 6, -4]$ with $c = -1 \\rightarrow 2; -7 - 2 = -9; 0 + 9 = 9; 6 - 9 = -3; -4 + 3 = -1$. Quotient: $2x^3 - 9x^2 + 9x - 3$, Remainder: $-1$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-9"></div>
+    </div>
+
+    <!-- ================= QUESTION 10 ================= -->
+    <div class="question-card" id="card-10">
+      <div class="card-top">
+        <div class="badge-number">10</div>
+        <div class="status-badge" id="badge-10"></div>
+      </div>
+      <div class="question-body">
+        <p>Find the quotient and remainder when \( 2x^4 - 3x^3 + 5x - 6 \) is divided by \( x - 2 \).</p>
+        <div class="input-row" style="margin-top: 1.25rem;">
+          <span class="input-label">Quotient:</span>
+          <input type="text" id="q10-quot" class="input-box" placeholder="" />
+        </div>
+        <div class="input-row">
+          <span class="input-label">Remainder:</span>
+          <input type="text" id="q10-rem" class="input-box" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkDivision(10, '2x^3+x^2+2x+9', '12', 'Include 0 coefficient for $x^2$: $[2, -3, 0, 5, -6]$ with $c = 2 \\rightarrow 2; -3 + 4 = 1; 0 + 2 = 2; 5 + 4 = 9; -6 + 18 = 12$. Quotient: $2x^3 + x^2 + 2x + 9$, Remainder: $12$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-10"></div>
+    </div>
+
+  </div>
+
+  <script>
+    const answeredState = {};
+    const correctState = {};
+    for (let i = 1; i <= 10; i++) {
+      answeredState[i] = false;
+      correctState[i] = false;
+    }
+
+    function clean(str) {
+      return str.replace(/\s+/g, '').toLowerCase().replace(/−/g, '-');
+    }
+
+    function updateScoreboard() {
+      let answered = 0;
+      let score = 0;
+      for (let i = 1; i <= 10; i++) {
+        if (answeredState[i]) answered++;
+        if (correctState[i]) score++;
+      }
+      document.getElementById('progress-text').innerText = answered + ' / 10';
+      document.getElementById('score-text').innerText = score + ' / 10';
+    }
+
+    function checkDivision(qNum, targetQuot, targetRem, explanation) {
+      const qInput = document.getElementById('q' + qNum + '-quot');
+      const rInput = document.getElementById('q' + qNum + '-rem');
+
+      const userQuot = clean(qInput.value);
+      const userRem = clean(rInput.value);
+
+      if (!userQuot || !userRem) {
+        alert('Please fill in both the quotient and remainder.');
+        return;
+      }
+
+      answeredState[qNum] = true;
+      const isQuotCorrect = (userQuot === clean(targetQuot));
+      const isRemCorrect = (userRem === clean(targetRem));
+      const isCorrect = isQuotCorrect && isRemCorrect;
+      correctState[qNum] = isCorrect;
+
+      const badge = document.getElementById('badge-' + qNum);
+      if (badge) {
+        badge.className = 'status-badge ' + (isCorrect ? 'correct' : 'incorrect');
+        badge.innerText = isCorrect ? '✓ Correct' : '✗ Incorrect';
+      }
+
+      const fb = document.getElementById('feedback-' + qNum);
+      if (fb) {
+        fb.className = 'inline-feedback ' + (isCorrect ? 'correct' : 'incorrect');
+        fb.innerHTML = (isCorrect ? '<strong>Correct!</strong> ' : '<strong>Incorrect.</strong> ') + explanation;
+        if (window.MathJax && window.MathJax.typesetPromise) {
+          MathJax.typesetPromise([fb]);
+        }
+      }
+
+      updateScoreboard();
+    }
+
+    function resetAll() {
+      if (!confirm('Reset all answers on the practice sheet?')) return;
+      for (let i = 1; i <= 10; i++) {
+        answeredState[i] = false;
+        correctState[i] = false;
+        const badge = document.getElementById('badge-' + i);
+        if (badge) {
+          badge.style.display = 'none';
+          badge.className = 'status-badge';
+        }
+        const fb = document.getElementById('feedback-' + i);
+        if (fb) {
+          fb.style.display = 'none';
+          fb.className = 'inline-feedback';
+          fb.innerHTML = '';
+        }
+      }
+      document.querySelectorAll('input').forEach(input => input.value = '');
+      updateScoreboard();
+    }
+  </script>
+</body>
+</html>

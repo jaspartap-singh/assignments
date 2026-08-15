@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Remainder Theorem & Polynomial Division — Practice Sheet</title>
+  
+  <!-- MathJax Configuration & Loader -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Charis+SIL:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-page: #f6f3ea;
+      --card-bg: #ffffff;
+      --border-color: #e5e0d3;
+      --text-color: #2b2b2b;
+      --text-muted: #6b7280;
+      --badge-bg: #ffd659;
+      --badge-text: #1c1917;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --success-bg: #ecfdf5;
+      --success-border: #86efac;
+      --danger-bg: #fef2f2;
+      --danger-border: #fca5a5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      font-family: 'Charis SIL', Georgia, serif;
+      color: var(--text-color);
+      min-height: 100vh;
+      padding: 2.5rem 1rem 5rem;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .sheet-header {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .sheet-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+    }
+
+    .sheet-subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* Score Bar */
+    .top-bar {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .stat-pill {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #1e293b;
+    }
+
+    .stat-pill span {
+      color: var(--primary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .btn-reset {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .btn-reset:hover {
+      background: #e2e8f0;
+    }
+
+    /* Question Cards */
+    .question-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 2rem;
+      margin-bottom: 2.25rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+    }
+
+    .badge-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--badge-bg);
+      color: var(--badge-text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      min-width: 44px;
+      height: 44px;
+      padding: 0 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    }
+
+    .status-badge {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 6px;
+      display: none;
+    }
+
+    .status-badge.correct {
+      display: inline-block;
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid var(--success-border);
+    }
+
+    .status-badge.incorrect {
+      display: inline-block;
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid var(--danger-border);
+    }
+
+    .question-body {
+      font-size: 1.24rem;
+      color: #1f2937;
+      margin-bottom: 1.5rem;
+      line-height: 1.75;
+    }
+
+    .expression-display {
+      margin: 1.25rem 0 1.75rem;
+      text-align: center;
+      font-size: 1.3rem;
+    }
+
+    .synthetic-table {
+      margin: 1rem auto 1.5rem;
+      border-collapse: collapse;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.25rem;
+    }
+
+    .synthetic-table td {
+      padding: 0.35rem 0.85rem;
+      text-align: center;
+    }
+
+    .synthetic-table .div-left {
+      border-right: 2.5px solid #334155;
+    }
+
+    .synthetic-table .div-bottom {
+      border-bottom: 2.5px solid #334155;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.9rem;
+      font-size: 1.2rem;
+    }
+
+    .input-label {
+      min-width: 105px;
+      font-family: 'Charis SIL', Georgia, serif;
+    }
+
+    /* Clean input boxes without answer spoilers */
+    .input-box {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.05rem;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 0.5rem 0.9rem;
+      background: #fff;
+      color: #1e293b;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 220px;
+    }
+
+    .input-box:focus {
+      border-color: var(--primary);
+    }
+
+    /* MCQ Option List */
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin: 1.5rem 0;
+    }
+
+    .mcq-option {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 0.95rem 1.25rem;
+      font-size: 1.15rem;
+      color: #1e293b;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      user-select: none;
+    }
+
+    .mcq-option:hover {
+      border-color: var(--primary);
+      background: #f1f5f9;
+    }
+
+    .mcq-option.selected {
+      border-color: var(--primary);
+      background: #eff6ff;
+      box-shadow: 0 0 0 1.5px var(--primary);
+    }
+
+    .radio-circle {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #94a3b8;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .mcq-option.selected .radio-circle {
+      border-color: var(--primary);
+    }
+
+    .mcq-option.selected .radio-circle::after {
+      content: '';
+      width: 9px;
+      height: 9px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+
+    /* Card Actions */
+    .card-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-top: 1.5rem;
+    }
+
+    .btn-check {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      background: #1e293b;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.65rem 1.45rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-check:hover {
+      background: var(--primary);
+    }
+
+    .inline-feedback {
+      display: none;
+      margin-top: 1.25rem;
+      padding: 1.1rem 1.35rem;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+
+    .inline-feedback.correct {
+      display: block;
+      background: var(--success-bg);
+      border: 1.5px solid var(--success-border);
+      color: #14532d;
+    }
+
+    .inline-feedback.incorrect {
+      display: block;
+      background: var(--danger-bg);
+      border: 1.5px solid var(--danger-border);
+      color: #7f1d1d;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header class="sheet-header">
+      <h1 class="sheet-title">Remainder Theorem & Advanced Polynomial Division</h1>
+      <p class="sheet-subtitle">Interactive Practice Sheet — Remainder Theorem, Unknown Constants & Applications</p>
+    </header>
+
+    <div class="top-bar">
+      <div class="stat-pill">Progress: <span id="progress-text">0 / 9</span></div>
+      <div class="stat-pill">Score: <span id="score-text">0</span></div>
+      <button class="btn-reset" onclick="resetAll()">Reset All</button>
+    </div>
+
+    <!-- ================= QUESTION 11 ================= -->
+    <div class="question-card" id="card-11">
+      <div class="card-top">
+        <div class="badge-number">11</div>
+        <div class="status-badge" id="badge-11"></div>
+      </div>
+      <div class="question-body">
+        <p>Let \( p(x) = 3x^2 - 5x + 4 \). Use the Remainder Theorem to find the remainder when \( p(x) \) is divided by \( x + 2 \).</p>
+        <div class="input-row" style="margin-top: 1.25rem;">
+          <span class="input-label">Remainder:</span>
+          <input type="text" id="q11-rem" class="input-box" style="width: 140px;" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkSingle(11, 'q11-rem', '26', 'By the Remainder Theorem, the remainder when dividing by $x + 2$ is $p(-2)$: $p(-2) = 3(-2)^2 - 5(-2) + 4 = 3(4) + 10 + 4 = 12 + 10 + 4 = 26$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-11"></div>
+    </div>
+
+    <!-- ================= QUESTION 12 ================= -->
+    <div class="question-card" id="card-12">
+      <div class="card-top">
+        <div class="badge-number">12</div>
+        <div class="status-badge" id="badge-12"></div>
+      </div>
+      <div class="question-body">
+        <p>Let \( p(x) = x^3 - 7x + 5 \). Use the Remainder Theorem to find the remainder when \( p(x) \) is divided by \( x - 3 \).</p>
+        <div class="input-row" style="margin-top: 1.25rem;">
+          <span class="input-label">Remainder:</span>
+          <input type="text" id="q12-rem" class="input-box" style="width: 140px;" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkSingle(12, 'q12-rem', '11', 'By the Remainder Theorem, evaluate $p(3)$: $p(3) = (3)^3 - 7(3) + 5 = 27 - 21 + 5 = 11$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-12"></div>
+    </div>
+
+    <!-- ================= QUESTION 13 ================= -->
+    <div class="question-card" id="card-13">
+      <div class="card-top">
+        <div class="badge-number">13</div>
+        <div class="status-badge" id="badge-13"></div>
+      </div>
+      <div class="question-body">
+        <p>Let \( p(x) = x^4 - 2x^3 + 3x^2 - x + 2 \). Find the remainder when \( p(x) \) is divided by \( x + 1 \).</p>
+        <div class="input-row" style="margin-top: 1.25rem;">
+          <span class="input-label">Remainder:</span>
+          <input type="text" id="q13-rem" class="input-box" style="width: 140px;" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkSingle(13, 'q13-rem', '9', 'Evaluate $p(-1)$: $p(-1) = (-1)^4 - 2(-1)^3 + 3(-1)^2 - (-1) + 2 = 1 - 2(-1) + 3(1) + 1 + 2 = 1 + 2 + 3 + 1 + 2 = 9$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-13"></div>
+    </div>
+
+    <!-- ================= QUESTION 14 ================= -->
+    <div class="question-card" id="card-14">
+      <div class="card-top">
+        <div class="badge-number">14</div>
+        <div class="status-badge" id="badge-14"></div>
+      </div>
+      <div class="question-body">
+        <p>When \( p(x) = 2x^3 + cx^2 - 4x + 1 \) is divided by \( x - 2 \), the remainder is \( 21 \). Find the value of \( c \).</p>
+        <div class="input-row" style="margin-top: 1.25rem;">
+          <span class="input-label">\( c = \)</span>
+          <input type="text" id="q14-c" class="input-box" style="width: 120px;" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkSingle(14, 'q14-c', '3', 'By the Remainder Theorem: $p(2) = 2(2)^3 + c(2)^2 - 4(2) + 1 = 21 \\implies 2(8) + 4c - 8 + 1 = 21 \\implies 16 + 4c - 7 = 21 \\implies 4c + 9 = 21 \\implies 4c = 12 \\implies c = 3$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-14"></div>
+    </div>
+
+    <!-- ================= QUESTION 15 ================= -->
+    <div class="question-card" id="card-15">
+      <div class="card-top">
+        <div class="badge-number">15</div>
+        <div class="status-badge" id="badge-15"></div>
+      </div>
+      <div class="question-body">
+        <p>A student used synthetic division to divide \( 2x^3 + 5x - 3 \) by \( x - 2 \), setting it up as shown:</p>
+        <table class="synthetic-table">
+          <tr>
+            <td class="div-left">2</td>
+            <td>2</td>
+            <td>5</td>
+            <td>-3</td>
+          </tr>
+          <tr>
+            <td class="div-left div-bottom"></td>
+            <td class="div-bottom"></td>
+            <td class="div-bottom">4</td>
+            <td class="div-bottom">18</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>2</td>
+            <td>9</td>
+            <td>15</td>
+          </tr>
+        </table>
+        <p>From the bottom row they read off a quotient of \( 2x + 9 \) and a remainder of \( 15 \). What error did the student make?</p>
+      </div>
+
+      <div class="options-grid" id="q15-options">
+        <div class="mcq-option" onclick="selectOption(15, 0, this)">
+          <div class="radio-circle"></div>
+          <div>The dividend \( 2x^3 + 5x - 3 \) has no \( x^2 \) term, so the top row should be \( 2, 0, 5, -3 \) — a \( 0 \) must be inserted for the missing term.</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(15, 1, this)">
+          <div class="radio-circle"></div>
+          <div>The last number, \( 15 \), is part of the quotient, not the remainder.</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(15, 2, this)">
+          <div class="radio-circle"></div>
+          <div>Each new entry should be added to the divisor rather than multiplied by it.</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(15, 3, this)">
+          <div class="radio-circle"></div>
+          <div>The number to the left of the bar should be \( -2 \) instead of \( 2 \), since the divisor is \( x - 2 \).</div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkMCQ(15, 0, 'Because the polynomial has no $x^2$ term ($2x^3 + 0x^2 + 5x - 3$), a zero placeholder is required in synthetic division. The coefficients should be $2, 0, 5, -3$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-15"></div>
+    </div>
+
+    <!-- ================= QUESTION 16 ================= -->
+    <div class="question-card" id="card-16">
+      <div class="card-top">
+        <div class="badge-number">16</div>
+        <div class="status-badge" id="badge-16"></div>
+      </div>
+      <div class="question-body">
+        <p>A rectangular box has a volume given by \( V(x) = 2x^3 + 7x^2 + 3x \) cubic centimeters. The width of the box is \( (x + 3) \) centimeters. Find an expression for the area of the base \( A(x) \).</p>
+        <div class="input-row" style="margin-top: 1.25rem;">
+          <span class="input-label">\( A(x) = \)</span>
+          <input type="text" id="q16-area" class="input-box" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkSingle(16, 'q16-area', '2x^2+x', 'Area of base $A(x) = \\frac{V(x)}{x + 3} = \\frac{x(2x^2 + 7x + 3)}{x + 3} = \\frac{x(2x + 1)(x + 3)}{x + 3} = x(2x + 1) = 2x^2 + x$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-16"></div>
+    </div>
+
+    <!-- ================= QUESTION 17 ================= -->
+    <div class="question-card" id="card-17">
+      <div class="card-top">
+        <div class="badge-number">17</div>
+        <div class="status-badge" id="badge-17"></div>
+      </div>
+      <div class="question-body">
+        <p>When a polynomial is divided by \( x - 4 \), the quotient is \( 3x^2 + 2x - 1 \) and the remainder is \( 6 \). Find the original dividend polynomial, written in standard form.</p>
+        <div class="input-row" style="margin-top: 1.25rem;">
+          <span class="input-label">Dividend:</span>
+          <input type="text" id="q17-div" class="input-box" style="width: 250px;" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkSingle(17, 'q17-div', '3x^3-10x^2-9x+10', '$\\text{Dividend} = (\\text{Divisor} \\times \\text{Quotient}) + \\text{Remainder} = (x - 4)(3x^2 + 2x - 1) + 6 = (3x^3 + 2x^2 - x - 12x^2 - 8x + 4) + 6 = 3x^3 - 10x^2 - 9x + 10$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-17"></div>
+    </div>
+
+    <!-- ================= QUESTION 18 ================= -->
+    <div class="question-card" id="card-18">
+      <div class="card-top">
+        <div class="badge-number">18</div>
+        <div class="status-badge" id="badge-18"></div>
+      </div>
+      <div class="question-body">
+        <p>Find the quotient and remainder of the following:</p>
+        <div class="expression-display">
+          $$ \frac{6x^2 + 5x + 1}{2x - 1} $$
+        </div>
+        <div class="input-row">
+          <span class="input-label">Quotient:</span>
+          <input type="text" id="q18-quot" class="input-box" placeholder="" />
+        </div>
+        <div class="input-row">
+          <span class="input-label">Remainder:</span>
+          <input type="text" id="q18-rem" class="input-box" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkDual(18, 'q18-quot', 'q18-rem', '3x+4', '5', 'Dividing: $\\frac{6x^2 + 5x + 1}{2x - 1} = 3x + 4 + \\frac{5}{2x - 1}$. Quotient: $3x + 4$, Remainder: $5$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-18"></div>
+    </div>
+
+    <!-- ================= QUESTION 19 ================= -->
+    <div class="question-card" id="card-19">
+      <div class="card-top">
+        <div class="badge-number">19</div>
+        <div class="status-badge" id="badge-19"></div>
+      </div>
+      <div class="question-body">
+        <p>Divide the following polynomials and find the quotient and a remainder.</p>
+        <div class="expression-display">
+          $$ \frac{6x^3 - x^2 - 14x + 11}{3x - 2} $$
+        </div>
+        <div class="input-row">
+          <span class="input-label">Quotient:</span>
+          <input type="text" id="q19-quot" class="input-box" placeholder="" />
+        </div>
+        <div class="input-row">
+          <span class="input-label">Remainder:</span>
+          <input type="text" id="q19-rem" class="input-box" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkDual(19, 'q19-quot', 'q19-rem', '2x^2+x-4', '3', 'Dividing by $3x - 2$: $2x^2(3x - 2) = 6x^3 - 4x^2$, subtracting leaves $3x^2 - 14x + 11$; $+x(3x - 2) = 3x^2 - 2x$, leaves $-12x + 11$; $-4(3x - 2) = -12x + 8$, remainder is $3$. Quotient: $2x^2 + x - 4$, Remainder: $3$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-19"></div>
+    </div>
+
+  </div>
+
+  <script>
+    const userAnswers = { 15: null };
+    const answeredState = {};
+    const correctState = {};
+    for (let i = 11; i <= 19; i++) {
+      answeredState[i] = false;
+      correctState[i] = false;
+    }
+
+    function clean(str) {
+      return str.replace(/\s+/g, '').toLowerCase().replace(/−/g, '-');
+    }
+
+    function selectOption(qNum, index, el) {
+      userAnswers[qNum] = index;
+      const parent = el.parentElement;
+      parent.querySelectorAll('.mcq-option').forEach(opt => opt.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function updateScoreboard() {
+      let answered = 0;
+      let score = 0;
+      for (let i = 11; i <= 19; i++) {
+        if (answeredState[i]) answered++;
+        if (correctState[i]) score++;
+      }
+      document.getElementById('progress-text').innerText = answered + ' / 9';
+      document.getElementById('score-text').innerText = score + ' / 9';
+    }
+
+    function setBadgeAndFeedback(qNum, isCorrect, explanation) {
+      const badge = document.getElementById('badge-' + qNum);
+      if (badge) {
+        badge.className = 'status-badge ' + (isCorrect ? 'correct' : 'incorrect');
+        badge.innerText = isCorrect ? '✓ Correct' : '✗ Incorrect';
+      }
+
+      const fb = document.getElementById('feedback-' + qNum);
+      if (fb) {
+        fb.className = 'inline-feedback ' + (isCorrect ? 'correct' : 'incorrect');
+        fb.innerHTML = (isCorrect ? '<strong>Correct!</strong> ' : '<strong>Incorrect.</strong> ') + explanation;
+        if (window.MathJax && window.MathJax.typesetPromise) {
+          MathJax.typesetPromise([fb]);
+        }
+      }
+    }
+
+    function checkSingle(qNum, inputId, targetVal, explanation) {
+      const inputEl = document.getElementById(inputId);
+      const val = clean(inputEl.value);
+
+      if (!val) {
+        alert('Please enter an answer.');
+        return;
+      }
+
+      answeredState[qNum] = true;
+      const isCorrect = (val === clean(targetVal));
+      correctState[qNum] = isCorrect;
+
+      setBadgeAndFeedback(qNum, isCorrect, explanation);
+      updateScoreboard();
+    }
+
+    function checkDual(qNum, quotId, remId, targetQuot, targetRem, explanation) {
+      const qVal = clean(document.getElementById(quotId).value);
+      const rVal = clean(document.getElementById(remId).value);
+
+      if (!qVal || !rVal) {
+        alert('Please fill in both the quotient and remainder.');
+        return;
+      }
+
+      answeredState[qNum] = true;
+      const isCorrect = (qVal === clean(targetQuot)) && (rVal === clean(targetRem));
+      correctState[qNum] = isCorrect;
+
+      setBadgeAndFeedback(qNum, isCorrect, explanation);
+      updateScoreboard();
+    }
+
+    function checkMCQ(qNum, correctIndex, explanation) {
+      if (userAnswers[qNum] === null) {
+        alert('Please select an option.');
+        return;
+      }
+
+      answeredState[qNum] = true;
+      const isCorrect = (userAnswers[qNum] === correctIndex);
+      correctState[qNum] = isCorrect;
+
+      setBadgeAndFeedback(qNum, isCorrect, explanation);
+      updateScoreboard();
+    }
+
+    function resetAll() {
+      if (!confirm('Reset all answers on the practice sheet?')) return;
+      for (let i = 11; i <= 19; i++) {
+        answeredState[i] = false;
+        correctState[i] = false;
+        const badge = document.getElementById('badge-' + i);
+        if (badge) {
+          badge.style.display = 'none';
+          badge.className = 'status-badge';
+        }
+        const fb = document.getElementById('feedback-' + i);
+        if (fb) {
+          fb.style.display = 'none';
+          fb.className = 'inline-feedback';
+          fb.innerHTML = '';
+        }
+      }
+      userAnswers[15] = null;
+      document.querySelectorAll('.mcq-option').forEach(el => el.classList.remove('selected'));
+      document.querySelectorAll('input').forEach(input => input.value = '');
+      updateScoreboard();
+    }
+  </script>
+</body>
+</html>
