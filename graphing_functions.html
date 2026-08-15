@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rational Functions Practice</title>
+  
+  <!-- MathJax for rendering math fractions and symbols -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Charis+SIL:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-page: #f6f3ea;
+      --card-bg: #ffffff;
+      --border-color: #e5e0d3;
+      --text-color: #2b2b2b;
+      --text-muted: #6b7280;
+      --accent-yellow: #fde047;
+      --badge-bg: #facc15;
+      --badge-text: #1f2937;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --success-bg: #dcfce7;
+      --success-text: #15803d;
+      --danger-bg: #fee2e2;
+      --danger-text: #b91c1c;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      font-family: 'Charis SIL', Georgia, serif;
+      color: var(--text-color);
+      min-height: 100vh;
+      padding: 2.5rem 1rem 5rem;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .sheet-header {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .sheet-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+    }
+
+    .sheet-subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* Score Bar */
+    .top-bar {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .stat-pill {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #1e293b;
+    }
+
+    .stat-pill span {
+      color: var(--primary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .btn-reset {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 0.4rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .btn-reset:hover {
+      background: #e2e8f0;
+    }
+
+    /* Question Cards */
+    .question-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+
+    /* Question Number Badge */
+    .badge-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #ffd659;
+      color: #1c1917;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    }
+
+    .question-title {
+      font-size: 1.28rem;
+      font-weight: 400;
+      color: #1f2937;
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    /* Fraction styling */
+    .mjx-chtml {
+      font-size: 118% !important;
+    }
+
+    /* Graph Options (2x2 Grid) */
+    .graph-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 650px) {
+      .graph-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .graph-box {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .graph-box:hover {
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+    }
+
+    .graph-box.selected {
+      border-color: var(--primary);
+      background-color: #eff6ff;
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+
+    .graph-svg {
+      width: 100%;
+      max-width: 280px;
+      height: 220px;
+    }
+
+    /* Choice List (MCQ) */
+    .options-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .option-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .option-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .choice-card {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      font-size: 1.15rem;
+      color: #1e293b;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.75rem;
+      text-align: left;
+    }
+
+    .choice-card:hover {
+      border-color: var(--primary);
+      background: #f1f5f9;
+    }
+
+    .choice-card.selected {
+      border-color: var(--primary);
+      background: #eff6ff;
+      box-shadow: 0 0 0 1px var(--primary);
+    }
+
+    .choice-bullet {
+      width: 18px;
+      height: 18px;
+      border: 2px solid #94a3b8;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .choice-card.selected .choice-bullet {
+      border-color: var(--primary);
+    }
+
+    .choice-card.selected .choice-bullet::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+
+    /* Inline Input Boxes */
+    .input-box {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.05rem;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 0.4rem 0.8rem;
+      background: #fff;
+      color: #1e293b;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-box:focus {
+      border-color: var(--primary);
+    }
+
+    /* Asymptote Table */
+    .table-wrapper {
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+    }
+
+    .styled-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+    }
+
+    .styled-table th {
+      background: #f8fafc;
+      padding: 1rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #334155;
+      border: 1px solid #e2e8f0;
+      text-align: center;
+    }
+
+    .styled-table td {
+      padding: 1.1rem;
+      border: 1px solid #e2e8f0;
+      text-align: center;
+      font-size: 1.15rem;
+    }
+
+    /* Button */
+    .card-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .btn-check {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      background: #1e293b;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.65rem 1.4rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-check:hover {
+      background: var(--primary);
+    }
+
+    /* Dialogue / Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 1rem;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      border-radius: 16px;
+      max-width: 520px;
+      width: 100%;
+      padding: 2rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      animation: slideUp 0.25s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(15px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-status-icon {
+      font-size: 2.2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .modal-heading {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-body {
+      font-size: 1.1rem;
+      color: #334155;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      background: #f8fafc;
+      padding: 1.25rem;
+      border-radius: 10px;
+      border-left: 4px solid var(--primary);
+    }
+
+    .modal-btn {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      background: #1e293b;
+      color: #fff;
+      border: none;
+      padding: 0.65rem 1.4rem;
+      border-radius: 8px;
+      cursor: pointer;
+      float: right;
+    }
+
+    .modal-btn:hover {
+      background: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header class="sheet-header">
+      <h1 class="sheet-title">Rational Functions & Graphs</h1>
+      <p class="sheet-subtitle">Interactive Practice Sheet — Type/Select answers and check explanations</p>
+    </header>
+
+    <div class="top-bar">
+      <div class="stat-pill">Progress: <span id="progress-text">0 / 7</span></div>
+      <div class="stat-pill">Score: <span id="score-text">0</span></div>
+      <button class="btn-reset" onclick="resetForm()">Reset Sheet</button>
+    </div>
+
+    <!-- QUESTION 1 -->
+    <div class="question-card">
+      <div class="badge-number">1</div>
+      <div class="question-title">
+        Identify the graph of \( f(x) = \frac{-3}{x} \)
+      </div>
+
+      <div class="graph-grid">
+        <!-- Option A -->
+        <div class="graph-box" onclick="pickGraph(1, 'A', this)">
+          <svg class="graph-svg" viewBox="-6 -6 12 12">
+            <g stroke="#e2e8f0" stroke-width="0.3">
+              <path d="M-5 -5 H5 M-5 -4 H5 M-5 -3 H5 M-5 -2 H5 M-5 -1 H5 M-5 1 H5 M-5 2 H5 M-5 3 H5 M-5 4 H5 M-5 5 H5" />
+              <path d="M-5 -5 V5 M-4 -5 V5 M-3 -5 V5 M-2 -5 V5 M-1 -5 V5 M1 -5 V5 M2 -5 V5 M3 -5 V5 M4 -5 V5 M5 -5 V5" />
+            </g>
+            <line x1="-5.5" y1="0" x2="5.5" y2="0" stroke="#000" stroke-width="0.5" />
+            <line x1="0" y1="5.5" x2="0" y2="-5.5" stroke="#000" stroke-width="0.5" />
+            <text x="4.7" y="-0.3" font-size="0.8" font-family="sans-serif">x</text>
+            <text x="0.3" y="-4.7" font-size="0.8" font-family="sans-serif">y</text>
+            <path d="M-5,0.6 Q-3,1 -1,3 T-0.6,5" fill="none" stroke="#2563eb" stroke-width="0.8" />
+            <path d="M0.6,-5 Q1,-3 3,-1 T5,-0.6" fill="none" stroke="#2563eb" stroke-width="0.8" />
+            <text x="2" y="-1.5" fill="#2563eb" font-size="0.9" font-family="sans-serif" font-weight="bold">f</text>
+          </svg>
+          <span style="margin-top: 6px; font-weight: 700; color: #475569; font-family: sans-serif;">Option A</span>
+        </div>
+
+        <!-- Option B -->
+        <div class="graph-box" onclick="pickGraph(1, 'B', this)">
+          <svg class="graph-svg" viewBox="-6 -6 12 12">
+            <g stroke="#e2e8f0" stroke-width="0.3">
+              <path d="M-5 -5 H5 M-5 -4 H5 M-5 -3 H5 M-5 -2 H5 M-5 -1 H5 M-5 1 H5 M-5 2 H5 M-5 3 H5 M-5 4 H5 M-5 5 H5" />
+              <path d="M-5 -5 V5 M-4 -5 V5 M-3 -5 V5 M-2 -5 V5 M-1 -5 V5 M1 -5 V5 M2 -5 V5 M3 -5 V5 M4 -5 V5 M5 -5 V5" />
+            </g>
+            <line x1="-5.5" y1="0" x2="5.5" y2="0" stroke="#000" stroke-width="0.5" />
+            <line x1="0" y1="5.5" x2="0" y2="-5.5" stroke="#000" stroke-width="0.5" />
+            <text x="4.7" y="-0.3" font-size="0.8" font-family="sans-serif">x</text>
+            <text x="0.3" y="-4.7" font-size="0.8" font-family="sans-serif">y</text>
+            <path d="M0.6,5 Q1,3 3,1 T5,0.6" fill="none" stroke="#2563eb" stroke-width="0.8" />
+            <path d="M-5,-0.6 Q-3,-1 -1,-3 T-0.6,-5" fill="none" stroke="#2563eb" stroke-width="0.8" />
+            <text x="2" y="2" fill="#2563eb" font-size="0.9" font-family="sans-serif" font-weight="bold">f</text>
+          </svg>
+          <span style="margin-top: 6px; font-weight: 700; color: #475569; font-family: sans-serif;">Option B</span>
+        </div>
+
+        <!-- Option C -->
+        <div class="graph-box" onclick="pickGraph(1, 'C', this)">
+          <svg class="graph-svg" viewBox="-6 -6 12 12">
+            <g stroke="#e2e8f0" stroke-width="0.3">
+              <path d="M-5 -5 H5 M-5 -4 H5 M-5 -3 H5 M-5 -2 H5 M-5 -1 H5 M-5 1 H5 M-5 2 H5 M-5 3 H5 M-5 4 H5 M-5 5 H5" />
+              <path d="M-5 -5 V5 M-4 -5 V5 M-3 -5 V5 M-2 -5 V5 M-1 -5 V5 M1 -5 V5 M2 -5 V5 M3 -5 V5 M4 -5 V5 M5 -5 V5" />
+            </g>
+            <line x1="-5.5" y1="0" x2="5.5" y2="0" stroke="#000" stroke-width="0.5" />
+            <line x1="0" y1="5.5" x2="0" y2="-5.5" stroke="#000" stroke-width="0.5" />
+            <text x="4.7" y="-0.3" font-size="0.8" font-family="sans-serif">x</text>
+            <text x="0.3" y="-4.7" font-size="0.8" font-family="sans-serif">y</text>
+            <path d="M-5,0.2 Q-2,1.2 -1,5" fill="none" stroke="#2563eb" stroke-width="0.8" />
+            <path d="M0.8,-5 Q2,-1.2 5,-0.2" fill="none" stroke="#2563eb" stroke-width="0.8" />
+            <text x="-2.5" y="-1.5" fill="#2563eb" font-size="0.9" font-family="sans-serif" font-weight="bold">f</text>
+          </svg>
+          <span style="margin-top: 6px; font-weight: 700; color: #475569; font-family: sans-serif;">Option C</span>
+        </div>
+
+        <!-- Option D -->
+        <div class="graph-box" onclick="pickGraph(1, 'D', this)">
+          <svg class="graph-svg" viewBox="-6 -6 12 12">
+            <g stroke="#e2e8f0" stroke-width="0.3">
+              <path d="M-5 -5 H5 M-5 -4 H5 M-5 -3 H5 M-5 -2 H5 M-5 -1 H5 M-5 1 H5 M-5 2 H5 M-5 3 H5 M-5 4 H5 M-5 5 H5" />
+              <path d="M-5 -5 V5 M-4 -5 V5 M-3 -5 V5 M-2 -5 V5 M-1 -5 V5 M1 -5 V5 M2 -5 V5 M3 -5 V5 M4 -5 V5 M5 -5 V5" />
+            </g>
+            <line x1="-5.5" y1="0" x2="5.5" y2="0" stroke="#000" stroke-width="0.5" />
+            <line x1="0" y1="5.5" x2="0" y2="-5.5" stroke="#000" stroke-width="0.5" />
+            <text x="4.7" y="-0.3" font-size="0.8" font-family="sans-serif">x</text>
+            <text x="0.3" y="-4.7" font-size="0.8" font-family="sans-serif">y</text>
+            <path d="M0.5,5 Q1,1.5 5,0.2" fill="none" stroke="#2563eb" stroke-width="0.8" />
+            <path d="M-5,-0.2 Q-1,-1.5 -0.5,-5" fill="none" stroke="#2563eb" stroke-width="0.8" />
+            <text x="2" y="-2" fill="#2563eb" font-size="0.9" font-family="sans-serif" font-weight="bold">f</text>
+          </svg>
+          <span style="margin-top: 6px; font-weight: 700; color: #475569; font-family: sans-serif;">Option D</span>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ1()">Check Answer</button>
+      </div>
+    </div>
+
+    <!-- QUESTION 2 -->
+    <div class="question-card">
+      <div class="badge-number">2</div>
+      <div class="question-title">
+        <p style="margin-bottom: 0.5rem;">Consider:</p>
+        <p style="margin-bottom: 0.5rem; text-indent: 1.5rem;">\( f(x) = \frac{3}{x-5} - 4 \)</p>
+        <p style="margin-bottom: 1.5rem; text-indent: 1.5rem;">\( g(x) = \frac{3}{x} \)</p>
+        <p>The graph of \( f \) is a translation of 
+          <input type="text" id="q2-ans1" class="input-box" style="width: 170px;" placeholder="5 units right" /> 
+          and 
+          <input type="text" id="q2-ans2" class="input-box" style="width: 170px;" placeholder="4 units down" /> 
+          of the graph of \( g \).
+        </p>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ2()">Check Answer</button>
+      </div>
+    </div>
+
+    <!-- QUESTION 3 -->
+    <div class="question-card">
+      <div class="badge-number">3</div>
+      <div class="question-title">
+        <p style="margin-bottom: 0.5rem;">Let \( f(x) = \frac{-5}{(x+3)} - 2 \)</p>
+        <p>Which of the following correctly identifies the domain and range of \( f \)?</p>
+      </div>
+
+      <div class="options-stack">
+        <div class="choice-card" onclick="pickMCQ(3, 0, this)">
+          <div class="choice-bullet"></div>
+          <div>Domain: all real numbers except \( x = -3 \); Range: all real numbers except \( y = -2 \)</div>
+        </div>
+        <div class="choice-card" onclick="pickMCQ(3, 1, this)">
+          <div class="choice-bullet"></div>
+          <div>Domain: all real numbers except \( x = -2 \); Range: all real numbers except \( y = -3 \)</div>
+        </div>
+        <div class="choice-card" onclick="pickMCQ(3, 2, this)">
+          <div class="choice-bullet"></div>
+          <div>Domain: all real numbers except \( x = -3 \); Range: all real numbers except \( y = 2 \)</div>
+        </div>
+        <div class="choice-card" onclick="pickMCQ(3, 3, this)">
+          <div class="choice-bullet"></div>
+          <div>Domain: all real numbers except \( x = 0 \); Range: all real numbers except \( y = -5 \)</div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ3()">Check Answer</button>
+      </div>
+    </div>
+
+    <!-- QUESTION 4 -->
+    <div class="question-card">
+      <div class="badge-number">4</div>
+      <div class="question-title">
+        Identify the graph of \( f(x) = \frac{3x-2}{x+1} \)
+      </div>
+
+      <div class="graph-grid">
+        <!-- Option A (VA x=-1, HA y=3, upper-left & lower-right through 0,-2) -->
+        <div class="graph-box" onclick="pickGraph(4, 'A', this)">
+          <svg class="graph-svg" viewBox="-12 -12 24 24">
+            <g stroke="#e2e8f0" stroke-width="0.35">
+              <path d="M-10 -10 H10 M-10 -8 H10 M-10 -6 H10 M-10 -4 H10 M-10 -2 H10 M-10 2 H10 M-10 4 H10 M-10 6 H10 M-10 8 H10 M-10 10 H10" />
+              <path d="M-10 -10 V10 M-8 -10 V10 M-6 -10 V10 M-4 -10 V10 M-2 -10 V10 M2 -10 V10 M4 -10 V10 M6 -10 V10 M8 -10 V10 M10 -10 V10" />
+            </g>
+            <line x1="-11" y1="0" x2="11" y2="0" stroke="#000" stroke-width="0.6" />
+            <line x1="0" y1="11" x2="0" y2="-11" stroke="#000" stroke-width="0.6" />
+            <line x1="-1" y1="-11" x2="-1" y2="11" stroke="#ef4444" stroke-width="0.6" stroke-dasharray="0.8,0.8" />
+            <line x1="-11" y1="-3" x2="11" y2="-3" stroke="#ef4444" stroke-width="0.6" stroke-dasharray="0.8,0.8" />
+            <text x="10" y="-0.5" font-size="1.2" font-family="sans-serif">x</text>
+            <text x="0.5" y="-10" font-size="1.2" font-family="sans-serif">y</text>
+            <path d="M-11,-2.4 Q-3,-2.4 -1.6,-11" fill="none" stroke="#2563eb" stroke-width="0.9" />
+            <path d="M-0.6,11 Q-0.2,2 11,-3.5" fill="none" stroke="#2563eb" stroke-width="0.9" />
+            <text x="2" y="-5" fill="#2563eb" font-size="1.4" font-family="sans-serif" font-weight="bold">f</text>
+          </svg>
+          <span style="margin-top: 6px; font-weight: 700; color: #475569; font-family: sans-serif;">Option A</span>
+        </div>
+
+        <!-- Option B (VA x=1, HA y=3) -->
+        <div class="graph-box" onclick="pickGraph(4, 'B', this)">
+          <svg class="graph-svg" viewBox="-12 -12 24 24">
+            <g stroke="#e2e8f0" stroke-width="0.35">
+              <path d="M-10 -10 H10 M-10 -8 H10 M-10 -6 H10 M-10 -4 H10 M-10 -2 H10 M-10 2 H10 M-10 4 H10 M-10 6 H10 M-10 8 H10 M-10 10 H10" />
+              <path d="M-10 -10 V10 M-8 -10 V10 M-6 -10 V10 M-4 -10 V10 M-2 -10 V10 M2 -10 V10 M4 -10 V10 M6 -10 V10 M8 -10 V10 M10 -10 V10" />
+            </g>
+            <line x1="-11" y1="0" x2="11" y2="0" stroke="#000" stroke-width="0.6" />
+            <line x1="0" y1="11" x2="0" y2="-11" stroke="#000" stroke-width="0.6" />
+            <line x1="1" y1="-11" x2="1" y2="11" stroke="#ef4444" stroke-width="0.6" stroke-dasharray="0.8,0.8" />
+            <line x1="-11" y1="-3" x2="11" y2="-3" stroke="#ef4444" stroke-width="0.6" stroke-dasharray="0.8,0.8" />
+            <text x="10" y="-0.5" font-size="1.2" font-family="sans-serif">x</text>
+            <text x="0.5" y="-10" font-size="1.2" font-family="sans-serif">y</text>
+            <path d="M1.4,-11 Q2,-4 11,-3.5" fill="none" stroke="#2563eb" stroke-width="0.9" />
+            <path d="M-11,-2.5 Q-1,2 0.6,11" fill="none" stroke="#2563eb" stroke-width="0.9" />
+            <text x="3" y="-5" fill="#2563eb" font-size="1.4" font-family="sans-serif" font-weight="bold">f</text>
+          </svg>
+          <span style="margin-top: 6px; font-weight: 700; color: #475569; font-family: sans-serif;">Option B</span>
+        </div>
+
+        <!-- Option C -->
+        <div class="graph-box" onclick="pickGraph(4, 'C', this)">
+          <svg class="graph-svg" viewBox="-12 -12 24 24">
+            <g stroke="#e2e8f0" stroke-width="0.35">
+              <path d="M-10 -10 H10 M-10 -8 H10 M-10 -6 H10 M-10 -4 H10 M-10 -2 H10 M-10 2 H10 M-10 4 H10 M-10 6 H10 M-10 8 H10 M-10 10 H10" />
+              <path d="M-10 -10 V10 M-8 -10 V10 M-6 -10 V10 M-4 -10 V10 M-2 -10 V10 M2 -10 V10 M4 -10 V10 M6 -10 V10 M8 -10 V10 M10 -10 V10" />
+            </g>
+            <line x1="-11" y1="0" x2="11" y2="0" stroke="#000" stroke-width="0.6" />
+            <line x1="0" y1="11" x2="0" y2="-11" stroke="#000" stroke-width="0.6" />
+            <line x1="1" y1="-11" x2="1" y2="11" stroke="#ef4444" stroke-width="0.6" stroke-dasharray="0.8,0.8" />
+            <line x1="-11" y1="-3" x2="11" y2="-3" stroke="#ef4444" stroke-width="0.6" stroke-dasharray="0.8,0.8" />
+            <text x="10" y="-0.5" font-size="1.2" font-family="sans-serif">x</text>
+            <text x="0.5" y="-10" font-size="1.2" font-family="sans-serif">y</text>
+            <path d="M0.6,-11 Q-1,-4 -11,-3.5" fill="none" stroke="#2563eb" stroke-width="0.9" />
+            <path d="M1.4,11 Q2,-2 11,-2.5" fill="none" stroke="#2563eb" stroke-width="0.9" />
+            <text x="-5" y="-5" fill="#2563eb" font-size="1.4" font-family="sans-serif" font-weight="bold">f</text>
+          </svg>
+          <span style="margin-top: 6px; font-weight: 700; color: #475569; font-family: sans-serif;">Option C</span>
+        </div>
+
+        <!-- Option D -->
+        <div class="graph-box" onclick="pickGraph(4, 'D', this)">
+          <svg class="graph-svg" viewBox="-12 -12 24 24">
+            <g stroke="#e2e8f0" stroke-width="0.35">
+              <path d="M-10 -10 H10 M-10 -8 H10 M-10 -6 H10 M-10 -4 H10 M-10 -2 H10 M-10 2 H10 M-10 4 H10 M-10 6 H10 M-10 8 H10 M-10 10 H10" />
+              <path d="M-10 -10 V10 M-8 -10 V10 M-6 -10 V10 M-4 -10 V10 M-2 -10 V10 M2 -10 V10 M4 -10 V10 M6 -10 V10 M8 -10 V10 M10 -10 V10" />
+            </g>
+            <line x1="-11" y1="0" x2="11" y2="0" stroke="#000" stroke-width="0.6" />
+            <line x1="0" y1="11" x2="0" y2="-11" stroke="#000" stroke-width="0.6" />
+            <line x1="-1" y1="-11" x2="-1" y2="11" stroke="#ef4444" stroke-width="0.6" stroke-dasharray="0.8,0.8" />
+            <line x1="-11" y1="-3" x2="11" y2="-3" stroke="#ef4444" stroke-width="0.6" stroke-dasharray="0.8,0.8" />
+            <text x="10" y="-0.5" font-size="1.2" font-family="sans-serif">x</text>
+            <text x="0.5" y="-10" font-size="1.2" font-family="sans-serif">y</text>
+            <path d="M-1.4,-11 Q-3,-4 -11,-3.5" fill="none" stroke="#2563eb" stroke-width="0.9" />
+            <path d="M-0.6,11 Q1,-2 11,-2.5" fill="none" stroke="#2563eb" stroke-width="0.9" />
+            <text x="-4" y="-5" fill="#2563eb" font-size="1.4" font-family="sans-serif" font-weight="bold">f</text>
+          </svg>
+          <span style="margin-top: 6px; font-weight: 700; color: #475569; font-family: sans-serif;">Option D</span>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ4()">Check Answer</button>
+      </div>
+    </div>
+
+    <!-- QUESTION 5 -->
+    <div class="question-card">
+      <div class="badge-number">5</div>
+      <div class="question-title">
+        Find the vertical and horizontal asymptotes of the following rational functions:
+      </div>
+
+      <div class="table-wrapper">
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>Function</th>
+              <th>Equation of its<br>vertical asymptote</th>
+              <th>Equation of its<br>horizontal asymptote</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>\( p(x) = \frac{2x+4}{3x-6} \)</td>
+              <td><input type="text" id="q5-v1" class="input-box" style="width: 120px; text-align: center;" placeholder="x = 2" /></td>
+              <td><input type="text" id="q5-h1" class="input-box" style="width: 120px; text-align: center;" placeholder="y = 2/3" /></td>
+            </tr>
+            <tr>
+              <td>\( r(x) = \frac{5}{x} \)</td>
+              <td><input type="text" id="q5-v2" class="input-box" style="width: 120px; text-align: center;" placeholder="x = 0" /></td>
+              <td><input type="text" id="q5-h2" class="input-box" style="width: 120px; text-align: center;" placeholder="y = 0" /></td>
+            </tr>
+            <tr>
+              <td>\( s(x) = \frac{x-2}{x+4} \)</td>
+              <td><input type="text" id="q5-v3" class="input-box" style="width: 120px; text-align: center;" placeholder="x = -4" /></td>
+              <td><input type="text" id="q5-h3" class="input-box" style="width: 120px; text-align: center;" placeholder="y = 1" /></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ5()">Check Answer</button>
+      </div>
+    </div>
+
+    <!-- QUESTION 6 -->
+    <div class="question-card">
+      <div class="badge-number">6</div>
+      <div class="question-title">
+        What are the \(x\)-intercept(s) of the graph of the function \( y = \frac{x^2 - 9}{x + 4} \)?
+      </div>
+
+      <div class="option-row">
+        <div class="choice-card" onclick="pickMCQ(6, 0, this)">
+          <div class="choice-bullet"></div>
+          <div>\( 3, -3 \)</div>
+        </div>
+        <div class="choice-card" onclick="pickMCQ(6, 1, this)">
+          <div class="choice-bullet"></div>
+          <div>\( 9 \)</div>
+        </div>
+        <div class="choice-card" onclick="pickMCQ(6, 2, this)">
+          <div class="choice-bullet"></div>
+          <div>\( 3 \)</div>
+        </div>
+        <div class="choice-card" onclick="pickMCQ(6, 3, this)">
+          <div class="choice-bullet"></div>
+          <div>\( -4 \)</div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ6()">Check Answer</button>
+      </div>
+    </div>
+
+    <!-- QUESTION 7 -->
+    <div class="question-card">
+      <div class="badge-number">7</div>
+      <div class="question-title">
+        <p style="margin-bottom: 0.8rem;">
+          A school district installs a new online reading platform. The platform has a setup cost of \(\$750\) plus \(\$15\) for each student who accesses it.
+        </p>
+        <p style="margin-bottom: 1.2rem;">
+          Estimate how many students must use the platform for the average cost per student to fall to \(\$25\).
+        </p>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <input type="number" id="q7-ans" class="input-box" style="width: 140px;" placeholder="e.g. 75" />
+          <span>students</span>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ7()">Check Answer</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Dialogue Modal -->
+  <div class="modal-overlay" id="dialogModal" onclick="handleModalOverlay(event)">
+    <div class="modal-content">
+      <div class="modal-status-icon" id="modalIcon">✅</div>
+      <h3 class="modal-heading" id="modalHeading">Great Job!</h3>
+      <div class="modal-body" id="modalBody"></div>
+      <button class="modal-btn" onclick="closeModal()">Got it</button>
+    </div>
+  </div>
+
+  <script>
+    const userAnswers = { 1: null, 3: null, 4: null, 6: null };
+    const correctState = { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false, 7: false };
+    const answeredState = { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false, 7: false };
+
+    function pickGraph(qNum, val, el) {
+      userAnswers[qNum] = val;
+      const parent = el.parentElement;
+      parent.querySelectorAll('.graph-box').forEach(b => b.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function pickMCQ(qNum, val, el) {
+      userAnswers[qNum] = val;
+      const parent = el.parentElement;
+      parent.querySelectorAll('.choice-card').forEach(b => b.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function openModal(isCorrect, heading, explanationHtml) {
+      const modal = document.getElementById('dialogModal');
+      const icon = document.getElementById('modalIcon');
+      const title = document.getElementById('modalHeading');
+      const body = document.getElementById('modalBody');
+
+      icon.innerHTML = isCorrect ? '🎉' : '❌';
+      title.innerText = heading;
+      body.innerHTML = explanationHtml;
+
+      modal.style.display = 'flex';
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([body]);
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('dialogModal').style.display = 'none';
+    }
+
+    function handleModalOverlay(e) {
+      if (e.target.id === 'dialogModal') closeModal();
+    }
+
+    function updateStats() {
+      let answered = 0;
+      let score = 0;
+      for (let i = 1; i <= 7; i++) {
+        if (answeredState[i]) answered++;
+        if (correctState[i]) score++;
+      }
+      document.getElementById('progress-text').innerText = answered + ' / 7';
+      document.getElementById('score-text').innerText = score + ' / 7';
+    }
+
+    function checkQ1() {
+      if (!userAnswers[1]) {
+        alert('Please choose a graph option.');
+        return;
+      }
+      answeredState[1] = true;
+      const isCorrect = (userAnswers[1] === 'A');
+      correctState[1] = isCorrect;
+      updateStats();
+
+      if (isCorrect) {
+        openModal(true, 'Correct Graph!', 'The function \\( f(x) = \\frac{-3}{x} \\) has branches in Quadrants II and IV passing through \\((-3, 1)\\) and \\((3, -1)\\). Option A is correct.');
+      } else {
+        openModal(false, 'Incorrect', 'For \\( f(x) = \\frac{-3}{x} \\), when \\( x > 0 \\), \\( y < 0 \\) (Quadrant IV); and when \\( x < 0 \\), \\( y > 0 \\) (Quadrant II). Option A is the correct graph.');
+      }
+    }
+
+    function checkQ2() {
+      const a1 = document.getElementById('q2-ans1').value.trim().toLowerCase();
+      const a2 = document.getElementById('q2-ans2').value.trim().toLowerCase();
+
+      if (!a1 || !a2) {
+        alert('Please fill in both blanks.');
+        return;
+      }
+
+      answeredState[2] = true;
+      const rightMatch = a1.includes('5') && a1.includes('right');
+      const downMatch = a2.includes('4') && a2.includes('down');
+      const isCorrect = rightMatch && downMatch;
+      correctState[2] = isCorrect;
+      updateStats();
+
+      if (isCorrect) {
+        openModal(true, 'Spot On!', 'In \\( f(x) = \\frac{3}{x-5} - 4 \\), \\((x-5)\\) in the denominator translates the graph <strong>5 units right</strong>, and \\(-4\\) translates it <strong>4 units down</strong>.');
+      } else {
+        openModal(false, 'Check Translations', 'For \\( f(x) = \\frac{3}{x-h} + k \\), \\( h = 5 \\) is a translation <strong>5 units right</strong> and \\( k = -4 \\) is a translation <strong>4 units down</strong>.');
+      }
+    }
+
+    function checkQ3() {
+      if (userAnswers[3] === null) {
+        alert('Please choose an answer option.');
+        return;
+      }
+      answeredState[3] = true;
+      const isCorrect = (userAnswers[3] === 0);
+      correctState[3] = isCorrect;
+      updateStats();
+
+      if (isCorrect) {
+        openModal(true, 'Correct!', 'Setting denominator \\( x + 3 \\neq 0 \\implies x \\neq -3 \\) (Domain). The fractional part cannot equal 0, so \\( y \\neq -2 \\) (Range).');
+      } else {
+        openModal(false, 'Incorrect', 'The vertical asymptote occurs at \\( x = -3 \\) (excluding \\(-3\\) from the domain), and horizontal asymptote is \\( y = -2 \\) (excluding \\(-2\\) from the range).');
+      }
+    }
+
+    function checkQ4() {
+      if (!userAnswers[4]) {
+        alert('Please choose a graph option.');
+        return;
+      }
+      answeredState[4] = true;
+      const isCorrect = (userAnswers[4] === 'A');
+      correctState[4] = isCorrect;
+      updateStats();
+
+      if (isCorrect) {
+        openModal(true, 'Correct Graph!', 'For \\( f(x) = \\frac{3x-2}{x+1} \\):<br>&bull; Vertical asymptote: \\( x = -1 \\)<br>&bull; Horizontal asymptote: \\( y = \\frac{3}{1} = 3 \\)<br>&bull; \\( y \\)-intercept: \\((0, -2)\\)<br>Option A correctly displays all features.');
+      } else {
+        openModal(false, 'Incorrect', 'The vertical asymptote is \\( x = -1 \\) and horizontal asymptote is \\( y = 3 \\). Its \\( y \\)-intercept is \\((0, -2)\\). Option A matches these properties.');
+      }
+    }
+
+    function normalize(str) {
+      return str.replace(/\s+/g, '').toLowerCase();
+    }
+
+    function checkQ5() {
+      const v1 = normalize(document.getElementById('q5-v1').value);
+      const h1 = normalize(document.getElementById('q5-h1').value);
+      const v2 = normalize(document.getElementById('q5-v2').value);
+      const h2 = normalize(document.getElementById('q5-h2').value);
+      const v3 = normalize(document.getElementById('q5-v3').value);
+      const h3 = normalize(document.getElementById('q5-h3').value);
+
+      answeredState[5] = true;
+      const cv1 = (v1 === 'x=2' || v1 === '2');
+      const ch1 = (h1 === 'y=2/3' || h1 === '2/3');
+      const cv2 = (v2 === 'x=0' || v2 === '0');
+      const ch2 = (h2 === 'y=0' || h2 === '0');
+      const cv3 = (v3 === 'x=-4' || v3 === '-4');
+      const ch3 = (h3 === 'y=1' || h3 === '1');
+
+      const isCorrect = cv1 && ch1 && cv2 && ch2 && cv3 && ch3;
+      correctState[5] = isCorrect;
+      updateStats();
+
+      if (isCorrect) {
+        openModal(true, 'All Asymptotes Correct!', '1) \\( p(x) \\implies x = 2, \\, y = \\frac{2}{3} \\)<br>2) \\( r(x) \\implies x = 0, \\, y = 0 \\)<br>3) \\( s(x) \\implies x = -4, \\, y = 1 \\)');
+      } else {
+        openModal(false, 'Check Asymptote Equations', '<b>Correct values:</b><br>&bull; \\( p(x) \\): Vertical \\( x = 2 \\), Horizontal \\( y = \\frac{2}{3} \\)<br>&bull; \\( r(x) \\): Vertical \\( x = 0 \\), Horizontal \\( y = 0 \\)<br>&bull; \\( s(x) \\): Vertical \\( x = -4 \\), Horizontal \\( y = 1 \\)');
+      }
+    }
+
+    function checkQ6() {
+      if (userAnswers[6] === null) {
+        alert('Please choose an answer option.');
+        return;
+      }
+      answeredState[6] = true;
+      const isCorrect = (userAnswers[6] === 0);
+      correctState[6] = isCorrect;
+      updateStats();
+
+      if (isCorrect) {
+        openModal(true, 'Correct!', 'To find \\( x \\)-intercepts, set numerator equal to 0: \\( x^2 - 9 = 0 \\implies x = 3, -3 \\). Both values belong to the domain (since \\( x \\neq -4 \\)).');
+      } else {
+        openModal(false, 'Incorrect', 'Set the numerator to zero: \\( x^2 - 9 = 0 \\implies (x-3)(x+3) = 0 \\implies x = 3, -3 \\).');
+      }
+    }
+
+    function checkQ7() {
+      const val = document.getElementById('q7-ans').value.trim();
+      if (!val) {
+        alert('Please enter a student count.');
+        return;
+      }
+      answeredState[7] = true;
+      const isCorrect = (parseInt(val, 10) === 75);
+      correctState[7] = isCorrect;
+      updateStats();
+
+      if (isCorrect) {
+        openModal(true, 'Great Job!', 'Average cost \\( \\bar{C}(x) = \\frac{750 + 15x}{x} = 25 \\)<br>\\( 750 + 15x = 25x \\implies 10x = 750 \\implies x = 75 \\) students.');
+      } else {
+        openModal(false, 'Try Again', 'Average cost equation: \\( \\frac{750 + 15x}{x} = 25 \\implies 750 + 15x = 25x \\implies 10x = 750 \\implies x = 75 \\) students.');
+      }
+    }
+
+    function resetForm() {
+      if (!confirm('Reset all answers?')) return;
+      for (let i = 1; i <= 7; i++) {
+        userAnswers[i] = null;
+        correctState[i] = false;
+        answeredState[i] = false;
+      }
+      document.querySelectorAll('.graph-box').forEach(b => b.classList.remove('selected'));
+      document.querySelectorAll('.choice-card').forEach(b => b.classList.remove('selected'));
+      document.querySelectorAll('input').forEach(i => i.value = '');
+      updateStats();
+    }
+  </script>
+</body>
+</html>

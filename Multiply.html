@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simplifying, Multiplying & Dividing Rational Expressions — Practice Sheet</title>
+  
+  <!-- MathJax Configuration & Loader -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Charis+SIL:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-page: #f6f3ea;
+      --card-bg: #ffffff;
+      --border-color: #e5e0d3;
+      --text-color: #2b2b2b;
+      --text-muted: #6b7280;
+      --badge-bg: #ffd659;
+      --badge-text: #1c1917;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --success: #16a34a;
+      --danger: #dc2626;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      font-family: 'Charis SIL', Georgia, serif;
+      color: var(--text-color);
+      min-height: 100vh;
+      padding: 2.5rem 1rem 5rem;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .sheet-header {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .sheet-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+    }
+
+    .sheet-subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* Score Bar */
+    .top-bar {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .stat-pill {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #1e293b;
+    }
+
+    .stat-pill span {
+      color: var(--primary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .btn-reset {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .btn-reset:hover {
+      background: #e2e8f0;
+    }
+
+    /* Question Cards */
+    .question-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 2rem;
+      margin-bottom: 2.25rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+
+    .badge-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--badge-bg);
+      color: var(--badge-text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    }
+
+    .question-body {
+      font-size: 1.22rem;
+      color: #1f2937;
+      margin-bottom: 1.5rem;
+      line-height: 1.75;
+    }
+
+    .mjx-chtml {
+      font-size: 116% !important;
+    }
+
+    .formula-display {
+      margin: 1rem 0 1.25rem;
+      text-align: center;
+    }
+
+    .bullet-list {
+      margin: 0.75rem 0 1.25rem 2rem;
+    }
+
+    .bullet-list li {
+      margin-bottom: 0.6rem;
+    }
+
+    /* Inline Input Boxes - Clean without answer spoilers */
+    .input-box {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.05rem;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 0.45rem 0.85rem;
+      background: #fff;
+      color: #1e293b;
+      outline: none;
+      transition: border-color 0.2s;
+      vertical-align: middle;
+      margin: 0 0.35rem;
+    }
+
+    .input-box:focus {
+      border-color: var(--primary);
+    }
+
+    /* Options Stack */
+    .options-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin: 1.25rem 0 1.5rem;
+    }
+
+    .choice-item {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 0.9rem 1.25rem;
+      font-size: 1.18rem;
+      color: #1e293b;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      user-select: none;
+    }
+
+    .choice-item:hover {
+      border-color: var(--primary);
+      background: #f1f5f9;
+    }
+
+    .choice-item.selected {
+      border-color: var(--primary);
+      background: #eff6ff;
+      box-shadow: 0 0 0 1.5px var(--primary);
+    }
+
+    .checkbox-box, .radio-box {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .radio-box {
+      border-radius: 50%;
+    }
+
+    .checkbox-box {
+      border-radius: 4px;
+    }
+
+    .choice-item.selected .radio-box {
+      border-color: var(--primary);
+    }
+
+    .choice-item.selected .radio-box::after {
+      content: '';
+      width: 9px;
+      height: 9px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+
+    .choice-item.selected .checkbox-box {
+      border-color: var(--primary);
+      background-color: var(--primary);
+    }
+
+    .choice-item.selected .checkbox-box::after {
+      content: '✓';
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 900;
+    }
+
+    /* Actions & Verification Buttons */
+    .card-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-top: 1.25rem;
+    }
+
+    .btn-check {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      background: #1e293b;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.65rem 1.45rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-check:hover {
+      background: var(--primary);
+    }
+
+    /* Modal / Dialogue Box */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 1rem;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      border-radius: 16px;
+      max-width: 540px;
+      width: 100%;
+      padding: 2rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      animation: slideUp 0.22s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(16px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-status-icon {
+      font-size: 2.2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .modal-heading {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-body {
+      font-size: 1.1rem;
+      color: #334155;
+      line-height: 1.75;
+      margin-bottom: 1.5rem;
+      background: #f8fafc;
+      padding: 1.25rem;
+      border-radius: 10px;
+      border-left: 4px solid var(--primary);
+    }
+
+    .modal-btn {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      background: #1e293b;
+      color: #fff;
+      border: none;
+      padding: 0.65rem 1.45rem;
+      border-radius: 8px;
+      cursor: pointer;
+      float: right;
+    }
+
+    .modal-btn:hover {
+      background: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header class="sheet-header">
+      <h1 class="sheet-title">Rational Expressions & Operations</h1>
+      <p class="sheet-subtitle">Interactive Practice Sheet — Simplify, Multiply, Divide & Solve Word Problems</p>
+    </header>
+
+    <div class="top-bar">
+      <div class="stat-pill">Progress: <span id="progress-text">0 / 10</span></div>
+      <div class="stat-pill">Score: <span id="score-text">0</span></div>
+      <button class="btn-reset" onclick="resetAll()">Reset All</button>
+    </div>
+
+    <!-- ================= QUESTION 1 ================= -->
+    <div class="question-card">
+      <div class="badge-number">1</div>
+      <div class="question-body">
+        <p>Consider the following rational expression:</p>
+        <div class="formula-display">$$ \frac{x^2 - 12x + 27}{x^2 + 3x - 18} $$</div>
+        <p>The lowest term of the above expression is written as: <em>(In case of multiple restricted values, use a comma-separated list. Enter \(\phi\) in case there are no restricted values.)</em></p>
+        <div style="margin-top: 1.25rem;">
+          <input type="text" id="q1-ans1" class="input-box" style="width: 180px;" placeholder="" />, 
+          \( x \neq \) <input type="text" id="q1-ans2" class="input-box" style="width: 120px;" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ1()">Check Answer</button>
+      </div>
+    </div>
+
+    <!-- ================= QUESTION 2 ================= -->
+    <div class="question-card">
+      <div class="badge-number">2</div>
+      <div class="question-body">
+        <p>Consider the following rational expression:</p>
+        <div class="formula-display">$$ \frac{3x^3 - 33x^2 + 30x}{3x^2 - 3x} $$</div>
+        <p>Which of the following represents the lowest term of the above expression? <em>(Select all that apply)</em></p>
+        <div class="options-stack" id="q2-options">
+          <div class="choice-item" onclick="toggleMulti(2, 0, this)">
+            <div class="checkbox-box"></div>
+            <div>\( \frac{x-10}{x+1}, \, x \neq 0, \pm 1 \)</div>
+          </div>
+          <div class="choice-item" onclick="toggleMulti(2, 1, this)">
+            <div class="checkbox-box"></div>
+            <div>\( x - 10, \, x \neq 10 \)</div>
+          </div>
+          <div class="choice-item" onclick="toggleMulti(2, 2, this)">
+            <div class="checkbox-box"></div>
+            <div>\( x - 10, \, x \neq 0 \)</div>
+          </div>
+          <div class="choice-item" onclick="toggleMulti(2, 3, this)">
+            <div class="checkbox-box"></div>
+            <div>\( x - 10, \, x \neq 1 \)</div>
+          </div>
+          <div class="choice-item" onclick="toggleMulti(2, 4, this)">
+            <div class="checkbox-box"></div>
+            <div>\( \frac{x-10}{x+1}, \, x \neq 0, -1 \)</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ2()">Check Answer</button>
+      </div>
+    </div>
+
+    <!-- ================= QUESTION 3 ================= -->
+    <div class="question-card">
+      <div class="badge-number">3</div>
+      <div class="question-body">
+        <p>Consider the following rational expression:</p>
+        <div class="formula-display">$$ \frac{2a^2 + 3ab + b^2}{4a^2 + 4ab + b^2} $$</div>
+        <p>Which of the following represents the lowest term of the above expression?</p>
+        <div class="options-stack" id="q3-options">
+          <div class="choice-item" onclick="pickSingle(3, 0, this)">
+            <div class="radio-box"></div>
+            <div>\( \frac{a+b}{2a+b}, \, a \neq \frac{-b}{2}, -b \)</div>
+          </div>
+          <div class="choice-item" onclick="pickSingle(3, 1, this)">
+            <div class="radio-box"></div>
+            <div>\( \frac{a+b}{2a+b} \)</div>
+          </div>
+          <div class="choice-item" onclick="pickSingle(3, 2, this)">
+            <div class="radio-box"></div>
+            <div>\( \frac{2a+b}{a+b}, \, a \neq \pm \frac{b}{2} \)</div>
+          </div>
+          <div class="choice-item" onclick="pickSingle(3, 3, this)">
+            <div class="radio-box"></div>
+            <div>\( \frac{2a+b}{a+b}, \, a \neq \frac{-b}{2}, -b \)</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ3()">Check Answer</button>
+      </div>
+    </div>
+
+    <!-- ================= QUESTION 4 ================= -->
+    <div class="question-card">
+      <div class="badge-number">4</div>
+      <div class="question-body">
+        <p>Consider the following rational expressions:</p>
+        <ul class="bullet-list">
+          <li>\( \frac{a^2 + a - 12}{a^2 + 2a - 15} \)</li>
+          <li>\( \frac{a^2 - 9}{a^2 - 16} \)</li>
+        </ul>
+        <p>Multiply and write the product:</p>
+        <div style="margin-top: 1.25rem;">
+          <input type="text" id="q4-ans1" class="input-box" style="width: 240px;" placeholder="" />, 
+          \( a \neq \) <input type="text" id="q4-ans2" class="input-box" style="width: 140px;" placeholder="" />
+        </div>
+        <p style="font-size: 1.05rem; color: #555; margin-top: 0.6rem;"><em>(In case of multiple restricted values, use a comma-separated list. Enter \(\phi\) in case there are no restricted values.)</em></p>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ4()">Check Answer</button>
+      </div>
+    </div>
+
+    <!-- ================= QUESTION 5 ================= -->
+    <div class="question-card">
+      <div class="badge-number">5</div>
+      <div class="question-body">
+        <p>Consider the following rational expressions:</p>
+        <ul class="bullet-list">
+          <li>\( \frac{16a^3}{2a + 1} \)</li>
+          <li>\( \frac{4a^2 - 1}{4a} \)</li>
+        </ul>
+        <p>Multiply them and write their product as follows:</p>
+        <div style="margin-top: 1.25rem;">
+          <input type="text" id="q5-ans1" class="input-box" style="width: 200px;" placeholder="" />, 
+          \( a \neq \) <input type="text" id="q5-ans2" class="input-box" style="width: 140px;" placeholder="" />
+        </div>
+        <p style="font-size: 1.05rem; color: #555; margin-top: 0.6rem;"><em>(In case of multiple restricted values, use a comma-separated list. Enter \(\phi\) in case there are no restricted values.)</em></p>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ5()">Check Answer</button>
+      </div>
+    </div>
+
+    <!-- ================= QUESTION 6 ================= -->
+    <div class="question-card">
+      <div class="badge-number">6</div>
+      <div class="question-body">
+        <p>Consider the following equation:</p>
+        <div class="formula-display">$$ \frac{r^2 + 2r - 8}{r^2 - 49} \times \frac{r^2 + 7r}{P(r)} = 1 \quad \text{(Where } P(r) \text{ is a non-zero polynomial.)} $$</div>
+        <p>If the above equation is true for all real numbers \((r)\) for which the LHS is defined, find \( P(r) \)</p>
+        <div style="margin-top: 1.25rem;">
+          \( P(r) = \) <input type="text" id="q6-ans1" class="input-box" style="width: 220px;" placeholder="" />, 
+          \( r \neq \) <input type="text" id="q6-ans2" class="input-box" style="width: 120px;" placeholder="" />
+        </div>
+        <p style="font-size: 1.05rem; color: #555; margin-top: 0.6rem;"><em>(In case of multiple restricted values, use a comma-separated list. Enter \(\phi\) in case there are no restricted values.)</em></p>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ6()">Check Answer</button>
+      </div>
+    </div>
+
+    <!-- ================= QUESTION 7 ================= -->
+    <div class="question-card">
+      <div class="badge-number">7</div>
+      <div class="question-body">
+        <p>A researcher modeled the acceleration \((A)\) of a car (in \(km/hr^2\)) in terms of the variable \(t\) as follows:</p>
+        <div class="formula-display">$$ A = \frac{5t^2}{2t - 1} $$</div>
+        <p>Here:</p>
+        <ol style="margin: 0.5rem 0 1rem 2rem;">
+          <li>Find the speed \(S\) (in terms of \(t\)) of the car in time, \( T = \frac{6t^2 - 3t}{10t} \) hours.</li>
+          <li>Use the expression for \(S\) obtained in <em>part 1</em> to find the speed \(S\) (in \(km/hr\)) when \(t = 10\).</li>
+        </ol>
+        <p><em>(Note that here \(t\) is a real number greater than \(\frac{1}{2}\).)</em></p>
+        <p style="margin-top: 0.75rem;">Let's do these one by one!</p>
+        <p style="margin-top: 0.75rem;">So, based on the given information, we can represent the speed \((S)\) as follows:</p>
+        <div style="margin: 0.75rem 0;">
+          \( S = \) <input type="text" id="q7-ans1" class="input-box" style="width: 150px;" placeholder="" />
+        </div>
+        <p>When \(t = 10\), the speed of the car is <input type="text" id="q7-ans2" class="input-box" style="width: 100px;" placeholder="" /> \(km/hr\).</p>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ7()">Check Answer</button>
+      </div>
+    </div>
+
+    <!-- ================= QUESTION 8 ================= -->
+    <div class="question-card">
+      <div class="badge-number">8</div>
+      <div class="question-body">
+        <p>Consider the following rational expressions:</p>
+        <ul class="bullet-list" style="list-style-type: none; margin-left: 1rem;">
+          <li>&bull; \( \frac{x^2 + 8x}{x^2 + 4x + 4} \dots (1) \)</li>
+          <li>&bull; \( \frac{x^2 - 64}{3x^2 + 5x - 2} \dots (2) \)</li>
+        </ul>
+        <p>Divide the expression \((1)\) by \((2)\) and write the quotient.</p>
+        <div style="margin-top: 1.25rem;">
+          <input type="text" id="q8-ans1" class="input-box" style="width: 240px;" placeholder="" />, 
+          \( x \neq \) <input type="text" id="q8-ans2" class="input-box" style="width: 140px;" placeholder="" />
+        </div>
+        <p style="font-size: 1.05rem; color: #555; margin-top: 0.6rem;"><em>(In case of multiple restricted values, use a comma-separated list. Enter \(\phi\) in case there are no restricted values.)</em></p>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ8()">Check Answer</button>
+      </div>
+    </div>
+
+    <!-- ================= QUESTION 9 ================= -->
+    <div class="question-card">
+      <div class="badge-number">9</div>
+      <div class="question-body">
+        <p>Consider the following equation:</p>
+        <div class="formula-display">$$ \frac{5x^2 - 5x - 30}{4x^2 - 12x} \div \frac{Q(x)}{16x^3 - 20x^2} = 4x - 5 \quad \text{(Where } Q(x) \text{ is a non-zero polynomial.)} $$</div>
+        <p>If the above equation is true for all real numbers \((x)\) for which the LHS is defined, find \( Q(x) \).</p>
+        <div style="margin-top: 1.25rem;">
+          \( Q(x) = \) <input type="text" id="q9-ans1" class="input-box" style="width: 200px;" placeholder="" />
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ9()">Check Answer</button>
+      </div>
+    </div>
+
+    <!-- ================= QUESTION 10 ================= -->
+    <div class="question-card">
+      <div class="badge-number">10</div>
+      <div class="question-body">
+        <p>A scientist modeled the change in temperature \(C\) (in \(^\circ C\)) of an object under observation as:</p>
+        <div class="formula-display">$$ C = \frac{x^2 - 11x + 24}{x + 8} $$</div>
+        <p>If the time \(T\) (in min) is given as:</p>
+        <div class="formula-display">$$ T = \frac{x - 3}{x + 8} $$</div>
+        <p>Then:</p>
+        <ol style="margin: 0.5rem 0 1rem 2rem;">
+          <li>Find the rate \(R\) (in \(^\circ C\) per min) of change in temperature of the object with respect to time in terms of \(x\).</li>
+          <li>Estimate the rate \(R\) (in \(^\circ C\) per min) of change in temperature of the object if \(x = 12\).</li>
+        </ol>
+        <p>Let's do these one by one!</p>
+        <p style="margin-top: 0.75rem;">Based on the above:</p>
+        <div style="margin: 0.75rem 0;">
+          \( R = \) <input type="text" id="q10-ans1" class="input-box" style="width: 140px;" placeholder="" /> \(^\circ C\text{ per min}\)
+        </div>
+        <p>When \(x = 12\), the rate \(R\) of change of temperature of the object is <input type="text" id="q10-ans2" class="input-box" style="width: 90px;" placeholder="" /> \(^\circ C\text{ per min}\).</p>
+      </div>
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ10()">Check Answer</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Dialogue / Modal -->
+  <div class="modal-overlay" id="dialogModal" onclick="handleModalOverlay(event)">
+    <div class="modal-content">
+      <div class="modal-status-icon" id="modalIcon">✅</div>
+      <h3 class="modal-heading" id="modalHeading">Great Job!</h3>
+      <div class="modal-body" id="modalBody"></div>
+      <button class="modal-btn" onclick="closeModal()">Got it</button>
+    </div>
+  </div>
+
+  <script>
+    const userAnswers = {
+      2: new Set(),
+      3: null
+    };
+
+    const answeredState = { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false, 7: false, 8: false, 9: false, 10: false };
+    const correctState = { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false, 7: false, 8: false, 9: false, 10: false };
+
+    function pickSingle(qNum, val, el) {
+      userAnswers[qNum] = val;
+      const parent = el.parentElement;
+      parent.querySelectorAll('.choice-item').forEach(b => b.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function toggleMulti(qNum, val, el) {
+      if (userAnswers[qNum].has(val)) {
+        userAnswers[qNum].delete(val);
+        el.classList.remove('selected');
+      } else {
+        userAnswers[qNum].add(val);
+        el.classList.add('selected');
+      }
+    }
+
+    function openModal(isCorrect, heading, explanationHtml) {
+      const modal = document.getElementById('dialogModal');
+      const icon = document.getElementById('modalIcon');
+      const title = document.getElementById('modalHeading');
+      const body = document.getElementById('modalBody');
+
+      icon.innerHTML = isCorrect ? '🎉' : '❌';
+      title.innerText = heading;
+      body.innerHTML = explanationHtml;
+
+      modal.style.display = 'flex';
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([body]);
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('dialogModal').style.display = 'none';
+    }
+
+    function handleModalOverlay(e) {
+      if (e.target.id === 'dialogModal') closeModal();
+    }
+
+    function updateStats() {
+      let answered = 0;
+      let score = 0;
+      for (let i = 1; i <= 10; i++) {
+        if (answeredState[i]) answered++;
+        if (correctState[i]) score++;
+      }
+      document.getElementById('progress-text').innerText = answered + ' / 10';
+      document.getElementById('score-text').innerText = score + ' / 10';
+    }
+
+    function clean(str) {
+      return str.replace(/\s+/g, '').toLowerCase().replace(/−/g, '-');
+    }
+
+    // Checking Functions
+    function checkQ1() {
+      const a1 = clean(document.getElementById('q1-ans1').value);
+      const a2 = clean(document.getElementById('q1-ans2').value);
+
+      if (!a1 || !a2) {
+        alert('Please fill in both fields.');
+        return;
+      }
+      answeredState[1] = true;
+      const c1 = (a1 === '(x-9)/(x+6)' || a1 === 'x-9/x+6');
+      const c2 = (a2 === '3');
+      const isCorrect = c1 && c2;
+      correctState[1] = isCorrect;
+      updateStats();
+
+      if (isCorrect) {
+        openModal(true, 'Correct!', 'Factoring both numerator and denominator: \\(\\frac{(x-9)(x-3)}{(x+6)(x-3)}\\). The common factor \\((x-3)\\) cancels out, leaving \\(\\frac{x-9}{x+6}\\) with restricted value \\(x \\neq 3\\).');
+      } else {
+        openModal(false, 'Incorrect', '<b>Correct Answers:</b><br>Lowest term: \\(\\frac{x-9}{x+6}\\)<br>Restricted value: \\(3\\)');
+      }
+    }
+
+    function checkQ2() {
+      if (userAnswers[2].size === 0) {
+        alert('Please select at least one option.');
+        return;
+      }
+      answeredState[2] = true;
+      const selected = Array.from(userAnswers[2]).sort();
+      const isCorrect = selected.length === 2 && selected[0] === 2 && selected[1] === 3;
+      correctState[2] = isCorrect;
+      updateStats();
+
+      if (isCorrect) {
+        openModal(true, 'Correct Selection!', 'Factoring gives \\(\\frac{3x(x-10)(x-1)}{3x(x-1)} = x - 10\\). The canceled factors require domain restrictions \\(x \\neq 0\\) and \\(x \\neq 1\\). Both options representing this are correct.');
+      } else {
+        openModal(false, 'Incorrect', 'Factoring: \\(\\frac{3x(x-1)(x-10)}{3x(x-1)} = x-10\\). The domain restrictions from canceled terms are \\(x \\neq 0\\) and \\(x \\neq 1\\).');
+      }
+    }
+
+    function checkQ3() {
+      if (userAnswers[3] === null) {
+        alert('Please select an option.');
+        return;
+      }
+      answeredState[3] = true;
+      const isCorrect = (userAnswers[3] === 1);
+      correctState[3] = isCorrect;
+      updateStats();
+
+      if (isCorrect) {
+        openModal(true, 'Correct!', 'Factoring gives \\(\\frac{(2a+b)(a+b)}{(2a+b)(2a+b)} = \\frac{a+b}{2a+b}\\).');
+      } else {
+        openModal(false, 'Incorrect', 'Numerator: \\((2a+b)(a+b)\\)<br>Denominator: \\((2a+b)^2\\)<br>Dividing common factors yields \\(\\frac{a+b}{2a+b}\\).');
+      }
+    }
+
+    function checkQ4() {
+      const a1 = clean(document.getElementById('q4-ans1').value);
+      const a2 = clean(document.getElementById('q4-ans2').value);
+
+      if (!a1 || !a2) {
+        alert('Please fill in both fields.');
+        return;
+      }
+      answeredState[4] = true;
+      const c1 = a1.includes('(a-3)(a+3)') && a1.includes('(a-4)(a+5)');
+      const c2 = (a2.includes('-4') && a2.includes('3'));
+      const isCorrect = c1 && c2;
+      correctState[4] = isCorrect;
+      updateStats();
+
+      if (isCorrect) {
+        openModal(true, 'Correct Product!', 'Factoring: \\(\\frac{(a+4)(a-3)}{(a+5)(a-3)} \\times \\frac{(a+3)(a-3)}{(a+4)(a-4)} = \\frac{(a-3)(a+3)}{(a-4)(a+5)}\\). The canceled factors from denominators give restricted values \\(-4, 3\\).');
+      } else {
+        openModal(false, 'Incorrect', '<b>Correct Answers:</b><br>Product: \\(\\frac{(a-3)(a+3)}{(a-4)(a+5)}\\)<br>Restricted values: \\(-4, 3\\)');
+      }
+    }
+
+    function checkQ5() {
+      const a1 = clean(document.getElementById('q5-ans1').value);
+      const a2 = clean(document.getElementById('q5-ans2').value);
+
+      if (!a1 || !a2) {
+        alert('Please fill in both fields.');
+        return;
+      }
+      answeredState[5] = true;
+      const c1 = (a1 === '4a^2(2a-1)' || a1 === '4a^2(2a-1)/1' || a1 === '8a^3-4a^2');
+      const c2 = (a2.includes('0') && (a2.includes('-1/2') || a2.includes('-0.5')));
+      const isCorrect = c1 && c2;
+      correctState[5] = isCorrect;
+      updateStats();
+
+      if (isCorrect) {
+        openModal(true, 'Correct!', 'Factoring: \\(\\frac{16a^3}{2a+1} \\times \\frac{(2a+1)(2a-1)}{4a} = 4a^2(2a-1)\\). The denominators give restrictions \\(a \\neq 0, -\\frac{1}{2}\\).');
+      } else {
+        openModal(false, 'Incorrect', '<b>Correct Answers:</b><br>Product: \\(4a^2(2a-1)\\)<br>Restricted values: \\(0, -\\frac{1}{2}\\)');
+      }
+    }
+
+    function checkQ6() {
+      const a1 = clean(document.getElementById('q6-ans1').value);
+      const a2 = clean(document.getElementById('q6-ans2').value);
+
+      if (!a1 || !a2) {
+        alert('Please fill in both fields.');
+        return;
+      }
+      answeredState[6] = true;
+      const c1 = a1.includes('r(r+4)(r-2)') && a1.includes('r-7');
+      const c2 = (a2 === '-7');
+      const isCorrect = c1 && c2;
+      correctState[6] = isCorrect;
+      updateStats();
+
+      if (isCorrect) {
+        openModal(true, 'Correct Polynomial!', 'Multiplying: \\(P(r) = \\frac{(r+4)(r-2)}{(r-7)(r+7)} \\times r(r+7) = \\frac{r(r+4)(r-2)}{r-7}\\). The canceled factor \\((r+7)\\) gives restriction \\(r \\neq -7\\).');
+      } else {
+        openModal(false, 'Incorrect', '<b>Correct Answers:</b><br>\\(P(r) = \\frac{r(r+4)(r-2)}{r-7}\\)<br>Restricted value: \\(-7\\)');
+      }
+    }
+
+    function checkQ7() {
+      const a1 = clean(document.getElementById('q7-ans1').value);
+      const a2 = clean(document.getElementById('q7-ans2').value);
+
+      if (!a1 || !a2) {
+        alert('Please fill in both fields.');
+        return;
+      }
+      answeredState[7] = true;
+      const c1 = (a1 === '3t^2/2' || a1 === '(3t^2)/2' || a1 === '1.5t^2');
+      const c2 = (a2 === '150');
+      const isCorrect = c1 && c2;
+      correctState[7] = isCorrect;
+      updateStats();
+
+      if (isCorrect) {
+        openModal(true, 'Great Job!', 'Speed \\(S = A \\times T = \\frac{5t^2}{2t-1} \\times \\frac{3t(2t-1)}{10t} = \\frac{3t^2}{2}\\).<br>When \\(t = 10\\): \\(S = \\frac{3(100)}{2} = 150\\text{ km/hr}\\).');
+      } else {
+        openModal(false, 'Incorrect', '<b>Correct Answers:</b><br>\\(S = \\frac{3t^2}{2}\\)<br>When \\(t = 10\\), speed = \\(150\\text{ km/hr}\\)');
+      }
+    }
+
+    function checkQ8() {
+      const a1 = clean(document.getElementById('q8-ans1').value);
+      const a2 = clean(document.getElementById('q8-ans2').value);
+
+      if (!a1 || !a2) {
+        alert('Please fill in both fields.');
+        return;
+      }
+      answeredState[8] = true;
+      const c1 = a1.includes('x(3x-1)') && a1.includes('(x+2)(x-8)');
+      const c2 = (a2.includes('-8') && (a2.includes('1/3') || a2.includes('0.33')));
+      const isCorrect = c1 && c2;
+      correctState[8] = isCorrect;
+      updateStats();
+
+      if (isCorrect) {
+        openModal(true, 'Correct Quotient!', '\\(\\frac{x(x+8)}{(x+2)^2} \\times \\frac{(3x-1)(x+2)}{(x-8)(x+8)} = \\frac{x(3x-1)}{(x+2)(x-8)}\\). The restricted values from canceled denominators/divisors are \\(-8, \\frac{1}{3}\\).');
+      } else {
+        openModal(false, 'Incorrect', '<b>Correct Answers:</b><br>Quotient: \\(\\frac{x(3x-1)}{(x+2)(x-8)}\\)<br>Restricted values: \\(-8, \\frac{1}{3}\\)');
+      }
+    }
+
+    function checkQ9() {
+      const a1 = clean(document.getElementById('q9-ans1').value);
+
+      if (!a1) {
+        alert('Please fill in the polynomial.');
+        return;
+      }
+      answeredState[9] = true;
+      const isCorrect = (a1 === '5x(x+2)' || a1 === '5x^2+10x');
+      correctState[9] = isCorrect;
+      updateStats();
+
+      if (isCorrect) {
+        openModal(true, 'Correct!', 'We have \\(\\frac{5(x-3)(x+2)}{4x(x-3)} \\times \\frac{4x^2(4x-5)}{Q(x)} = 4x-5 \\implies \\frac{5x(x+2)(4x-5)}{Q(x)} = 4x-5 \\implies Q(x) = 5x(x+2)\\).');
+      } else {
+        openModal(false, 'Incorrect', '<b>Correct Answer:</b><br>\\(Q(x) = 5x(x+2)\\)');
+      }
+    }
+
+    function checkQ10() {
+      const a1 = clean(document.getElementById('q10-ans1').value);
+      const a2 = clean(document.getElementById('q10-ans2').value);
+
+      if (!a1 || !a2) {
+        alert('Please fill in both fields.');
+        return;
+      }
+      answeredState[10] = true;
+      const c1 = (a1 === 'x-8');
+      const c2 = (a2 === '4');
+      const isCorrect = c1 && c2;
+      correctState[10] = isCorrect;
+      updateStats();
+
+      if (isCorrect) {
+        openModal(true, 'Spot On!', 'Rate \\(R = \\frac{C}{T} = \\frac{(x-8)(x-3)}{x+8} \\div \\frac{x-3}{x+8} = x - 8\\).<br>When \\(x = 12\\): \\(R = 12 - 8 = 4^\\circ\\text{C per min}\\).');
+      } else {
+        openModal(false, 'Incorrect', '<b>Correct Answers:</b><br>\\(R = x - 8\\)<br>When \\(x = 12\\), \\(R = 4^\\circ\\text{C per min}\\)');
+      }
+    }
+
+    function resetAll() {
+      if (!confirm('Reset all answers on the sheet?')) return;
+      for (let i = 1; i <= 10; i++) {
+        answeredState[i] = false;
+        correctState[i] = false;
+      }
+      userAnswers[2].clear();
+      userAnswers[3] = null;
+      document.querySelectorAll('.choice-item').forEach(el => el.classList.remove('selected'));
+      document.querySelectorAll('input').forEach(el => el.value = '');
+      updateStats();
+    }
+  </script>
+</body>
+</html>
