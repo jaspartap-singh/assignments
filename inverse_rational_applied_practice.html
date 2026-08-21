@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inverse & Applied Rational Functions — Practice Sheet</title>
+  
+  <!-- MathJax Configuration & Loader -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Charis+SIL:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-page: #f6f3ea;
+      --card-bg: #ffffff;
+      --border-color: #e5e0d3;
+      --text-color: #2b2b2b;
+      --text-muted: #6b7280;
+      --badge-bg: #ffd659;
+      --badge-text: #1c1917;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --success-bg: #ecfdf5;
+      --success-border: #86efac;
+      --danger-bg: #fef2f2;
+      --danger-border: #fca5a5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      font-family: 'Charis SIL', Georgia, serif;
+      color: var(--text-color);
+      min-height: 100vh;
+      padding: 2.5rem 1rem 5rem;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .sheet-header {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .sheet-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+    }
+
+    .sheet-subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* Top Stats Bar */
+    .top-bar {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .stat-pill {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #1e293b;
+    }
+
+    .stat-pill span {
+      color: var(--primary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .btn-reset {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .btn-reset:hover {
+      background: #e2e8f0;
+    }
+
+    /* Question Cards */
+    .question-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 2rem;
+      margin-bottom: 2.25rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+    }
+
+    .badge-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--badge-bg);
+      color: var(--badge-text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      min-width: 44px;
+      height: 44px;
+      padding: 0 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    }
+
+    .status-badge {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 6px;
+      display: none;
+    }
+
+    .status-badge.correct {
+      display: inline-block;
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid var(--success-border);
+    }
+
+    .status-badge.incorrect {
+      display: inline-block;
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid var(--danger-border);
+    }
+
+    .question-body {
+      font-size: 1.24rem;
+      color: #1f2937;
+      margin-bottom: 1.25rem;
+      line-height: 1.75;
+    }
+
+    .equation-display {
+      margin: 1.25rem 0 1.5rem;
+      text-align: center;
+      font-size: 1.3rem;
+    }
+
+    .mjx-chtml {
+      font-size: 116% !important;
+    }
+
+    .bullet-list {
+      margin: 0.75rem 0 1.25rem 2rem;
+    }
+
+    .bullet-list li {
+      margin-bottom: 0.6rem;
+    }
+
+    /* Sub-part indicator */
+    .part-label {
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 1rem;
+      display: block;
+    }
+
+    /* MCQ Option List */
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin: 1.5rem 0;
+    }
+
+    .mcq-option {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 0.95rem 1.25rem;
+      font-size: 1.18rem;
+      color: #1e293b;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      user-select: none;
+    }
+
+    .mcq-option:hover {
+      border-color: var(--primary);
+      background: #f1f5f9;
+    }
+
+    .mcq-option.selected {
+      border-color: var(--primary);
+      background: #eff6ff;
+      box-shadow: 0 0 0 1.5px var(--primary);
+    }
+
+    .radio-circle {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #94a3b8;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .mcq-option.selected .radio-circle {
+      border-color: var(--primary);
+    }
+
+    .mcq-option.selected .radio-circle::after {
+      content: '';
+      width: 9px;
+      height: 9px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+
+    /* Card Actions */
+    .card-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-top: 1.25rem;
+    }
+
+    .btn-check {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      background: #1e293b;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.65rem 1.45rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-check:hover {
+      background: var(--primary);
+    }
+
+    /* Inline Solution Feedback */
+    .inline-feedback {
+      display: none;
+      margin-top: 1.25rem;
+      padding: 1.1rem 1.35rem;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+
+    .inline-feedback.correct {
+      display: block;
+      background: var(--success-bg);
+      border: 1.5px solid var(--success-border);
+      color: #14532d;
+    }
+
+    .inline-feedback.incorrect {
+      display: block;
+      background: var(--danger-bg);
+      border: 1.5px solid var(--danger-border);
+      color: #7f1d1d;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header class="sheet-header">
+      <h1 class="sheet-title">Inverse & Applied Rational Functions</h1>
+      <p class="sheet-subtitle">Interactive Practice Sheet — Find inverse functions, solve rational models, and work with rates</p>
+    </header>
+
+    <div class="top-bar">
+      <div class="stat-pill">Progress: <span id="progress-text">0 / 9</span></div>
+      <div class="stat-pill">Score: <span id="score-text">0</span></div>
+      <button class="btn-reset" onclick="resetAll()">Reset All</button>
+    </div>
+
+    <!-- ================= QUESTION 1 ================= -->
+    <div class="question-card" id="card-1">
+      <div class="card-top">
+        <div class="badge-number">1</div>
+        <div class="status-badge" id="badge-1"></div>
+      </div>
+      <div class="question-body">
+        <p>Find the inverse of \( f(x) \).</p>
+        <div class="equation-display">
+          $$ f(x) = \frac{5}{x - 3} $$
+        </div>
+      </div>
+
+      <div class="options-grid" id="q1-options">
+        <div class="mcq-option" onclick="selectOption(1, 0, this)">
+          <div class="radio-circle"></div>
+          <div>\( f^{-1}(x) = \frac{5}{x} + 3, \quad x \neq 0 \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(1, 1, this)">
+          <div class="radio-circle"></div>
+          <div>\( f^{-1}(x) = \frac{x - 3}{5}, \quad x \neq 3 \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(1, 2, this)">
+          <div class="radio-circle"></div>
+          <div>\( f^{-1}(x) = \frac{5}{x} - 3, \quad x \neq 0 \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(1, 3, this)">
+          <div class="radio-circle"></div>
+          <div>\( f^{-1}(x) = \frac{5}{x + 3}, \quad x \neq -3 \)</div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ(1, 0, 'Set $y = \\frac{5}{x - 3}$. Swap $x$ and $y$: $x = \\frac{5}{y - 3} \\implies y - 3 = \\frac{5}{x} \\implies y = \\frac{5}{x} + 3$. The domain of the inverse excludes $x = 0$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-1"></div>
+    </div>
+
+    <!-- ================= QUESTION 8 ================= -->
+    <div class="question-card" id="card-2">
+      <div class="card-top">
+        <div class="badge-number">8</div>
+        <div class="status-badge" id="badge-2"></div>
+      </div>
+      <div class="question-body">
+        <p>A man took a flight and then traveled by car to reach a destination. The time (in hours) for each of these travels were represented as:</p>
+        <ul class="bullet-list">
+          <li>\( t_f = \frac{100}{2x - 1} \), and</li>
+          <li>\( t_c = \frac{200}{x} \) <em>(Where \(x\) is the speed of the car (in miles/hr).)</em></li>
+        </ul>
+        <p>If the time taken by the flight was equal to that taken by the car, then find the speed of the car.</p>
+      </div>
+
+      <div class="options-grid" id="q2-options">
+        <div class="mcq-option" onclick="selectOption(2, 0, this)">
+          <div class="radio-circle"></div>
+          <div>\( \frac{2}{3} \text{ miles/hr} \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(2, 1, this)">
+          <div class="radio-circle"></div>
+          <div>\( \frac{3}{2} \text{ miles/hr} \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(2, 2, this)">
+          <div class="radio-circle"></div>
+          <div>\( 2 \text{ miles/hr} \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(2, 3, this)">
+          <div class="radio-circle"></div>
+          <div>\( \frac{1}{2} \text{ miles/hr} \)</div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ(2, 0, 'Set $t_f = t_c \\implies \\frac{100}{2x - 1} = \\frac{200}{x}$. Cross multiply: $100x = 200(2x - 1) \\implies x = 2(2x - 1) \\implies x = 4x - 2 \\implies 3x = 2 \\implies x = \\frac{2}{3}$ miles/hr.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-2"></div>
+    </div>
+
+    <!-- ================= QUESTION (Shop Sales) ================= -->
+    <div class="question-card" id="card-3">
+      <div class="card-top">
+        <div class="badge-number">3</div>
+        <div class="status-badge" id="badge-3"></div>
+      </div>
+      <div class="question-body">
+        <p>Sales made by two shops in a day are modeled in terms of number of items sold \((n)\) as follows:</p>
+        <ul class="bullet-list">
+          <li>\( S_1 = \frac{5n^2 - 5n - 30}{n} \)</li>
+          <li>\( S_2 = \frac{5n^2 - 20}{2n} \)</li>
+        </ul>
+        <p>If both the shops made equal sales, then how many items did they sell?</p>
+      </div>
+
+      <div class="options-grid" id="q3-options">
+        <div class="mcq-option" onclick="selectOption(3, 0, this)">
+          <div class="radio-circle"></div>
+          <div>\( n = 4 \) items</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(3, 1, this)">
+          <div class="radio-circle"></div>
+          <div>\( n = 6 \) items</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(3, 2, this)">
+          <div class="radio-circle"></div>
+          <div>\( n = 2 \) items</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(3, 3, this)">
+          <div class="radio-circle"></div>
+          <div>\( n = 5 \) items</div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ(3, 0, 'Set $S_1 = S_2 \\implies \\frac{5n^2 - 5n - 30}{n} = \\frac{5n^2 - 20}{2n}$. Since $n \\neq 0$, multiply by $2n$: $2(5n^2 - 5n - 30) = 5n^2 - 20 \\implies 10n^2 - 10n - 60 = 5n^2 - 20 \\implies 5n^2 - 10n - 40 = 0 \\implies n^2 - 2n - 8 = 0 \\implies (n - 4)(n + 2) = 0$. Since items sold must be positive, $n = 4$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-3"></div>
+    </div>
+
+    <!-- ================= QUESTION (Basketball Player) ================= -->
+    <div class="question-card" id="card-4">
+      <div class="card-top">
+        <div class="badge-number">4</div>
+        <div class="status-badge" id="badge-4"></div>
+      </div>
+      <div class="question-body">
+        <p>A basketball player has made \( 18 \) out of \( 30 \) free throws this season. Solve the equation</p>
+        <div class="equation-display">
+          $$ \frac{80}{100} = \frac{18 + x}{30 + x} $$
+        </div>
+        <p>to find the number of consecutive free throws she needs to make to raise her free-throw percentage to \( 80\% \).</p>
+      </div>
+
+      <div class="options-grid" id="q4-options">
+        <div class="mcq-option" onclick="selectOption(4, 0, this)">
+          <div class="radio-circle"></div>
+          <div>\( x = 24 \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(4, 1, this)">
+          <div class="radio-circle"></div>
+          <div>\( x = 30 \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(4, 2, this)">
+          <div class="radio-circle"></div>
+          <div>\( x = 20 \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(4, 3, this)">
+          <div class="radio-circle"></div>
+          <div>\( x = 35 \)</div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ(4, 1, 'Simplify $\\frac{80}{100} = \\frac{4}{5}$. Then $\\frac{4}{5} = \\frac{18 + x}{30 + x} \\implies 4(30 + x) = 5(18 + x) \\implies 120 + 4x = 90 + 5x \\implies x = 30$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-4"></div>
+    </div>
+
+    <!-- ================= QUESTION (Solve Rational Equation) ================= -->
+    <div class="question-card" id="card-5">
+      <div class="card-top">
+        <div class="badge-number">5</div>
+        <div class="status-badge" id="badge-5"></div>
+      </div>
+      <div class="question-body">
+        <p>Solve the equation.</p>
+        <div class="equation-display">
+          $$ \frac{x}{x - 3} - \frac{2}{x + 3} = \frac{12}{x^2 - 9} $$
+        </div>
+      </div>
+
+      <div class="options-grid" id="q5-options">
+        <div class="mcq-option" onclick="selectOption(5, 0, this)">
+          <div class="radio-circle"></div>
+          <div>\( x = 2 \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(5, 1, this)">
+          <div class="radio-circle"></div>
+          <div>\( x = -3, \, 2 \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(5, 2, this)">
+          <div class="radio-circle"></div>
+          <div>\( x = 3 \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(5, 3, this)">
+          <div class="radio-circle"></div>
+          <div>\( x = -2 \)</div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ(5, 0, 'Multiply by LCD $(x - 3)(x + 3)$: $x(x + 3) - 2(x - 3) = 12 \\implies x^2 + 3x - 2x + 6 = 12 \\implies x^2 + x - 6 = 0 \\implies (x + 3)(x - 2) = 0 \\implies x = -3$ or $x = 2$. Since $x = -3$ causes division by zero (extraneous), the only valid solution is $x = 2$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-5"></div>
+    </div>
+
+    <!-- ================= QUESTION (Pipes Tank Problem - Part a) ================= -->
+    <div class="question-card" id="card-6">
+      <div class="card-top">
+        <div class="badge-number">6a</div>
+        <div class="status-badge" id="badge-6"></div>
+      </div>
+      <div class="question-body">
+        <p>A large pipe can fill a tank in \( 9\text{ hours} \). A smaller pipe can fill the same tank in \( t\text{ hours} \). When both pipes run together, the tank is full in \( 6\text{ hours} \).</p>
+        <span class="part-label">a. Which rational equation in \(t\) correctly models this situation?</span>
+      </div>
+
+      <div class="options-grid" id="q6-options">
+        <div class="mcq-option" onclick="selectOption(6, 0, this)">
+          <div class="radio-circle"></div>
+          <div>\( \frac{1}{9} + \frac{1}{t} = \frac{1}{6} \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(6, 1, this)">
+          <div class="radio-circle"></div>
+          <div>\( \frac{1}{9} - \frac{1}{t} = \frac{1}{6} \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(6, 2, this)">
+          <div class="radio-circle"></div>
+          <div>\( 9 + t = 6 \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(6, 3, this)">
+          <div class="radio-circle"></div>
+          <div>\( \frac{9}{t} = \frac{1}{6} \)</div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ(6, 0, 'Rate of large pipe is $\\frac{1}{9}$ tank/hr, rate of smaller pipe is $\\frac{1}{t}$ tank/hr, and combined rate is $\\frac{1}{6}$ tank/hr. Thus, $\\frac{1}{9} + \\frac{1}{t} = \\frac{1}{6}$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-6"></div>
+    </div>
+
+    <!-- ================= QUESTION (Pipes Tank Problem - Part b) ================= -->
+    <div class="question-card" id="card-7">
+      <div class="card-top">
+        <div class="badge-number">6b</div>
+        <div class="status-badge" id="badge-7"></div>
+      </div>
+      <div class="question-body">
+        <span class="part-label">b. Solve the equation to find how long the smaller pipe would take to fill the tank alone:</span>
+      </div>
+
+      <div class="options-grid" id="q7-options">
+        <div class="mcq-option" onclick="selectOption(7, 0, this)">
+          <div class="radio-circle"></div>
+          <div>\( t = 18\text{ hours} \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(7, 1, this)">
+          <div class="radio-circle"></div>
+          <div>\( t = 15\text{ hours} \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(7, 2, this)">
+          <div class="radio-circle"></div>
+          <div>\( t = 12\text{ hours} \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(7, 3, this)">
+          <div class="radio-circle"></div>
+          <div>\( t = 24\text{ hours} \)</div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ(7, 0, '$\\frac{1}{t} = \\frac{1}{6} - \\frac{1}{9} = \\frac{3 - 2}{18} = \\frac{1}{18} \\implies t = 18$ hours.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-7"></div>
+    </div>
+
+    <!-- ================= QUESTION (Tranquilizer Dart - Part a) ================= -->
+    <div class="question-card" id="card-8">
+      <div class="card-top">
+        <div class="badge-number">7a</div>
+        <div class="status-badge" id="badge-8"></div>
+      </div>
+      <div class="question-body">
+        <p>A wildlife biologist models the concentration \( C \) (in mg/L) of a sedative in a tranquilizer dart as a function of the volume \( v \) (in mL) of solution used:</p>
+        <div class="equation-display">
+          $$ C(v) = \frac{120}{v - 4}, \quad v > 4 $$
+        </div>
+        <span class="part-label">a. Find the inverse function \( v(C) \).</span>
+      </div>
+
+      <div class="options-grid" id="q8-options">
+        <div class="mcq-option" onclick="selectOption(8, 0, this)">
+          <div class="radio-circle"></div>
+          <div>\( v(C) = \frac{120}{C} + 4 \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(8, 1, this)">
+          <div class="radio-circle"></div>
+          <div>\( v(C) = \frac{120}{C} - 4 \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(8, 2, this)">
+          <div class="radio-circle"></div>
+          <div>\( v(C) = \frac{C - 4}{120} \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(8, 3, this)">
+          <div class="radio-circle"></div>
+          <div>\( v(C) = \frac{120}{C + 4} \)</div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ(8, 0, 'From $C = \\frac{120}{v - 4} \\implies v - 4 = \\frac{120}{C} \\implies v(C) = \\frac{120}{C} + 4$.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-8"></div>
+    </div>
+
+    <!-- ================= QUESTION (Tranquilizer Dart - Part b) ================= -->
+    <div class="question-card" id="card-9">
+      <div class="card-top">
+        <div class="badge-number">7b</div>
+        <div class="status-badge" id="badge-9"></div>
+      </div>
+      <div class="question-body">
+        <span class="part-label">b. A dart needs to deliver a concentration of \( 15\text{ mg/L} \). Use the inverse function to find the required volume \( v(15) \).</span>
+      </div>
+
+      <div class="options-grid" id="q9-options">
+        <div class="mcq-option" onclick="selectOption(9, 0, this)">
+          <div class="radio-circle"></div>
+          <div>\( v(15) = 12\text{ mL} \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(9, 1, this)">
+          <div class="radio-circle"></div>
+          <div>\( v(15) = 8\text{ mL} \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(9, 2, this)">
+          <div class="radio-circle"></div>
+          <div>\( v(15) = 16\text{ mL} \)</div>
+        </div>
+        <div class="mcq-option" onclick="selectOption(9, 3, this)">
+          <div class="radio-circle"></div>
+          <div>\( v(15) = 10\text{ mL} \)</div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-check" onclick="checkQ(9, 0, 'Substitute $C = 15$ into $v(C)$: $v(15) = \\frac{120}{15} + 4 = 8 + 4 = 12$ mL.')">Check Answer</button>
+      </div>
+      <div class="inline-feedback" id="feedback-9"></div>
+    </div>
+
+  </div>
+
+  <script>
+    const userAnswers = {};
+    const answeredState = {};
+    const correctState = {};
+
+    for (let i = 1; i <= 9; i++) {
+      userAnswers[i] = null;
+      answeredState[i] = false;
+      correctState[i] = false;
+    }
+
+    function selectOption(qNum, index, el) {
+      userAnswers[qNum] = index;
+      const parent = el.parentElement;
+      parent.querySelectorAll('.mcq-option').forEach(opt => opt.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function updateScoreboard() {
+      let answered = 0;
+      let score = 0;
+      for (let i = 1; i <= 9; i++) {
+        if (answeredState[i]) answered++;
+        if (correctState[i]) score++;
+      }
+      document.getElementById('progress-text').innerText = answered + ' / 9';
+      document.getElementById('score-text').innerText = score + ' / 9';
+    }
+
+    function checkQ(qNum, correctIndex, explanation) {
+      if (userAnswers[qNum] === null) {
+        alert('Please choose an option first.');
+        return;
+      }
+
+      answeredState[qNum] = true;
+      const isCorrect = (userAnswers[qNum] === correctIndex);
+      correctState[qNum] = isCorrect;
+
+      const badge = document.getElementById('badge-' + qNum);
+      if (badge) {
+        badge.className = 'status-badge ' + (isCorrect ? 'correct' : 'incorrect');
+        badge.innerText = isCorrect ? '✓ Correct' : '✗ Incorrect';
+      }
+
+      const fb = document.getElementById('feedback-' + qNum);
+      if (fb) {
+        fb.className = 'inline-feedback ' + (isCorrect ? 'correct' : 'incorrect');
+        fb.innerHTML = (isCorrect ? '<strong>Correct!</strong> ' : '<strong>Incorrect.</strong> ') + explanation;
+        if (window.MathJax && window.MathJax.typesetPromise) {
+          MathJax.typesetPromise([fb]);
+        }
+      }
+
+      updateScoreboard();
+    }
+
+    function resetAll() {
+      if (!confirm('Reset all answers on the practice sheet?')) return;
+      for (let i = 1; i <= 9; i++) {
+        userAnswers[i] = null;
+        answeredState[i] = false;
+        correctState[i] = false;
+        const badge = document.getElementById('badge-' + i);
+        if (badge) {
+          badge.style.display = 'none';
+          badge.className = 'status-badge';
+        }
+        const fb = document.getElementById('feedback-' + i);
+        if (fb) {
+          fb.style.display = 'none';
+          fb.className = 'inline-feedback';
+          fb.innerHTML = '';
+        }
+      }
+      document.querySelectorAll('.mcq-option').forEach(el => el.classList.remove('selected'));
+      updateScoreboard();
+    }
+  </script>
+</body>
+</html>
